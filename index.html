@@ -1,0 +1,925 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Para mi Vainilla</title>
+<meta name="description" content="Vos me escribiste una carta. Yo te hice una página. — Tu Vikingo, 4 de septiembre de 2026.">
+<meta name="theme-color" content="#0B0A08">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Para mi Vainilla 🌻">
+<meta property="og:description" content="Vos me escribiste una carta. Yo te hice una página. — Tu Vikingo, 4 de septiembre de 2026.">
+<meta property="og:image" content="og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%230B0A08'/%3E%3Cg fill='%23F5B720'%3E%3Cellipse cx='50' cy='24' rx='7' ry='16'/%3E%3Cellipse cx='50' cy='76' rx='7' ry='16'/%3E%3Cellipse cx='24' cy='50' rx='16' ry='7'/%3E%3Cellipse cx='76' cy='50' rx='16' ry='7'/%3E%3Cellipse cx='31' cy='31' rx='7' ry='16' transform='rotate(-45 31 31)'/%3E%3Cellipse cx='69' cy='69' rx='7' ry='16' transform='rotate(-45 69 69)'/%3E%3Cellipse cx='69' cy='31' rx='7' ry='16' transform='rotate(45 69 31)'/%3E%3Cellipse cx='31' cy='69' rx='7' ry='16' transform='rotate(45 31 69)'/%3E%3C/g%3E%3Ccircle cx='50' cy='50' r='17' fill='%233A2A12'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Karla:ital,wght@0,300..700;1,300..500&family=Caveat:wght@500..700&display=swap">
+<style>
+/* ==========================================================================
+   Para mi Vainilla — de su Vikingo · 4 de septiembre de 2026
+   Un solo archivo: HTML + CSS + JS. Sin dependencias más que la tipografía.
+   El fondo es negro porque el negro es su color favorito.
+   Todo lo que brilla encima es girasol.
+   ========================================================================== */
+
+:root{
+  --noche:      #0B0A08;
+  --noche-2:    #14110B;
+  --girasol:    #F5B720;
+  --girasol-luz:#FFD963;
+  --girasol-hondo:#B87E12;
+  --hoja:       #7A9A46;
+  --crema:      #F2E9D8;
+  --tenue:      #A2937A;
+  --tenue-2:    #6E6252;
+  --linea:      rgba(242,233,216,.14);
+
+  --display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --cuerpo:  "Karla", "Helvetica Neue", Arial, sans-serif;
+  --mano:    "Caveat", "Segoe Script", cursive;
+
+  --ancho: 34rem;
+  --borde: clamp(1.15rem, 5.5vw, 2.5rem);
+  --s1:.5rem; --s2:1rem; --s3:1.75rem; --s4:2.75rem; --s5:4.5rem; --s6:6.5rem;
+
+  --luz: 0;
+}
+
+*{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+body{
+  margin:0; background:var(--noche); color:var(--crema);
+  font-family:var(--cuerpo); font-size:clamp(1.02rem,1rem + .5vw,1.14rem);
+  line-height:1.72; overflow-x:hidden; -webkit-font-smoothing:antialiased;
+}
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *,*::before,*::after{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
+}
+
+/* ---------- cielo, estrellas, polen, campo ---------- */
+.cielo{
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(125% 62% at 50% 112%, rgba(245,183,32,calc(.035 + var(--luz)*.16)) 0%, rgba(245,183,32,0) 60%),
+    radial-gradient(90% 55% at 78% 3%, rgba(184,126,18,calc(.03 + var(--luz)*.07)) 0%, rgba(184,126,18,0) 70%),
+    linear-gradient(180deg,#07060A 0%,var(--noche) 45%,#0D0A06 100%);
+}
+.estrellas,.polen{ position:fixed; inset:0; z-index:0; pointer-events:none; }
+.estrellas{ opacity:calc(1 - var(--luz)*.8); }
+.polen{ opacity:calc(.3 + var(--luz)*.7); }
+.campo{
+  position:fixed; left:0; right:0; bottom:0; height:30vh; z-index:0; pointer-events:none;
+  opacity:calc(.22 + var(--luz)*.26);
+}
+.campo svg{ display:block; width:100%; height:100%; }
+
+/* ---------- estructura ---------- */
+.hoja{ position:relative; z-index:1; }
+.env{ width:100%; max-width:var(--ancho); margin-inline:auto; padding-inline:var(--borde); }
+section{ padding-block:var(--s6); }
+
+/* ---------- tipografía ---------- */
+.fecha{
+  font-size:.715rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--girasol); display:flex; align-items:center; gap:.7rem; margin:0 0 var(--s2);
+}
+.fecha::after{ content:""; flex:1; height:1px; background:linear-gradient(90deg,rgba(245,183,32,.45),rgba(245,183,32,0)); }
+
+h1,h2,h3{ font-family:var(--display); font-weight:400; text-wrap:balance; margin:0; }
+h2{
+  font-size:clamp(1.85rem,1.35rem + 3.1vw,2.7rem); line-height:1.14; letter-spacing:-.015em;
+  font-variation-settings:"SOFT" 40,"WONK" 1,"opsz" 90; margin:0 0 var(--s3);
+}
+h3{ font-size:1.16rem; line-height:1.3; font-variation-settings:"SOFT" 30,"opsz" 20; margin:0 0 var(--s1); }
+p{ margin:0 0 1.25em; }
+p:last-child{ margin-bottom:0; }
+strong{ font-weight:700; color:#fff; }
+.grande{ font-size:1.14em; line-height:1.62; }
+.oro{ color:var(--girasol-luz); }
+.apagado{ color:var(--tenue); }
+a{ color:var(--girasol-luz); text-decoration-color:rgba(255,217,99,.4); text-underline-offset:.22em; }
+a:focus-visible,button:focus-visible,[tabindex]:focus-visible{ outline:2px solid var(--girasol-luz); outline-offset:3px; border-radius:4px; }
+
+.dice{
+  font-family:var(--mano); font-size:clamp(1.35rem,1.15rem + 1.4vw,1.72rem); line-height:1.34;
+  color:var(--girasol-luz); border-left:2px solid rgba(245,183,32,.45);
+  padding:.1em 0 .1em 1rem; margin:1.6em 0;
+}
+.dice .quien{
+  display:block; font-family:var(--cuerpo); font-size:.68rem; font-weight:600;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--tenue-2); margin-top:.7em;
+}
+.dice.mia{ border-left-color:rgba(242,233,216,.3); color:var(--crema); }
+.nota{ font-family:var(--mano); font-size:1.22rem; line-height:1.35; color:var(--tenue); margin-top:var(--s3); }
+
+/* ---------- portada ---------- */
+.portada{ min-height:100svh; display:grid; place-items:center; text-align:center; padding-block:var(--s5) var(--s4); }
+.portada .env{ display:grid; justify-items:center; gap:var(--s3); }
+.portada .sello{ font-size:.7rem; letter-spacing:.22em; text-transform:uppercase; font-weight:600; color:var(--tenue-2); margin:0; }
+.portada h1{
+  font-size:clamp(2.7rem,1.9rem + 6vw,4.4rem); line-height:.98; letter-spacing:-.03em;
+  font-variation-settings:"SOFT" 60,"WONK" 1,"opsz" 144; font-weight:300;
+}
+.portada h1 em{ display:block; font-style:normal; color:var(--girasol); font-variation-settings:"SOFT" 100,"WONK" 1,"opsz" 144; font-weight:400; }
+.portada .de{ font-family:var(--mano); font-size:1.5rem; color:var(--tenue); line-height:1.3; margin:0; }
+
+.capullo{ appearance:none; background:none; border:0; padding:0; margin:0; width:min(60vw,238px); aspect-ratio:1; cursor:pointer; display:block; touch-action:manipulation; }
+.capullo svg{ width:100%; height:100%; overflow:visible; }
+.pu{
+  transform-box:fill-box; transform-origin:50% 100%; transform:scaleY(.17) scaleX(.5); opacity:.4;
+  transition:transform .95s cubic-bezier(.16,.9,.24,1), opacity .6s ease-out;
+  transition-delay:calc(var(--i) * 34ms);
+}
+.abierta .pu{ transform:none; opacity:1; }
+.centro-flor{ transform-box:fill-box; transform-origin:50% 50%; transform:scale(.5); transition:transform .8s cubic-bezier(.16,.9,.24,1); }
+.abierta .centro-flor{ transform:none; }
+.semillas{ opacity:0; transition:opacity .7s ease-out .5s; }
+.abierta .semillas{ opacity:1; }
+
+.pista{ font-size:.78rem; letter-spacing:.16em; text-transform:uppercase; font-weight:600; color:var(--girasol); display:flex; align-items:center; gap:.55rem; margin:0; }
+.pista::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--girasol); animation:latir 2.4s ease-in-out infinite; }
+@keyframes latir{ 0%,100%{opacity:.25;transform:scale(.8)} 50%{opacity:1;transform:scale(1.25)} }
+.abierta-ya .pista{ display:none; }
+.bajar{ margin:0; opacity:0; transform:translateY(-6px); transition:opacity .6s ease .9s, transform .6s ease .9s; }
+.abierta-ya .bajar{ opacity:1; transform:none; }
+.bajar a{ font-size:.78rem; letter-spacing:.16em; text-transform:uppercase; font-weight:600; color:var(--tenue); text-decoration:none; display:inline-flex; flex-direction:column; align-items:center; gap:.4rem; }
+.bajar svg{ animation:flotar 2.6s ease-in-out infinite; }
+@keyframes flotar{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+
+/* ---------- reloj del 7 del 7 ---------- */
+.reloj{
+  display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:var(--s2);
+  margin:var(--s4) 0 0; padding:var(--s3); border:1px solid var(--linea);
+  background:linear-gradient(180deg,rgba(245,183,32,.05),rgba(245,183,32,0));
+}
+.reloj .hora{ text-align:center; }
+.reloj .hora b{ display:block; font-family:var(--display); font-weight:400; font-size:clamp(1.6rem,1.2rem + 2.4vw,2.2rem); color:var(--girasol-luz); font-variant-numeric:tabular-nums; letter-spacing:-.02em; line-height:1; }
+.reloj .hora span{ display:block; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; color:var(--tenue-2); margin-top:.6rem; }
+.reloj .vano{ color:var(--tenue-2); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; text-align:center; }
+.reloj .vano b{ display:block; color:var(--crema); font-family:var(--display); font-size:1.05rem; letter-spacing:0; text-transform:none; margin-bottom:.3rem; }
+
+/* ---------- números ---------- */
+.cifras{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1px; background:var(--linea); border:1px solid var(--linea); margin:var(--s4) 0 var(--s3); }
+.cifra{ background:var(--noche); padding:1.15rem .9rem 1.1rem; }
+.cifra b{ display:block; font-family:var(--display); font-weight:400; font-size:clamp(1.7rem,1.3rem + 2.6vw,2.35rem); line-height:1; color:var(--girasol); font-variant-numeric:tabular-nums; letter-spacing:-.025em; }
+.cifra span{ display:block; font-size:.75rem; line-height:1.35; color:var(--tenue); margin-top:.5rem; }
+.cifra i{ font-style:normal; color:var(--tenue-2); }
+
+.grafico{ margin:var(--s4) 0 0; touch-action:pan-y; }
+.grafico svg{ display:block; width:100%; height:auto; overflow:visible; }
+.barra{ fill:var(--girasol-hondo); transition:fill .18s ease; }
+.barra.hito{ fill:var(--girasol); }
+.barra.activa{ fill:var(--girasol-luz); }
+.cero{ fill:var(--tenue-2); }
+.marca{ stroke:rgba(242,233,216,.22); stroke-width:1; }
+.lectura{ display:flex; align-items:baseline; justify-content:space-between; gap:1rem; margin-top:.9rem; min-height:3.2rem; border-top:1px solid var(--linea); padding-top:.8rem; }
+.lectura .dia{ font-family:var(--display); font-size:1.06rem; }
+.lectura .dia small{ display:block; font-family:var(--cuerpo); font-size:.76rem; color:var(--girasol); margin-top:.15rem; }
+.lectura .cuenta{ font-family:var(--display); font-size:1.5rem; color:var(--girasol); font-variant-numeric:tabular-nums; white-space:nowrap; }
+.lectura .cuenta small{ font-family:var(--cuerpo); font-size:.72rem; color:var(--tenue-2); margin-left:.35rem; }
+.pie-grafico{ font-size:.78rem; color:var(--tenue-2); margin-top:.7rem; }
+
+/* ---------- girasol que gira ---------- */
+.helio{ position:relative; margin:var(--s4) calc(var(--borde) * -1) 0; touch-action:none; cursor:grab; user-select:none; -webkit-user-select:none; }
+.helio:active{ cursor:grabbing; }
+.helio svg{ display:block; width:100%; height:auto; }
+.helio .sol{ filter:drop-shadow(0 0 14px rgba(255,217,99,.55)); }
+.helio-pista{ text-align:center; font-size:.74rem; letter-spacing:.14em; text-transform:uppercase; color:var(--tenue-2); margin:.2rem 0 0; }
+
+/* ---------- flores prensadas ---------- */
+.prensadas{ display:grid; grid-template-columns:repeat(2,1fr); gap:var(--s2); margin:var(--s4) 0 0; }
+.marco{ border:1px solid var(--linea); background:var(--noche-2); padding:1.1rem .8rem .9rem; text-align:center; }
+.marco:first-child{ transform:rotate(-1.4deg); }
+.marco:last-child{ transform:rotate(1.1deg); }
+.marco svg{ width:100%; height:auto; max-width:118px; margin-inline:auto; display:block; opacity:.92; }
+.marco b{ display:block; font-family:var(--display); font-size:.95rem; margin-top:.85rem; }
+.marco span{ display:block; font-size:.72rem; color:var(--tenue-2); margin-top:.15rem; }
+
+/* ---------- acuerdos ---------- */
+.flor-acuerdos{ width:min(100%,320px); margin-inline:auto; display:block; margin-top:var(--s4); }
+.flor-acuerdos svg{ width:100%; height:auto; overflow:visible; }
+.petalo-btn{ cursor:pointer; }
+.petalo-btn .forma{ fill:rgba(245,183,32,.16); stroke:rgba(245,183,32,.5); stroke-width:1.5; transition:fill .28s ease,stroke .28s ease; }
+.petalo-btn .rotulo{ fill:var(--tenue); font-family:"Karla",sans-serif; font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; transition:fill .28s ease; }
+.petalo-btn:hover .forma{ fill:rgba(245,183,32,.3); }
+.petalo-btn[aria-selected="true"] .forma{ fill:var(--girasol); stroke:var(--girasol-luz); }
+.petalo-btn[aria-selected="true"] .rotulo{ fill:#2E220E; }
+.petalo-btn:focus-visible .forma{ stroke:var(--girasol-luz); stroke-width:3; }
+.acuerdo-texto{ margin-top:var(--s3); border:1px solid var(--linea); background:var(--noche-2); padding:1.3rem 1.25rem; min-height:13rem; }
+.acuerdo-texto h3{ color:var(--girasol); font-variation-settings:"SOFT" 60,"WONK" 1; text-transform:lowercase; }
+.acuerdo-texto p{ margin:0; }
+.acuerdo-texto .cual{ font-size:.7rem; letter-spacing:.16em; text-transform:uppercase; color:var(--tenue-2); display:block; margin-bottom:.55rem; }
+
+/* ---------- los sí ---------- */
+.sies{ display:grid; gap:.6rem; margin:var(--s3) 0; }
+.si{
+  appearance:none; border:1px solid var(--linea); background:var(--noche-2); color:var(--crema);
+  font-family:var(--cuerpo); font-size:1rem; text-align:left; padding:.95rem 1.1rem; cursor:pointer; width:100%;
+  display:flex; align-items:center; justify-content:space-between; gap:1rem; min-height:56px;
+  transition:border-color .25s ease,background .25s ease;
+}
+.si:hover{ border-color:rgba(245,183,32,.45); }
+.si .resp{ font-family:var(--display); font-size:1.12rem; color:var(--girasol); opacity:0; transform:translateX(-6px); transition:opacity .35s ease,transform .35s ease; text-align:right; }
+.si[data-abierto="1"]{ border-color:rgba(245,183,32,.55); background:rgba(245,183,32,.08); }
+.si[data-abierto="1"] .resp{ opacity:1; transform:none; }
+.si .preg{ flex:1; }
+.marcador{ font-size:.75rem; letter-spacing:.14em; text-transform:uppercase; color:var(--tenue-2); display:flex; align-items:center; gap:.6rem; }
+.marcador .barrita{ flex:1; height:2px; background:var(--linea); position:relative; }
+.marcador .barrita i{ position:absolute; inset:0 auto 0 0; background:var(--girasol); width:0%; transition:width .5s cubic-bezier(.2,.8,.2,1); }
+.remate{ margin-top:var(--s3); font-family:var(--mano); font-size:1.5rem; line-height:1.35; color:var(--girasol-luz); opacity:0; transform:translateY(8px); transition:opacity .6s ease,transform .6s ease; }
+.remate[data-visible="1"]{ opacity:1; transform:none; }
+
+/* ---------- sección seria ---------- */
+.seria{ border-top:1px solid var(--linea); border-bottom:1px solid var(--linea); }
+.seria h2{ font-variation-settings:"SOFT" 20,"WONK" 0,"opsz" 90; }
+
+/* ---------- canciones ---------- */
+.discos{ display:grid; gap:1px; background:var(--linea); border:1px solid var(--linea); margin:var(--s4) 0 0; }
+.disco{ background:var(--noche); padding:.95rem 1rem; display:flex; align-items:center; gap:.95rem; text-decoration:none; color:inherit; transition:background .2s ease; }
+.disco:hover{ background:var(--noche-2); }
+.disco .vinilo{ flex:none; width:32px; height:32px; }
+.disco .info{ flex:1; min-width:0; }
+.disco b{ display:block; font-family:var(--display); font-size:1.02rem; font-weight:400; line-height:1.2; }
+.disco span{ display:block; font-size:.78rem; color:var(--tenue); margin-top:.12rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.disco .cuando{ flex:none; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--tenue-2); }
+
+/* ---------- cierre ---------- */
+.firma{ margin-top:var(--s4); }
+.firma .frase{ font-family:var(--mano); font-size:clamp(1.55rem,1.3rem + 1.6vw,2rem); line-height:1.3; margin:0; }
+.firma .nombre{ font-family:var(--mano); font-size:clamp(2.6rem,2rem + 3.4vw,3.6rem); color:var(--girasol); line-height:1; margin:.35rem 0 0; }
+.firma .sello{ font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:var(--tenue-2); margin:1.1rem 0 0; }
+.posdata{ margin-top:var(--s4); padding-top:var(--s3); border-top:1px solid var(--linea); font-size:.95rem; color:var(--tenue); }
+.posdata b{ color:var(--girasol); font-weight:600; }
+.colofon{ text-align:center; padding:var(--s4) var(--borde) var(--s5); font-size:.75rem; color:var(--tenue-2); line-height:1.7; }
+.colofon .girasoles{ font-size:1.15rem; letter-spacing:.18em; display:block; margin-bottom:.9rem; }
+
+/* ---------- aparición ----------
+   Solo se esconde si el JS confirmó que puede volver a mostrarlo.
+   Sin JS, con JS roto o con reduced-motion, todo se ve desde el inicio. */
+@media (prefers-reduced-motion: no-preference){
+  .revela .sube{ transform:translateY(18px); transition:transform .85s cubic-bezier(.2,.8,.2,1); }
+  .revela .sube.vista{ transform:none; }
+}
+
+@media (min-width:760px){
+  :root{ --ancho:36rem; }
+  .cifras{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .helio{ margin-inline:0; }
+}
+@media (min-width:1100px){ .campo{ height:38vh; } }
+</style>
+</head>
+<body class="no-js">
+
+<div class="cielo" aria-hidden="true"></div>
+<canvas class="estrellas" aria-hidden="true"></canvas>
+<canvas class="polen" aria-hidden="true"></canvas>
+<div class="campo" aria-hidden="true">
+  <svg viewBox="0 0 1200 400" preserveAspectRatio="xMidYMax slice">
+    <g fill="#1C1608"><rect x="5.4" y="252.8" width="3.4" height="147.2"/><ellipse cx="7.1" cy="234.3" rx="5.2" ry="11.8" transform="rotate(1.8 7.1 252.8)"/><ellipse cx="7.1" cy="234.3" rx="5.2" ry="11.8" transform="rotate(39.9 7.1 252.8)"/><ellipse cx="7.1" cy="234.3" rx="5.2" ry="11.8" transform="rotate(90.4 7.1 252.8)"/><ellipse cx="7.1" cy="234.3" rx="5.2" ry="11.8" transform="rotate(133.4 7.1 252.8)"/><ellipse cx="7.1" cy="234.3" rx="5.2" ry="11.8" transform="rotate(174.7 7.1 252.8)"/><ellipse cx="7.1" cy="234.3" rx="5.2" ry="11.8" transform="rotate(225.1 7.1 252.8)"/><ellipse cx="7.1" cy="234.3" rx="5.2" ry="11.8" transform="rotate(264.4 7.1 252.8)"/><ellipse cx="7.1" cy="234.3" rx="5.2" ry="11.8" transform="rotate(314.2 7.1 252.8)"/><circle cx="7.1" cy="252.8" r="8.9"/><rect x="38.3" y="263.7" width="3.4" height="136.3"/><ellipse cx="40.0" cy="245.8" rx="5.0" ry="11.3" transform="rotate(-0.9 40.0 263.7)"/><ellipse cx="40.0" cy="245.8" rx="5.0" ry="11.3" transform="rotate(48.9 40.0 263.7)"/><ellipse cx="40.0" cy="245.8" rx="5.0" ry="11.3" transform="rotate(85.5 40.0 263.7)"/><ellipse cx="40.0" cy="245.8" rx="5.0" ry="11.3" transform="rotate(131.7 40.0 263.7)"/><ellipse cx="40.0" cy="245.8" rx="5.0" ry="11.3" transform="rotate(181.5 40.0 263.7)"/><ellipse cx="40.0" cy="245.8" rx="5.0" ry="11.3" transform="rotate(230.4 40.0 263.7)"/><ellipse cx="40.0" cy="245.8" rx="5.0" ry="11.3" transform="rotate(270.9 40.0 263.7)"/><ellipse cx="40.0" cy="245.8" rx="5.0" ry="11.3" transform="rotate(313.8 40.0 263.7)"/><circle cx="40.0" cy="263.7" r="8.6"/><rect x="103.6" y="271.6" width="3.4" height="128.4"/><ellipse cx="105.3" cy="254.3" rx="4.9" ry="11.0" transform="rotate(4.3 105.3 271.6)"/><ellipse cx="105.3" cy="254.3" rx="4.9" ry="11.0" transform="rotate(42.5 105.3 271.6)"/><ellipse cx="105.3" cy="254.3" rx="4.9" ry="11.0" transform="rotate(85.7 105.3 271.6)"/><ellipse cx="105.3" cy="254.3" rx="4.9" ry="11.0" transform="rotate(130.4 105.3 271.6)"/><ellipse cx="105.3" cy="254.3" rx="4.9" ry="11.0" transform="rotate(177.7 105.3 271.6)"/><ellipse cx="105.3" cy="254.3" rx="4.9" ry="11.0" transform="rotate(228.8 105.3 271.6)"/><ellipse cx="105.3" cy="254.3" rx="4.9" ry="11.0" transform="rotate(266.2 105.3 271.6)"/><ellipse cx="105.3" cy="254.3" rx="4.9" ry="11.0" transform="rotate(316.0 105.3 271.6)"/><circle cx="105.3" cy="271.6" r="8.3"/><rect x="134.2" y="213.0" width="3.4" height="187.0"/><ellipse cx="135.9" cy="191.8" rx="5.9" ry="13.4" transform="rotate(0.6 135.9 213.0)"/><ellipse cx="135.9" cy="191.8" rx="5.9" ry="13.4" transform="rotate(39.8 135.9 213.0)"/><ellipse cx="135.9" cy="191.8" rx="5.9" ry="13.4" transform="rotate(84.7 135.9 213.0)"/><ellipse cx="135.9" cy="191.8" rx="5.9" ry="13.4" transform="rotate(131.5 135.9 213.0)"/><ellipse cx="135.9" cy="191.8" rx="5.9" ry="13.4" transform="rotate(182.2 135.9 213.0)"/><ellipse cx="135.9" cy="191.8" rx="5.9" ry="13.4" transform="rotate(224.1 135.9 213.0)"/><ellipse cx="135.9" cy="191.8" rx="5.9" ry="13.4" transform="rotate(267.8 135.9 213.0)"/><ellipse cx="135.9" cy="191.8" rx="5.9" ry="13.4" transform="rotate(316.0 135.9 213.0)"/><circle cx="135.9" cy="213.0" r="10.2"/><rect x="169.0" y="226.0" width="3.4" height="174.0"/><ellipse cx="170.7" cy="205.7" rx="5.7" ry="12.9" transform="rotate(3.5 170.7 226.0)"/><ellipse cx="170.7" cy="205.7" rx="5.7" ry="12.9" transform="rotate(47.4 170.7 226.0)"/><ellipse cx="170.7" cy="205.7" rx="5.7" ry="12.9" transform="rotate(86.9 170.7 226.0)"/><ellipse cx="170.7" cy="205.7" rx="5.7" ry="12.9" transform="rotate(135.9 170.7 226.0)"/><ellipse cx="170.7" cy="205.7" rx="5.7" ry="12.9" transform="rotate(180.3 170.7 226.0)"/><ellipse cx="170.7" cy="205.7" rx="5.7" ry="12.9" transform="rotate(229.5 170.7 226.0)"/><ellipse cx="170.7" cy="205.7" rx="5.7" ry="12.9" transform="rotate(272.8 170.7 226.0)"/><ellipse cx="170.7" cy="205.7" rx="5.7" ry="12.9" transform="rotate(312.5 170.7 226.0)"/><circle cx="170.7" cy="226.0" r="9.7"/><rect x="223.7" y="258.7" width="3.4" height="141.3"/><ellipse cx="225.4" cy="240.6" rx="5.1" ry="11.5" transform="rotate(-1.0 225.4 258.7)"/><ellipse cx="225.4" cy="240.6" rx="5.1" ry="11.5" transform="rotate(48.1 225.4 258.7)"/><ellipse cx="225.4" cy="240.6" rx="5.1" ry="11.5" transform="rotate(85.8 225.4 258.7)"/><ellipse cx="225.4" cy="240.6" rx="5.1" ry="11.5" transform="rotate(134.9 225.4 258.7)"/><ellipse cx="225.4" cy="240.6" rx="5.1" ry="11.5" transform="rotate(174.5 225.4 258.7)"/><ellipse cx="225.4" cy="240.6" rx="5.1" ry="11.5" transform="rotate(227.0 225.4 258.7)"/><ellipse cx="225.4" cy="240.6" rx="5.1" ry="11.5" transform="rotate(273.2 225.4 258.7)"/><ellipse cx="225.4" cy="240.6" rx="5.1" ry="11.5" transform="rotate(315.9 225.4 258.7)"/><circle cx="225.4" cy="258.7" r="8.7"/><rect x="260.8" y="223.5" width="3.4" height="176.5"/><ellipse cx="262.5" cy="203.1" rx="5.7" ry="13.0" transform="rotate(2.3 262.5 223.5)"/><ellipse cx="262.5" cy="203.1" rx="5.7" ry="13.0" transform="rotate(46.1 262.5 223.5)"/><ellipse cx="262.5" cy="203.1" rx="5.7" ry="13.0" transform="rotate(91.0 262.5 223.5)"/><ellipse cx="262.5" cy="203.1" rx="5.7" ry="13.0" transform="rotate(134.5 262.5 223.5)"/><ellipse cx="262.5" cy="203.1" rx="5.7" ry="13.0" transform="rotate(184.1 262.5 223.5)"/><ellipse cx="262.5" cy="203.1" rx="5.7" ry="13.0" transform="rotate(230.3 262.5 223.5)"/><ellipse cx="262.5" cy="203.1" rx="5.7" ry="13.0" transform="rotate(269.7 262.5 223.5)"/><ellipse cx="262.5" cy="203.1" rx="5.7" ry="13.0" transform="rotate(317.0 262.5 223.5)"/><circle cx="262.5" cy="223.5" r="9.8"/><rect x="278.0" y="153.7" width="3.4" height="246.3"/><ellipse cx="279.7" cy="128.7" rx="7.0" ry="15.8" transform="rotate(1.8 279.7 153.7)"/><ellipse cx="279.7" cy="128.7" rx="7.0" ry="15.8" transform="rotate(50.9 279.7 153.7)"/><ellipse cx="279.7" cy="128.7" rx="7.0" ry="15.8" transform="rotate(93.9 279.7 153.7)"/><ellipse cx="279.7" cy="128.7" rx="7.0" ry="15.8" transform="rotate(132.4 279.7 153.7)"/><ellipse cx="279.7" cy="128.7" rx="7.0" ry="15.8" transform="rotate(178.6 279.7 153.7)"/><ellipse cx="279.7" cy="128.7" rx="7.0" ry="15.8" transform="rotate(227.0 279.7 153.7)"/><ellipse cx="279.7" cy="128.7" rx="7.0" ry="15.8" transform="rotate(264.3 279.7 153.7)"/><ellipse cx="279.7" cy="128.7" rx="7.0" ry="15.8" transform="rotate(314.5 279.7 153.7)"/><circle cx="279.7" cy="153.7" r="12.0"/><rect x="321.0" y="258.9" width="3.4" height="141.1"/><ellipse cx="322.7" cy="240.8" rx="5.1" ry="11.5" transform="rotate(-5.3 322.7 258.9)"/><ellipse cx="322.7" cy="240.8" rx="5.1" ry="11.5" transform="rotate(48.2 322.7 258.9)"/><ellipse cx="322.7" cy="240.8" rx="5.1" ry="11.5" transform="rotate(85.6 322.7 258.9)"/><ellipse cx="322.7" cy="240.8" rx="5.1" ry="11.5" transform="rotate(132.0 322.7 258.9)"/><ellipse cx="322.7" cy="240.8" rx="5.1" ry="11.5" transform="rotate(178.7 322.7 258.9)"/><ellipse cx="322.7" cy="240.8" rx="5.1" ry="11.5" transform="rotate(229.5 322.7 258.9)"/><ellipse cx="322.7" cy="240.8" rx="5.1" ry="11.5" transform="rotate(265.0 322.7 258.9)"/><ellipse cx="322.7" cy="240.8" rx="5.1" ry="11.5" transform="rotate(314.4 322.7 258.9)"/><circle cx="322.7" cy="258.9" r="8.7"/><rect x="371.7" y="121.0" width="3.4" height="279.0"/><ellipse cx="373.4" cy="93.9" rx="7.6" ry="17.2" transform="rotate(3.8 373.4 121.0)"/><ellipse cx="373.4" cy="93.9" rx="7.6" ry="17.2" transform="rotate(49.4 373.4 121.0)"/><ellipse cx="373.4" cy="93.9" rx="7.6" ry="17.2" transform="rotate(87.3 373.4 121.0)"/><ellipse cx="373.4" cy="93.9" rx="7.6" ry="17.2" transform="rotate(134.0 373.4 121.0)"/><ellipse cx="373.4" cy="93.9" rx="7.6" ry="17.2" transform="rotate(178.3 373.4 121.0)"/><ellipse cx="373.4" cy="93.9" rx="7.6" ry="17.2" transform="rotate(229.6 373.4 121.0)"/><ellipse cx="373.4" cy="93.9" rx="7.6" ry="17.2" transform="rotate(275.5 373.4 121.0)"/><ellipse cx="373.4" cy="93.9" rx="7.6" ry="17.2" transform="rotate(310.8 373.4 121.0)"/><circle cx="373.4" cy="121.0" r="13.0"/><rect x="401.2" y="238.2" width="3.4" height="161.8"/><ellipse cx="402.9" cy="218.7" rx="5.5" ry="12.4" transform="rotate(-3.2 402.9 238.2)"/><ellipse cx="402.9" cy="218.7" rx="5.5" ry="12.4" transform="rotate(44.8 402.9 238.2)"/><ellipse cx="402.9" cy="218.7" rx="5.5" ry="12.4" transform="rotate(91.1 402.9 238.2)"/><ellipse cx="402.9" cy="218.7" rx="5.5" ry="12.4" transform="rotate(132.2 402.9 238.2)"/><ellipse cx="402.9" cy="218.7" rx="5.5" ry="12.4" transform="rotate(174.0 402.9 238.2)"/><ellipse cx="402.9" cy="218.7" rx="5.5" ry="12.4" transform="rotate(224.0 402.9 238.2)"/><ellipse cx="402.9" cy="218.7" rx="5.5" ry="12.4" transform="rotate(268.4 402.9 238.2)"/><ellipse cx="402.9" cy="218.7" rx="5.5" ry="12.4" transform="rotate(315.8 402.9 238.2)"/><circle cx="402.9" cy="238.2" r="9.4"/><rect x="463.0" y="155.7" width="3.4" height="244.3"/><ellipse cx="464.7" cy="130.8" rx="7.0" ry="15.8" transform="rotate(0.2 464.7 155.7)"/><ellipse cx="464.7" cy="130.8" rx="7.0" ry="15.8" transform="rotate(46.4 464.7 155.7)"/><ellipse cx="464.7" cy="130.8" rx="7.0" ry="15.8" transform="rotate(92.1 464.7 155.7)"/><ellipse cx="464.7" cy="130.8" rx="7.0" ry="15.8" transform="rotate(129.6 464.7 155.7)"/><ellipse cx="464.7" cy="130.8" rx="7.0" ry="15.8" transform="rotate(184.8 464.7 155.7)"/><ellipse cx="464.7" cy="130.8" rx="7.0" ry="15.8" transform="rotate(228.4 464.7 155.7)"/><ellipse cx="464.7" cy="130.8" rx="7.0" ry="15.8" transform="rotate(274.5 464.7 155.7)"/><ellipse cx="464.7" cy="130.8" rx="7.0" ry="15.8" transform="rotate(318.6 464.7 155.7)"/><circle cx="464.7" cy="155.7" r="11.9"/><rect x="487.3" y="208.2" width="3.4" height="191.8"/><ellipse cx="489.0" cy="186.7" rx="6.0" ry="13.6" transform="rotate(-4.8 489.0 208.2)"/><ellipse cx="489.0" cy="186.7" rx="6.0" ry="13.6" transform="rotate(46.6 489.0 208.2)"/><ellipse cx="489.0" cy="186.7" rx="6.0" ry="13.6" transform="rotate(84.7 489.0 208.2)"/><ellipse cx="489.0" cy="186.7" rx="6.0" ry="13.6" transform="rotate(129.8 489.0 208.2)"/><ellipse cx="489.0" cy="186.7" rx="6.0" ry="13.6" transform="rotate(176.5 489.0 208.2)"/><ellipse cx="489.0" cy="186.7" rx="6.0" ry="13.6" transform="rotate(220.9 489.0 208.2)"/><ellipse cx="489.0" cy="186.7" rx="6.0" ry="13.6" transform="rotate(268.1 489.0 208.2)"/><ellipse cx="489.0" cy="186.7" rx="6.0" ry="13.6" transform="rotate(309.6 489.0 208.2)"/><circle cx="489.0" cy="208.2" r="10.3"/><rect x="516.3" y="252.8" width="3.4" height="147.2"/><ellipse cx="518.0" cy="234.2" rx="5.2" ry="11.8" transform="rotate(-4.8 518.0 252.8)"/><ellipse cx="518.0" cy="234.2" rx="5.2" ry="11.8" transform="rotate(43.4 518.0 252.8)"/><ellipse cx="518.0" cy="234.2" rx="5.2" ry="11.8" transform="rotate(84.3 518.0 252.8)"/><ellipse cx="518.0" cy="234.2" rx="5.2" ry="11.8" transform="rotate(139.5 518.0 252.8)"/><ellipse cx="518.0" cy="234.2" rx="5.2" ry="11.8" transform="rotate(181.4 518.0 252.8)"/><ellipse cx="518.0" cy="234.2" rx="5.2" ry="11.8" transform="rotate(220.8 518.0 252.8)"/><ellipse cx="518.0" cy="234.2" rx="5.2" ry="11.8" transform="rotate(267.0 518.0 252.8)"/><ellipse cx="518.0" cy="234.2" rx="5.2" ry="11.8" transform="rotate(313.2 518.0 252.8)"/><circle cx="518.0" cy="252.8" r="8.9"/><rect x="566.5" y="257.9" width="3.4" height="142.1"/><ellipse cx="568.2" cy="239.7" rx="5.1" ry="11.6" transform="rotate(4.2 568.2 257.9)"/><ellipse cx="568.2" cy="239.7" rx="5.1" ry="11.6" transform="rotate(50.9 568.2 257.9)"/><ellipse cx="568.2" cy="239.7" rx="5.1" ry="11.6" transform="rotate(89.6 568.2 257.9)"/><ellipse cx="568.2" cy="239.7" rx="5.1" ry="11.6" transform="rotate(134.8 568.2 257.9)"/><ellipse cx="568.2" cy="239.7" rx="5.1" ry="11.6" transform="rotate(175.0 568.2 257.9)"/><ellipse cx="568.2" cy="239.7" rx="5.1" ry="11.6" transform="rotate(220.2 568.2 257.9)"/><ellipse cx="568.2" cy="239.7" rx="5.1" ry="11.6" transform="rotate(268.1 568.2 257.9)"/><ellipse cx="568.2" cy="239.7" rx="5.1" ry="11.6" transform="rotate(312.2 568.2 257.9)"/><circle cx="568.2" cy="257.9" r="8.8"/><rect x="619.5" y="250.9" width="3.4" height="149.1"/><ellipse cx="621.2" cy="232.3" rx="5.2" ry="11.8" transform="rotate(-5.7 621.2 250.9)"/><ellipse cx="621.2" cy="232.3" rx="5.2" ry="11.8" transform="rotate(50.4 621.2 250.9)"/><ellipse cx="621.2" cy="232.3" rx="5.2" ry="11.8" transform="rotate(90.3 621.2 250.9)"/><ellipse cx="621.2" cy="232.3" rx="5.2" ry="11.8" transform="rotate(130.8 621.2 250.9)"/><ellipse cx="621.2" cy="232.3" rx="5.2" ry="11.8" transform="rotate(180.5 621.2 250.9)"/><ellipse cx="621.2" cy="232.3" rx="5.2" ry="11.8" transform="rotate(219.3 621.2 250.9)"/><ellipse cx="621.2" cy="232.3" rx="5.2" ry="11.8" transform="rotate(270.3 621.2 250.9)"/><ellipse cx="621.2" cy="232.3" rx="5.2" ry="11.8" transform="rotate(320.7 621.2 250.9)"/><circle cx="621.2" cy="250.9" r="9.0"/><rect x="660.5" y="154.7" width="3.4" height="245.3"/><ellipse cx="662.2" cy="129.7" rx="7.0" ry="15.8" transform="rotate(-2.9 662.2 154.7)"/><ellipse cx="662.2" cy="129.7" rx="7.0" ry="15.8" transform="rotate(43.4 662.2 154.7)"/><ellipse cx="662.2" cy="129.7" rx="7.0" ry="15.8" transform="rotate(86.0 662.2 154.7)"/><ellipse cx="662.2" cy="129.7" rx="7.0" ry="15.8" transform="rotate(138.3 662.2 154.7)"/><ellipse cx="662.2" cy="129.7" rx="7.0" ry="15.8" transform="rotate(180.4 662.2 154.7)"/><ellipse cx="662.2" cy="129.7" rx="7.0" ry="15.8" transform="rotate(228.3 662.2 154.7)"/><ellipse cx="662.2" cy="129.7" rx="7.0" ry="15.8" transform="rotate(268.0 662.2 154.7)"/><ellipse cx="662.2" cy="129.7" rx="7.0" ry="15.8" transform="rotate(311.7 662.2 154.7)"/><circle cx="662.2" cy="154.7" r="12.0"/><rect x="699.0" y="102.7" width="3.4" height="297.3"/><ellipse cx="700.7" cy="74.4" rx="7.9" ry="17.9" transform="rotate(4.2 700.7 102.7)"/><ellipse cx="700.7" cy="74.4" rx="7.9" ry="17.9" transform="rotate(48.7 700.7 102.7)"/><ellipse cx="700.7" cy="74.4" rx="7.9" ry="17.9" transform="rotate(93.8 700.7 102.7)"/><ellipse cx="700.7" cy="74.4" rx="7.9" ry="17.9" transform="rotate(137.9 700.7 102.7)"/><ellipse cx="700.7" cy="74.4" rx="7.9" ry="17.9" transform="rotate(176.7 700.7 102.7)"/><ellipse cx="700.7" cy="74.4" rx="7.9" ry="17.9" transform="rotate(225.2 700.7 102.7)"/><ellipse cx="700.7" cy="74.4" rx="7.9" ry="17.9" transform="rotate(268.3 700.7 102.7)"/><ellipse cx="700.7" cy="74.4" rx="7.9" ry="17.9" transform="rotate(309.3 700.7 102.7)"/><circle cx="700.7" cy="102.7" r="13.6"/><rect x="717.1" y="229.7" width="3.4" height="170.3"/><ellipse cx="718.8" cy="209.6" rx="5.6" ry="12.7" transform="rotate(-2.9 718.8 229.7)"/><ellipse cx="718.8" cy="209.6" rx="5.6" ry="12.7" transform="rotate(47.3 718.8 229.7)"/><ellipse cx="718.8" cy="209.6" rx="5.6" ry="12.7" transform="rotate(95.5 718.8 229.7)"/><ellipse cx="718.8" cy="209.6" rx="5.6" ry="12.7" transform="rotate(134.4 718.8 229.7)"/><ellipse cx="718.8" cy="209.6" rx="5.6" ry="12.7" transform="rotate(185.2 718.8 229.7)"/><ellipse cx="718.8" cy="209.6" rx="5.6" ry="12.7" transform="rotate(230.9 718.8 229.7)"/><ellipse cx="718.8" cy="209.6" rx="5.6" ry="12.7" transform="rotate(275.5 718.8 229.7)"/><ellipse cx="718.8" cy="209.6" rx="5.6" ry="12.7" transform="rotate(313.4 718.8 229.7)"/><circle cx="718.8" cy="229.7" r="9.6"/><rect x="762.5" y="239.2" width="3.4" height="160.8"/><ellipse cx="764.2" cy="219.7" rx="5.4" ry="12.3" transform="rotate(-3.6 764.2 239.2)"/><ellipse cx="764.2" cy="219.7" rx="5.4" ry="12.3" transform="rotate(41.5 764.2 239.2)"/><ellipse cx="764.2" cy="219.7" rx="5.4" ry="12.3" transform="rotate(91.5 764.2 239.2)"/><ellipse cx="764.2" cy="219.7" rx="5.4" ry="12.3" transform="rotate(139.8 764.2 239.2)"/><ellipse cx="764.2" cy="219.7" rx="5.4" ry="12.3" transform="rotate(184.1 764.2 239.2)"/><ellipse cx="764.2" cy="219.7" rx="5.4" ry="12.3" transform="rotate(224.8 764.2 239.2)"/><ellipse cx="764.2" cy="219.7" rx="5.4" ry="12.3" transform="rotate(271.8 764.2 239.2)"/><ellipse cx="764.2" cy="219.7" rx="5.4" ry="12.3" transform="rotate(318.6 764.2 239.2)"/><circle cx="764.2" cy="239.2" r="9.3"/><rect x="798.7" y="161.1" width="3.4" height="238.9"/><ellipse cx="800.4" cy="136.6" rx="6.9" ry="15.5" transform="rotate(4.9 800.4 161.1)"/><ellipse cx="800.4" cy="136.6" rx="6.9" ry="15.5" transform="rotate(48.4 800.4 161.1)"/><ellipse cx="800.4" cy="136.6" rx="6.9" ry="15.5" transform="rotate(93.0 800.4 161.1)"/><ellipse cx="800.4" cy="136.6" rx="6.9" ry="15.5" transform="rotate(134.7 800.4 161.1)"/><ellipse cx="800.4" cy="136.6" rx="6.9" ry="15.5" transform="rotate(176.1 800.4 161.1)"/><ellipse cx="800.4" cy="136.6" rx="6.9" ry="15.5" transform="rotate(228.5 800.4 161.1)"/><ellipse cx="800.4" cy="136.6" rx="6.9" ry="15.5" transform="rotate(268.0 800.4 161.1)"/><ellipse cx="800.4" cy="136.6" rx="6.9" ry="15.5" transform="rotate(318.6 800.4 161.1)"/><circle cx="800.4" cy="161.1" r="11.8"/><rect x="863.5" y="208.7" width="3.4" height="191.3"/><ellipse cx="865.2" cy="187.3" rx="6.0" ry="13.6" transform="rotate(-1.2 865.2 208.7)"/><ellipse cx="865.2" cy="187.3" rx="6.0" ry="13.6" transform="rotate(50.4 865.2 208.7)"/><ellipse cx="865.2" cy="187.3" rx="6.0" ry="13.6" transform="rotate(92.7 865.2 208.7)"/><ellipse cx="865.2" cy="187.3" rx="6.0" ry="13.6" transform="rotate(131.0 865.2 208.7)"/><ellipse cx="865.2" cy="187.3" rx="6.0" ry="13.6" transform="rotate(175.5 865.2 208.7)"/><ellipse cx="865.2" cy="187.3" rx="6.0" ry="13.6" transform="rotate(220.8 865.2 208.7)"/><ellipse cx="865.2" cy="187.3" rx="6.0" ry="13.6" transform="rotate(274.9 865.2 208.7)"/><ellipse cx="865.2" cy="187.3" rx="6.0" ry="13.6" transform="rotate(318.7 865.2 208.7)"/><circle cx="865.2" cy="208.7" r="10.3"/><rect x="880.4" y="131.2" width="3.4" height="268.8"/><ellipse cx="882.1" cy="104.8" rx="7.4" ry="16.8" transform="rotate(5.8 882.1 131.2)"/><ellipse cx="882.1" cy="104.8" rx="7.4" ry="16.8" transform="rotate(46.9 882.1 131.2)"/><ellipse cx="882.1" cy="104.8" rx="7.4" ry="16.8" transform="rotate(88.2 882.1 131.2)"/><ellipse cx="882.1" cy="104.8" rx="7.4" ry="16.8" transform="rotate(135.6 882.1 131.2)"/><ellipse cx="882.1" cy="104.8" rx="7.4" ry="16.8" transform="rotate(175.6 882.1 131.2)"/><ellipse cx="882.1" cy="104.8" rx="7.4" ry="16.8" transform="rotate(219.2 882.1 131.2)"/><ellipse cx="882.1" cy="104.8" rx="7.4" ry="16.8" transform="rotate(275.7 882.1 131.2)"/><ellipse cx="882.1" cy="104.8" rx="7.4" ry="16.8" transform="rotate(316.8 882.1 131.2)"/><circle cx="882.1" cy="131.2" r="12.7"/><rect x="931.0" y="111.9" width="3.4" height="288.1"/><ellipse cx="932.7" cy="84.2" rx="7.8" ry="17.6" transform="rotate(-0.8 932.7 111.9)"/><ellipse cx="932.7" cy="84.2" rx="7.8" ry="17.6" transform="rotate(49.5 932.7 111.9)"/><ellipse cx="932.7" cy="84.2" rx="7.8" ry="17.6" transform="rotate(93.9 932.7 111.9)"/><ellipse cx="932.7" cy="84.2" rx="7.8" ry="17.6" transform="rotate(131.5 932.7 111.9)"/><ellipse cx="932.7" cy="84.2" rx="7.8" ry="17.6" transform="rotate(177.0 932.7 111.9)"/><ellipse cx="932.7" cy="84.2" rx="7.8" ry="17.6" transform="rotate(222.5 932.7 111.9)"/><ellipse cx="932.7" cy="84.2" rx="7.8" ry="17.6" transform="rotate(266.9 932.7 111.9)"/><ellipse cx="932.7" cy="84.2" rx="7.8" ry="17.6" transform="rotate(316.0 932.7 111.9)"/><circle cx="932.7" cy="111.9" r="13.3"/><rect x="963.6" y="204.6" width="3.4" height="195.4"/><ellipse cx="965.3" cy="182.9" rx="6.1" ry="13.7" transform="rotate(-4.4 965.3 204.6)"/><ellipse cx="965.3" cy="182.9" rx="6.1" ry="13.7" transform="rotate(49.9 965.3 204.6)"/><ellipse cx="965.3" cy="182.9" rx="6.1" ry="13.7" transform="rotate(88.2 965.3 204.6)"/><ellipse cx="965.3" cy="182.9" rx="6.1" ry="13.7" transform="rotate(134.5 965.3 204.6)"/><ellipse cx="965.3" cy="182.9" rx="6.1" ry="13.7" transform="rotate(181.0 965.3 204.6)"/><ellipse cx="965.3" cy="182.9" rx="6.1" ry="13.7" transform="rotate(229.9 965.3 204.6)"/><ellipse cx="965.3" cy="182.9" rx="6.1" ry="13.7" transform="rotate(269.0 965.3 204.6)"/><ellipse cx="965.3" cy="182.9" rx="6.1" ry="13.7" transform="rotate(320.0 965.3 204.6)"/><circle cx="965.3" cy="204.6" r="10.4"/><rect x="1010.3" y="184.3" width="3.4" height="215.7"/><ellipse cx="1012.0" cy="161.2" rx="6.4" ry="14.6" transform="rotate(0.3 1012.0 184.3)"/><ellipse cx="1012.0" cy="161.2" rx="6.4" ry="14.6" transform="rotate(39.2 1012.0 184.3)"/><ellipse cx="1012.0" cy="161.2" rx="6.4" ry="14.6" transform="rotate(89.3 1012.0 184.3)"/><ellipse cx="1012.0" cy="161.2" rx="6.4" ry="14.6" transform="rotate(131.2 1012.0 184.3)"/><ellipse cx="1012.0" cy="161.2" rx="6.4" ry="14.6" transform="rotate(174.0 1012.0 184.3)"/><ellipse cx="1012.0" cy="161.2" rx="6.4" ry="14.6" transform="rotate(228.6 1012.0 184.3)"/><ellipse cx="1012.0" cy="161.2" rx="6.4" ry="14.6" transform="rotate(266.1 1012.0 184.3)"/><ellipse cx="1012.0" cy="161.2" rx="6.4" ry="14.6" transform="rotate(314.7 1012.0 184.3)"/><circle cx="1012.0" cy="184.3" r="11.1"/><rect x="1056.6" y="179.8" width="3.4" height="220.2"/><ellipse cx="1058.3" cy="156.5" rx="6.5" ry="14.8" transform="rotate(-2.1 1058.3 179.8)"/><ellipse cx="1058.3" cy="156.5" rx="6.5" ry="14.8" transform="rotate(45.2 1058.3 179.8)"/><ellipse cx="1058.3" cy="156.5" rx="6.5" ry="14.8" transform="rotate(90.7 1058.3 179.8)"/><ellipse cx="1058.3" cy="156.5" rx="6.5" ry="14.8" transform="rotate(138.4 1058.3 179.8)"/><ellipse cx="1058.3" cy="156.5" rx="6.5" ry="14.8" transform="rotate(175.3 1058.3 179.8)"/><ellipse cx="1058.3" cy="156.5" rx="6.5" ry="14.8" transform="rotate(225.7 1058.3 179.8)"/><ellipse cx="1058.3" cy="156.5" rx="6.5" ry="14.8" transform="rotate(267.0 1058.3 179.8)"/><ellipse cx="1058.3" cy="156.5" rx="6.5" ry="14.8" transform="rotate(312.3 1058.3 179.8)"/><circle cx="1058.3" cy="179.8" r="11.2"/><rect x="1097.9" y="188.6" width="3.4" height="211.4"/><ellipse cx="1099.6" cy="165.9" rx="6.4" ry="14.4" transform="rotate(0.7 1099.6 188.6)"/><ellipse cx="1099.6" cy="165.9" rx="6.4" ry="14.4" transform="rotate(48.1 1099.6 188.6)"/><ellipse cx="1099.6" cy="165.9" rx="6.4" ry="14.4" transform="rotate(94.9 1099.6 188.6)"/><ellipse cx="1099.6" cy="165.9" rx="6.4" ry="14.4" transform="rotate(134.3 1099.6 188.6)"/><ellipse cx="1099.6" cy="165.9" rx="6.4" ry="14.4" transform="rotate(181.4 1099.6 188.6)"/><ellipse cx="1099.6" cy="165.9" rx="6.4" ry="14.4" transform="rotate(225.1 1099.6 188.6)"/><ellipse cx="1099.6" cy="165.9" rx="6.4" ry="14.4" transform="rotate(270.1 1099.6 188.6)"/><ellipse cx="1099.6" cy="165.9" rx="6.4" ry="14.4" transform="rotate(317.3 1099.6 188.6)"/><circle cx="1099.6" cy="188.6" r="10.9"/><rect x="1129.0" y="184.0" width="3.4" height="216.0"/><ellipse cx="1130.7" cy="161.0" rx="6.5" ry="14.6" transform="rotate(-0.3 1130.7 184.0)"/><ellipse cx="1130.7" cy="161.0" rx="6.5" ry="14.6" transform="rotate(50.3 1130.7 184.0)"/><ellipse cx="1130.7" cy="161.0" rx="6.5" ry="14.6" transform="rotate(92.4 1130.7 184.0)"/><ellipse cx="1130.7" cy="161.0" rx="6.5" ry="14.6" transform="rotate(139.5 1130.7 184.0)"/><ellipse cx="1130.7" cy="161.0" rx="6.5" ry="14.6" transform="rotate(185.3 1130.7 184.0)"/><ellipse cx="1130.7" cy="161.0" rx="6.5" ry="14.6" transform="rotate(222.1 1130.7 184.0)"/><ellipse cx="1130.7" cy="161.0" rx="6.5" ry="14.6" transform="rotate(270.7 1130.7 184.0)"/><ellipse cx="1130.7" cy="161.0" rx="6.5" ry="14.6" transform="rotate(320.3 1130.7 184.0)"/><circle cx="1130.7" cy="184.0" r="11.1"/><rect x="1179.8" y="255.3" width="3.4" height="144.7"/><ellipse cx="1181.5" cy="236.9" rx="5.2" ry="11.7" transform="rotate(-4.5 1181.5 255.3)"/><ellipse cx="1181.5" cy="236.9" rx="5.2" ry="11.7" transform="rotate(44.3 1181.5 255.3)"/><ellipse cx="1181.5" cy="236.9" rx="5.2" ry="11.7" transform="rotate(84.9 1181.5 255.3)"/><ellipse cx="1181.5" cy="236.9" rx="5.2" ry="11.7" transform="rotate(131.9 1181.5 255.3)"/><ellipse cx="1181.5" cy="236.9" rx="5.2" ry="11.7" transform="rotate(174.9 1181.5 255.3)"/><ellipse cx="1181.5" cy="236.9" rx="5.2" ry="11.7" transform="rotate(227.0 1181.5 255.3)"/><ellipse cx="1181.5" cy="236.9" rx="5.2" ry="11.7" transform="rotate(273.4 1181.5 255.3)"/><ellipse cx="1181.5" cy="236.9" rx="5.2" ry="11.7" transform="rotate(319.8 1181.5 255.3)"/><circle cx="1181.5" cy="255.3" r="8.8"/></g>
+  </svg>
+</div>
+
+<div class="hoja">
+
+<!-- ═══════════ PORTADA ═══════════ -->
+<header class="portada" id="portada">
+  <div class="env">
+    <p class="sello">4 de septiembre de 2026</p>
+
+    <button class="capullo" id="capullo" aria-label="Abrir la carta">
+      <svg viewBox="0 0 200 200" aria-hidden="true">
+        <defs>
+          <radialGradient id="gCentro" cx="38%" cy="34%">
+            <stop offset="0%" stop-color="#5A421C"/><stop offset="100%" stop-color="#241A0A"/>
+          </radialGradient>
+          <linearGradient id="gPetalo" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stop-color="#B87E12"/><stop offset="55%" stop-color="#F5B720"/><stop offset="100%" stop-color="#FFD963"/>
+          </linearGradient>
+        </defs>
+        <g fill="url(#gPetalo)"><g transform="rotate(15 100 100)"><path class="pu" style="--i:0" d="M100,76 C110,62 109,38 100,28 C91,38 90,62 100,76 Z"/></g><g transform="rotate(45 100 100)"><path class="pu" style="--i:1" d="M100,76 C110,62 109,38 100,28 C91,38 90,62 100,76 Z"/></g><g transform="rotate(75 100 100)"><path class="pu" style="--i:2" d="M100,76 C110,62 109,38 100,28 C91,38 90,62 100,76 Z"/></g><g transform="rotate(105 100 100)"><path class="pu" style="--i:3" d="M100,76 C110,62 109,38 100,28 C91,38 90,62 100,76 Z"/></g><g transform="rotate(135 100 100)"><path class="pu" style="--i:4" d="M100,76 C110,62 109,38 100,28 C91,38 90,62 100,76 Z"/></g><g transform="rotate(165 100 100)"><path class="pu" style="--i:5" d="M100,76 C110,62 109,38 100,28 C91,38 90,62 100,76 Z"/></g><g transform="rotate(195 100 100)"><path class="pu" style="--i:6" d="M100,76 C110,62 109,38 100,28 C91,38 90,62 100,76 Z"/></g><g transform="rotate(225 100 100)"><path class="pu" style="--i:7" d="M100,76 C110,62 109,38 100,28 C91,38 90,62 100,76 Z"/></g><g transform="rotate(255 100 100)"><path class="pu" style="--i:8" d="M100,76 C110,62 109,38 100,28 C91,38 90,62 100,76 Z"/></g><g transform="rotate(285 100 100)"><path class="pu" style="--i:9" d="M100,76 C110,62 109,38 100,28 C91,38 90,62 100,76 Z"/></g><g transform="rotate(315 100 100)"><path class="pu" style="--i:10" d="M100,76 C110,62 109,38 100,28 C91,38 90,62 100,76 Z"/></g><g transform="rotate(345 100 100)"><path class="pu" style="--i:11" d="M100,76 C110,62 109,38 100,28 C91,38 90,62 100,76 Z"/></g><g transform="rotate(0 100 100)"><path class="pu" style="--i:12" d="M100,72 C113,54 111,20 100,6 C89,20 87,54 100,72 Z"/></g><g transform="rotate(20 100 100)"><path class="pu" style="--i:13" d="M100,72 C113,54 111,20 100,6 C89,20 87,54 100,72 Z"/></g><g transform="rotate(40 100 100)"><path class="pu" style="--i:14" d="M100,72 C113,54 111,20 100,6 C89,20 87,54 100,72 Z"/></g><g transform="rotate(60 100 100)"><path class="pu" style="--i:15" d="M100,72 C113,54 111,20 100,6 C89,20 87,54 100,72 Z"/></g><g transform="rotate(80 100 100)"><path class="pu" style="--i:16" d="M100,72 C113,54 111,20 100,6 C89,20 87,54 100,72 Z"/></g><g transform="rotate(100 100 100)"><path class="pu" style="--i:17" d="M100,72 C113,54 111,20 100,6 C89,20 87,54 100,72 Z"/></g><g transform="rotate(120 100 100)"><path class="pu" style="--i:18" d="M100,72 C113,54 111,20 100,6 C89,20 87,54 100,72 Z"/></g><g transform="rotate(140 100 100)"><path class="pu" style="--i:19" d="M100,72 C113,54 111,20 100,6 C89,20 87,54 100,72 Z"/></g><g transform="rotate(160 100 100)"><path class="pu" style="--i:20" d="M100,72 C113,54 111,20 100,6 C89,20 87,54 100,72 Z"/></g><g transform="rotate(180 100 100)"><path class="pu" style="--i:21" d="M100,72 C113,54 111,20 100,6 C89,20 87,54 100,72 Z"/></g><g transform="rotate(200 100 100)"><path class="pu" style="--i:22" d="M100,72 C113,54 111,20 100,6 C89,20 87,54 100,72 Z"/></g><g transform="rotate(220 100 100)"><path class="pu" style="--i:23" d="M100,72 C113,54 111,20 100,6 C89,20 87,54 100,72 Z"/></g><g transform="rotate(240 100 100)"><path class="pu" style="--i:24" d="M100,72 C113,54 111,20 100,6 C89,20 87,54 100,72 Z"/></g><g transform="rotate(260 100 100)"><path class="pu" style="--i:25" d="M100,72 C113,54 111,20 100,6 C89,20 87,54 100,72 Z"/></g><g transform="rotate(280 100 100)"><path class="pu" style="--i:26" d="M100,72 C113,54 111,20 100,6 C89,20 87,54 100,72 Z"/></g><g transform="rotate(300 100 100)"><path class="pu" style="--i:27" d="M100,72 C113,54 111,20 100,6 C89,20 87,54 100,72 Z"/></g><g transform="rotate(320 100 100)"><path class="pu" style="--i:28" d="M100,72 C113,54 111,20 100,6 C89,20 87,54 100,72 Z"/></g><g transform="rotate(340 100 100)"><path class="pu" style="--i:29" d="M100,72 C113,54 111,20 100,6 C89,20 87,54 100,72 Z"/></g></g>
+        <circle class="centro-flor" cx="100" cy="100" r="30" fill="url(#gCentro)"/>
+        <g class="semillas" fill="#0B0A08" opacity=".5"><circle cx="100.0" cy="100.0" r="1.15"/><circle cx="98.4" cy="101.5" r="1.15"/><circle cx="100.3" cy="96.9" r="1.15"/><circle cx="102.3" cy="103.0" r="1.15"/><circle cx="95.7" cy="99.2" r="1.15"/><circle cx="104.2" cy="97.4" r="1.15"/><circle cx="98.6" cy="105.2" r="1.15"/><circle cx="97.3" cy="94.8" r="1.15"/><circle cx="105.9" cy="102.1" r="1.15"/><circle cx="93.9" cy="102.5" r="1.15"/><circle cx="103.0" cy="93.7" r="1.15"/><circle cx="102.2" cy="107.0" r="1.15"/><circle cx="93.4" cy="96.2" r="1.15"/><circle cx="107.8" cy="98.3" r="1.15"/><circle cx="95.3" cy="106.7" r="1.15"/><circle cx="98.9" cy="91.5" r="1.15"/><circle cx="106.7" cy="105.7" r="1.15"/><circle cx="90.9" cy="100.4" r="1.15"/><circle cx="106.6" cy="93.4" r="1.15"/><circle cx="99.6" cy="109.6" r="1.15"/><circle cx="93.7" cy="92.4" r="1.15"/><circle cx="110.0" cy="101.3" r="1.15"/><circle cx="91.5" cy="105.9" r="1.15"/><circle cx="102.3" cy="89.7" r="1.15"/><circle cx="105.4" cy="109.4" r="1.15"/><circle cx="89.5" cy="96.6" r="1.15"/><circle cx="110.2" cy="95.3" r="1.15"/><circle cx="95.6" cy="110.6" r="1.15"/><circle cx="96.1" cy="89.0" r="1.15"/><circle cx="110.5" cy="105.5" r="1.15"/><circle cx="88.3" cy="103.1" r="1.15"/><circle cx="106.6" cy="89.7" r="1.15"/><circle cx="102.1" cy="112.3" r="1.15"/><circle cx="90.0" cy="92.2" r="1.15"/><circle cx="112.8" cy="98.9" r="1.15"/><circle cx="91.1" cy="109.6" r="1.15"/><circle cx="100.1" cy="86.8" r="1.15"/><circle cx="109.0" cy="109.9" r="1.15"/><circle cx="86.5" cy="98.7" r="1.15"/><circle cx="111.0" cy="91.7" r="1.15"/><circle cx="97.5" cy="113.7" r="1.15"/><circle cx="92.5" cy="88.1" r="1.15"/><circle cx="113.8" cy="103.8" r="1.15"/><circle cx="87.1" cy="106.6" r="1.15"/><circle cx="105.1" cy="86.3" r="1.15"/><circle cx="105.6" cy="113.7" r="1.15"/><circle cx="86.5" cy="93.6" r="1.15"/><circle cx="114.4" cy="95.5" r="1.15"/><circle cx="92.3" cy="113.2" r="1.15"/><circle cx="96.8" cy="84.9" r="1.15"/><circle cx="112.7" cy="109.0" r="1.15"/><circle cx="84.4" cy="101.9" r="1.15"/><circle cx="110.3" cy="87.9" r="1.15"/><circle cx="100.6" cy="116.0" r="1.15"/><circle cx="88.6" cy="88.5" r="1.15"/><circle cx="116.3" cy="100.8" r="1.15"/><circle cx="87.3" cy="110.5" r="1.15"/><circle cx="102.3" cy="83.5" r="1.15"/><circle cx="109.5" cy="113.8" r="1.15"/><circle cx="83.5" cy="96.2" r="1.15"/><circle cx="114.9" cy="91.6" r="1.15"/><circle cx="94.7" cy="116.4" r="1.15"/><circle cx="92.8" cy="84.2" r="1.15"/><circle cx="116.1" cy="106.8" r="1.15"/><circle cx="83.4" cy="105.9" r="1.15"/><circle cx="108.3" cy="84.3" r="1.15"/><circle cx="104.5" cy="117.3" r="1.15"/><circle cx="84.9" cy="90.2" r="1.15"/><circle cx="117.9" cy="97.0" r="1.15"/><circle cx="88.7" cy="114.4" r="1.15"/><circle cx="98.6" cy="81.6" r="1.15"/><circle cx="113.6" cy="112.7" r="1.15"/><circle cx="81.3" cy="99.8" r="1.15"/><circle cx="114.0" cy="87.4" r="1.15"/><circle cx="98.2" cy="118.9" r="1.15"/><circle cx="88.5" cy="84.7" r="1.15"/><circle cx="118.9" cy="103.5" r="1.15"/><circle cx="83.6" cy="110.2" r="1.15"/><circle cx="105.2" cy="81.2" r="1.15"/><circle cx="108.9" cy="117.5" r="1.15"/><circle cx="81.5" cy="93.1" r="1.15"/><circle cx="118.4" cy="92.6" r="1.15"/><circle cx="91.4" cy="118.0" r="1.15"/><circle cx="94.2" cy="80.8" r="1.15"/><circle cx="117.4" cy="110.3" r="1.15"/><circle cx="80.1" cy="104.2" r="1.15"/><circle cx="111.9" cy="83.4" r="1.15"/><circle cx="102.4" cy="120.4" r="1.15"/><circle cx="84.3" cy="86.5" r="1.15"/><circle cx="120.8" cy="99.3" r="1.15"/><circle cx="85.0" cy="114.6" r="1.15"/><circle cx="101.2" cy="79.0" r="1.15"/><circle cx="113.4" cy="116.4" r="1.15"/><circle cx="79.0" cy="97.0" r="1.15"/><circle cx="117.7" cy="88.0" r="1.15"/><circle cx="95.1" cy="120.9" r="1.15"/><circle cx="89.4" cy="81.2" r="1.15"/><circle cx="120.6" cy="106.8" r="1.15"/><circle cx="80.1" cy="109.0" r="1.15"/><circle cx="108.7" cy="79.8" r="1.15"/><circle cx="107.3" cy="120.8" r="1.15"/><circle cx="80.5" cy="89.5" r="1.15"/><circle cx="121.6" cy="94.5" r="1.15"/><circle cx="87.7" cy="118.7" r="1.15"/><circle cx="96.4" cy="77.8" r="1.15"/><circle cx="117.7" cy="114.0" r="1.15"/><circle cx="77.4" cy="101.7" r="1.15"/><circle cx="115.6" cy="83.4" r="1.15"/><circle cx="99.7" cy="122.9" r="1.15"/><circle cx="84.7" cy="82.8" r="1.15"/><circle cx="123.0" cy="102.4" r="1.15"/><circle cx="81.4" cy="113.9" r="1.15"/><circle cx="104.4" cy="77.1" r="1.15"/><circle cx="112.3" cy="120.0" r="1.15"/><circle cx="77.4" cy="93.6" r="1.15"/><circle cx="121.1" cy="89.4" r="1.15"/><circle cx="91.5" cy="122.2" r="1.15"/><circle cx="91.2" cy="77.8" r="1.15"/><circle cx="121.5" cy="110.5" r="1.15"/><circle cx="77.0" cy="106.9" r="1.15"/><circle cx="112.4" cy="79.3" r="1.15"/><circle cx="104.9" cy="123.8" r="1.15"/><circle cx="80.3" cy="85.7" r="1.15"/><circle cx="124.3" cy="97.2" r="1.15"/><circle cx="83.9" cy="118.5" r="1.15"/><circle cx="99.3" cy="75.4" r="1.15"/><circle cx="117.2" cy="117.8" r="1.15"/><circle cx="75.2" cy="98.5" r="1.15"/><circle cx="119.4" cy="84.3" r="1.15"/><circle cx="96.3" cy="124.8" r="1.15"/><circle cx="85.9" cy="79.2" r="1.15"/><circle cx="124.5" cy="105.9" r="1.15"/><circle cx="77.8" cy="112.3" r="1.15"/><circle cx="108.1" cy="75.9" r="1.15"/><circle cx="110.4" cy="123.3" r="1.15"/><circle cx="76.5" cy="89.8" r="1.15"/><circle cx="124.3" cy="91.7" r="1.15"/><circle cx="87.7" cy="122.7" r="1.15"/><circle cx="93.8" cy="74.9" r="1.15"/><circle cx="121.7" cy="114.4" r="1.15"/><circle cx="74.2" cy="104.0" r="1.15"/><circle cx="116.3" cy="79.5" r="1.15"/><circle cx="101.8" cy="126.2" r="1.15"/><circle cx="80.9" cy="81.8" r="1.15"/><circle cx="126.4" cy="100.5" r="1.15"/><circle cx="80.1" cy="117.5" r="1.15"/><circle cx="102.8" cy="73.5" r="1.15"/><circle cx="115.8" cy="121.5" r="1.15"/><circle cx="73.7" cy="94.8" r="1.15"/><circle cx="123.0" cy="86.0" r="1.15"/></g>
+      </svg>
+    </button>
+
+    <h1>Para mi <em>Vainilla</em></h1>
+    <p class="de">Vos me escribiste una carta.<br>Yo te hice una página 🌻</p>
+    <p class="pista" id="pista">Tocá el girasol para abrirlo</p>
+    <p class="bajar" id="bajar"><a href="#apertura">Empezá a leer
+      <svg width="14" height="20" viewBox="0 0 14 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M7 1v17M1 12l6 6 6-6"/></svg></a></p>
+  </div>
+</header>
+
+<main>
+
+<!-- ═══════════ 1 · APERTURA ═══════════ -->
+<section id="apertura">
+  <div class="env sube">
+    <p class="fecha">Hoy</p>
+    <h2>El álbum que me pediste</h2>
+    <div class="grande">
+      <p>Meli Meli Meli 🌻✨</p>
+      <p>Hoy abrí tu carta y la leí, y después la volví a leer más despacio, y después una tercera vez, y realmente me quedé un buen rato callado viéndola sin saber qué contestarte.</p>
+      <p>Y de entrada me pusiste «Hola Vikingo Mi Amor», así, sin avisar. Me quedé leyendo esas dos palabras un rato largo, hermosa. Qué dicha leerlas ✨</p>
+      <p>Vos dijiste que hoy querías iniciar nuestra conversación de una forma muy diferente, y lo lograste, guapa. Y mirá lo que provocaste: que yo también quisiera contestarte diferente.</p>
+      <p>Y ahí me acordé de algo que me dijiste el 2 de agosto y que nunca se me olvidó:</p>
+    </div>
+
+    <blockquote class="dice">«Quiero hacer un álbum de todas las citas, momentos y salidas juntos. 💚»<span class="quien">Vainilla · 2 de agosto</span></blockquote>
+
+    <div class="grande">
+      <p>Vos me dijiste que hacía años de años no hacías una carta y que ni sabías cómo iniciarla, y aun así la hiciste. Eso yo lo valoro demasiado demasiado 💛</p>
+      <p>Yo no sé escribir cartas, hermosa. Lo mío son las páginas: es lo que hago todos los días, es de lo que vivo, es lo que me sale natural.</p>
+      <p>Así que te hice las dos cosas en una. Esta es tu carta y es el álbum que pediste.</p>
+      <p>La hice yo, a mano, línea por línea, después del trabajo, sin que nadie me la pidiera, sin cobrar un cinco y sin fecha de entrega. Abrila las veces que querás, preciosa. Es tuya 🌻</p>
+    </div>
+    <p class="nota">Y sí, el fondo es negro a propósito: es tu color favorito para todo. Así todo lo que brilla acá encima es girasol.</p>
+  </div>
+</section>
+
+<!-- ═══════════ 2 · EL 7 DEL 7 ═══════════ -->
+<section id="siete">
+  <div class="env sube">
+    <p class="fecha">7 de julio de 2026</p>
+    <h2>Vos le dijiste casualidad</h2>
+    <p>Vos le dijiste «la linda casualidad de cruzarnos». Y yo, que soy bien necio, agarré y me fui a revisar la casualidad 😅</p>
+    <p>Nos conocimos un <strong>7</strong>. Del mes <strong>7</strong>.</p>
+    <p>Mi primer mensaje te llegó a las 11:32 de la mañana, ese donde le preguntaba a la señorita si le gustaba que la llamaran Vainilla. Y el último mensaje de ese día fue tuyo, a las 10:32 de la noche: «Guapo!!!».</p>
+
+    <div class="reloj">
+      <div class="hora"><b>11:32</b><span>a. m. · yo</span></div>
+      <div class="vano"><b>11 h</b>sin parar</div>
+      <div class="hora"><b>10:32</b><span>p. m. · vos</span></div>
+    </div>
+
+    <p style="margin-top:var(--s3)">El mismo minuto, once horas después, y ninguno de los dos se dio cuenta 💥</p>
+    <p>Ese día nos escribimos <strong>260 mensajes</strong>, y hoy, dos meses después, ese sigue siendo el récord y no lo hemos vuelto a romper ni un solo día. Ni siquiera el del viaje.</p>
+    <p>Y ese mismo 7 de julio, a las tres horas de conocerme, vos me escribiste esto:</p>
+
+    <blockquote class="dice">«En mi criterio, no creo jamás encontrar el amor de mi vida en Tinder.»<span class="quien">Vainilla · 7 de julio, 12:09 p. m.</span></blockquote>
+
+    <p>Y yo te contesté que el amor de tu vida te podía encontrar en cualquier lugar, porque a lo mejor el amor de tu vida algún día también sintió la curiosidad de saber qué era eso de Tinder, igual que vos.</p>
+    <p>Hoy tengo una carta tuya en la mano, guapa.</p>
+    <p>Vos le decís casualidad y yo te la respeto. Pero qué casualidad tan bien hecha ✨</p>
+  </div>
+</section>
+
+<!-- ═══════════ 3 · LOS NÚMEROS ═══════════ -->
+<section id="numeros">
+  <div class="env sube">
+    <p class="fecha">60 días</p>
+    <h2>Los números de nosotros</h2>
+    <p>Yo me paso el día metido en datos, guapa. Reportes, tableros, números de gente que ni conozco.</p>
+    <p>Y esta semana conté los nuestros por primera vez, y realmente nunca en la vida había visto unos que me gustaran tanto 🫶</p>
+
+    <div class="cifras">
+      <div class="cifra"><b data-hasta="4463">4.463</b><span>mensajes<i> · 1.939 míos, 2.524 tuyos</i></span></div>
+      <div class="cifra"><b data-hasta="89477">89.477</b><span>palabras<i> · una novela entera</i></span></div>
+      <div class="cifra"><b data-hasta="57">57</b><span>de 60 días<i> · con mensajes</i></span></div>
+      <div class="cifra"><b data-hasta="373">373</b><span>girasoles 🌻<i> · en el chat</i></span></div>
+      <div class="cifra"><b data-hasta="1864">1.864</b><span>«jaja»<i> · casi todos tuyos</i></span></div>
+      <div class="cifra"><b data-hasta="1116">1.116</b><span>✨ que te mandé<i> · mi favorito</i></span></div>
+    </div>
+
+    <div class="grafico" id="grafico">
+      <svg viewBox="0 0 340 150" role="img" aria-label="Mensajes por día, del 7 de julio al 4 de septiembre de 2026">
+        <line class="marca" x1="0" y1="132" x2="340" y2="132"/>
+        <g id="barras"><rect class="barra hito" x="0.85" y="20.00" width="3.97" height="112.00"/><rect class="barra" x="6.52" y="81.60" width="3.97" height="50.40"/><rect class="barra" x="12.18" y="66.09" width="3.97" height="65.91"/><rect class="barra" x="17.85" y="87.63" width="3.97" height="44.37"/><rect class="barra cero" x="23.52" y="130.0" width="3.97" height="2"/><rect class="barra cero" x="29.18" y="130.0" width="3.97" height="2"/><rect class="barra" x="34.85" y="88.92" width="3.97" height="43.08"/><rect class="barra" x="40.52" y="75.57" width="3.97" height="56.43"/><rect class="barra" x="46.18" y="87.20" width="3.97" height="44.80"/><rect class="barra" x="51.85" y="114.77" width="3.97" height="17.23"/><rect class="barra" x="57.52" y="89.78" width="3.97" height="42.22"/><rect class="barra hito" x="63.18" y="98.40" width="3.97" height="33.60"/><rect class="barra hito" x="68.85" y="41.97" width="3.97" height="90.03"/><rect class="barra" x="74.52" y="103.57" width="3.97" height="28.43"/><rect class="barra" x="80.18" y="88.49" width="3.97" height="43.51"/><rect class="barra" x="85.85" y="78.15" width="3.97" height="53.85"/><rect class="barra" x="91.52" y="89.78" width="3.97" height="42.22"/><rect class="barra hito" x="97.18" y="62.65" width="3.97" height="69.35"/><rect class="barra hito" x="102.85" y="112.18" width="3.97" height="19.82"/><rect class="barra" x="108.52" y="89.78" width="3.97" height="42.22"/><rect class="barra" x="114.18" y="102.28" width="3.97" height="29.72"/><rect class="barra" x="119.85" y="64.80" width="3.97" height="67.20"/><rect class="barra" x="125.52" y="116.49" width="3.97" height="15.51"/><rect class="barra" x="131.18" y="94.52" width="3.97" height="37.48"/><rect class="barra" x="136.85" y="109.17" width="3.97" height="22.83"/><rect class="barra hito" x="142.52" y="115.63" width="3.97" height="16.37"/><rect class="barra" x="148.18" y="85.48" width="3.97" height="46.52"/><rect class="barra" x="153.85" y="99.69" width="3.97" height="32.31"/><rect class="barra" x="159.52" y="56.18" width="3.97" height="75.82"/><rect class="barra" x="165.18" y="112.18" width="3.97" height="19.82"/><rect class="barra" x="170.85" y="86.77" width="3.97" height="45.23"/><rect class="barra hito" x="176.52" y="27.75" width="3.97" height="104.25"/><rect class="barra" x="182.18" y="76.00" width="3.97" height="56.00"/><rect class="barra" x="187.85" y="128.12" width="3.97" height="3.88"/><rect class="barra hito" x="193.52" y="92.37" width="3.97" height="39.63"/><rect class="barra" x="199.18" y="113.05" width="3.97" height="18.95"/><rect class="barra hito" x="204.85" y="70.40" width="3.97" height="61.60"/><rect class="barra" x="210.52" y="97.11" width="3.97" height="34.89"/><rect class="barra" x="216.18" y="113.48" width="3.97" height="18.52"/><rect class="barra" x="221.85" y="108.31" width="3.97" height="23.69"/><rect class="barra" x="227.52" y="130.00" width="3.97" height="2.00"/><rect class="barra" x="233.18" y="122.52" width="3.97" height="9.48"/><rect class="barra" x="238.85" y="98.83" width="3.97" height="33.17"/><rect class="barra" x="244.52" y="110.89" width="3.97" height="21.11"/><rect class="barra" x="250.18" y="117.78" width="3.97" height="14.22"/><rect class="barra" x="255.85" y="115.63" width="3.97" height="16.37"/><rect class="barra hito" x="261.52" y="127.69" width="3.97" height="4.31"/><rect class="barra" x="267.18" y="122.09" width="3.97" height="9.91"/><rect class="barra" x="272.85" y="110.89" width="3.97" height="21.11"/><rect class="barra" x="278.52" y="125.97" width="3.97" height="6.03"/><rect class="barra" x="284.18" y="129.85" width="3.97" height="2.15"/><rect class="barra" x="289.85" y="93.23" width="3.97" height="38.77"/><rect class="barra hito" x="295.52" y="108.74" width="3.97" height="23.26"/><rect class="barra hito" x="301.18" y="97.97" width="3.97" height="34.03"/><rect class="barra" x="306.85" y="130.00" width="3.97" height="2.00"/><rect class="barra cero" x="312.52" y="130.0" width="3.97" height="2"/><rect class="barra" x="318.18" y="128.98" width="3.97" height="3.02"/><rect class="barra hito" x="323.85" y="126.83" width="3.97" height="5.17"/><rect class="barra" x="329.52" y="124.68" width="3.97" height="7.32"/><rect class="barra hito" x="335.18" y="130.00" width="3.97" height="2.00"/></g>
+      </svg>
+      <div class="lectura" id="lectura">
+        <div class="dia" id="lecturaDia">Martes 7 de julio<small id="lecturaHito">El día que te escribí</small></div>
+        <div class="cuenta" id="lecturaCuenta">260<small>mensajes</small></div>
+      </div>
+      <p class="pie-grafico">Cada barra es un día. Deslizá el dedo por encima.</p>
+    </div>
+
+    <p style="margin-top:var(--s4)">Y de todos esos números, el que más me gusta no es el grande. Es el <strong>57 de 60</strong>. Porque eso no se planea, hermosa, eso pasó solito, día tras día, sin que ninguno estuviera llevando la cuenta. Bueno, sin que nadie la llevara hasta que la llevé yo 😅</p>
+    <p>Fijate en otra cosa que me encantó descubrir: <strong>los días con menos mensajes son los días en que estuvimos juntos.</strong> El 25 de julio, nuestra primera cita, hay 46. El fin de semana del viaje casi no hay nada. Es que no hacía falta.</p>
+    <p>Y solo hubo tres días en blanco en dos meses. El 11 y el 12 de julio, cuando todavía ninguno de los dos sabía lo que estábamos empezando. Y el 31 de agosto, ese lunes en que me quedé dormido y del que ya hablamos vos y yo. Ese día también cuenta, Meli. Porque hasta ese día yo seguía acá ✨</p>
+  </div>
+</section>
+
+<!-- ═══════════ 4 · LOS NOMBRES ═══════════ -->
+<section id="nombres">
+  <div class="env sube">
+    <p class="fecha">14 y 19 de julio</p>
+    <h2>Cómo nos pusimos nombre</h2>
+    <p>Los nombres nuestros no los inventamos, nos salieron solitos. Y los dos tienen fecha.</p>
+    <p>El 14 de julio yo te solté que tenía un vikingo adentro 🔥, y fue una tontera que dije sin pensar, de esas que uno tira y sigue. Y usted ya no soltó esa palabra: me contestó «Que Vikingo!!!!» y desde el 22 de julio soy «Mi Vikingo». Esa palabra con el «Mi» adelante me hace algo cada vez que la leo 💛</p>
+    <p>Y cinco días después pasó al revés. El 19 de julio te escribí que era rarísimo, que te veía y automáticamente pensaba en un girasol, y que no era porque a vos te gustaran: era que te veía y sentía muy muy parecido a lo que siento cuando veo uno.</p>
+    <p>Y vos me contestaste con la frase que no se me va a olvidar nunca:</p>
+    <blockquote class="dice">«Soy un hermoso girasol en forma de humana. 🌻🍃»<span class="quien">Vainilla · 19 de julio, 1:50 p. m.</span></blockquote>
+    <p>Eso lo dijiste vos sola, guapa. Yo lo único que hice ese día fue estar de acuerdo, y hoy te lo vuelvo a decir igualito: sí que sos un hermoso girasol 🌻✨💚</p>
+  </div>
+</section>
+
+<!-- ═══════════ 5 · HELIOTROPISMO ═══════════ -->
+<section id="heliotropismo">
+  <div class="env sube">
+    <p class="fecha">Por qué girasol</p>
+    <h2>Por qué esa flor y no otra</h2>
+    <p>Te voy a decir por qué girasol y no otra flor, porque esto lo pensé un montón y nunca te lo dije completo.</p>
+    <p>Los girasoles se pasan el día entero girando la cara para quedar viendo hacia la luz. Y no es de una vez y ya: la luz se mueve y ellos se mueven con ella, todo el día, despacito, <strong>sin que nadie se los pida y sin que nadie los esté viendo hacerlo</strong> 🌻</p>
+
+    <div class="helio" id="helio">
+      <svg viewBox="0 0 340 250" aria-hidden="true">
+        <defs>
+          <radialGradient id="gSol"><stop offset="0%" stop-color="#FFF3CE"/><stop offset="60%" stop-color="#FFD963"/><stop offset="100%" stop-color="#F5B720"/></radialGradient>
+          <radialGradient id="gHalo"><stop offset="0%" stop-color="rgba(255,217,99,.32)"/><stop offset="100%" stop-color="rgba(255,217,99,0)"/></radialGradient>
+        </defs>
+        <circle id="halo" cx="240" cy="60" r="86" fill="url(#gHalo)"/>
+        <path id="tallo" d="M170,242 Q170,180 170,128" stroke="#7A9A46" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+        <path d="M170,206 Q146,196 138,210 Q152,224 170,214 Z" fill="#5E7A34"/>
+        <path d="M170,184 Q194,174 202,188 Q188,202 170,192 Z" fill="#6B8A3D"/>
+        <g id="cabeza" transform="translate(70,28)">
+          <g fill="url(#gPetalo)"><g transform="rotate(0.0 100 100)"><path d="M100,74 C109,62 108,42 100,36 C92,42 91,62 100,74 Z"/></g><g transform="rotate(22.5 100 100)"><path d="M100,74 C109,62 108,42 100,36 C92,42 91,62 100,74 Z"/></g><g transform="rotate(45.0 100 100)"><path d="M100,74 C109,62 108,42 100,36 C92,42 91,62 100,74 Z"/></g><g transform="rotate(67.5 100 100)"><path d="M100,74 C109,62 108,42 100,36 C92,42 91,62 100,74 Z"/></g><g transform="rotate(90.0 100 100)"><path d="M100,74 C109,62 108,42 100,36 C92,42 91,62 100,74 Z"/></g><g transform="rotate(112.5 100 100)"><path d="M100,74 C109,62 108,42 100,36 C92,42 91,62 100,74 Z"/></g><g transform="rotate(135.0 100 100)"><path d="M100,74 C109,62 108,42 100,36 C92,42 91,62 100,74 Z"/></g><g transform="rotate(157.5 100 100)"><path d="M100,74 C109,62 108,42 100,36 C92,42 91,62 100,74 Z"/></g><g transform="rotate(180.0 100 100)"><path d="M100,74 C109,62 108,42 100,36 C92,42 91,62 100,74 Z"/></g><g transform="rotate(202.5 100 100)"><path d="M100,74 C109,62 108,42 100,36 C92,42 91,62 100,74 Z"/></g><g transform="rotate(225.0 100 100)"><path d="M100,74 C109,62 108,42 100,36 C92,42 91,62 100,74 Z"/></g><g transform="rotate(247.5 100 100)"><path d="M100,74 C109,62 108,42 100,36 C92,42 91,62 100,74 Z"/></g><g transform="rotate(270.0 100 100)"><path d="M100,74 C109,62 108,42 100,36 C92,42 91,62 100,74 Z"/></g><g transform="rotate(292.5 100 100)"><path d="M100,74 C109,62 108,42 100,36 C92,42 91,62 100,74 Z"/></g><g transform="rotate(315.0 100 100)"><path d="M100,74 C109,62 108,42 100,36 C92,42 91,62 100,74 Z"/></g><g transform="rotate(337.5 100 100)"><path d="M100,74 C109,62 108,42 100,36 C92,42 91,62 100,74 Z"/></g></g>
+          <circle cx="100" cy="100" r="24" fill="url(#gCentro)"/>
+        </g>
+        <circle class="sol" id="sol" cx="240" cy="60" r="19" fill="url(#gSol)"/>
+      </svg>
+      <p class="helio-pista">Movés el sol con el dedo</p>
+    </div>
+
+    <p style="margin-top:var(--s3)">Eso es lo que yo hago con vos, hermosa.</p>
+    <p>Aunque ande metido hasta el cuello en el trabajo, aunque no conteste rápido, aunque ande hundido en mil cosas y aparezca hasta la noche: <strong>la cabeza mía se queda girando para donde estás vos.</strong> Callado a veces, pero girando ☀️</p>
+    <p>Y eso pasa igual con el teléfono guardado y la pantalla apagada, guapa ✨</p>
+  </div>
+</section>
+
+<!-- ═══════════ 6 · PRIMERA CITA ═══════════ -->
+<section id="primeracita">
+  <div class="env sube">
+    <p class="fecha">25 de julio</p>
+    <h2>Pocahontas iba limpia</h2>
+    <p>Ese día, antes de ir a verte, agarré a Pocahontas y la dejé limpia limpia, por dentro y por fuera, aspirada y todo, como si fuera a recoger a alguien importante.</p>
+    <p>Y era, hermosa. Sí era 🌻</p>
+    <p>Llegué a Pavas a las 12:45 y llegué con un girasol en el asiento de al lado, porque desde el 19 de julio yo ya no podía verte sin pensar en uno. Y realmente iba nervioso, porque uno nunca sabe si el detalle va a caer bien o si va a quedar raro 😅</p>
+    <p>La reserva la habías hecho vos. En el Negroni, salón principal, la una y media, y me lo pusiste de regalo de cumpleaños. Terminamos viendo un atardecer con <strong>venados</strong>. Y una zarigüeya. Vos lo resumiste en tres palabras: <em>«Luna, Sol, estrellas»</em>. Y después: <em>«Perfecto todo»</em>.</p>
+    <p>Pero si me preguntás cuál fue el momento exacto, no fue ninguno de esos. Fue cuando me besaste la frente y juntaste tu frente con la mía. Ese gesto tan chiquito, para mí, es un vínculo entero.</p>
+    <p>Esa noche llegué a mi casa a las 11:45 y te avisé. Vos me contestaste dos cosas:</p>
+    <blockquote class="dice">«Gracias por cumplir tu palabra, sana y salva.»<br>«Te luciste con el girasol 🌻 Lo voy q guardar siempre siempre. ✨»<span class="quien">Vainilla · 25 de julio, 11:49 p. m.</span></blockquote>
+    <p>Meli, no me lucí. Es que de verdad no había otra flor posible.</p>
+    <p>Pero lo que yo me traje de ese día no fue el girasol, guapa, y te lo dije esa misma noche apenas llegué a la casa: gracias por la cantidad tan astronómica de risas ✨ Y lo sigo pensando igualito 💛</p>
+    <p class="apagado">Y todavía nos debemos la Casita del Negroni. Vos misma dijiste que así teníamos una razón para volver.</p>
+  </div>
+</section>
+
+<!-- ═══════════ 7 · LAS DOS FLORES ═══════════ -->
+<section id="flores">
+  <div class="env sube">
+    <p class="fecha">1 y 10 de agosto</p>
+    <h2>Nuestros girasoles eternos</h2>
+    <p>El 1 de agosto, en el picnic, vos me regalaste un queque y una flor.</p>
+    <p>No sé si te acordás de lo que te dije ese día, pero era literal: <strong>esa fue la primera flor que alguien me regaló en toda mi vida.</strong> Treinta y un años y ninguna antes. Vos fuiste la primera.</p>
+    <p>Y después pasó lo del 10 de agosto, que todavía me da cosita cuando lo pienso. Ese día caímos en cuenta de que los dos, cada uno metido en su casa, cada uno por su lado y sin habernos puesto de acuerdo en nada, estábamos secando nuestro girasol. Vos el que yo te llevé y yo el que vos me diste 🌻</p>
+    <p>Yo ni sabía cómo se hacía, guapa, te lo confesé ahí mismo: era la primera vez en mi vida que hacía algo así, y andaba averiguando dónde ponerlo, cómo colgarlo, cuánto tiempo dejarlo 😅</p>
+
+    <div class="prensadas">
+      <div class="marco">
+        <svg viewBox="0 0 100 120" aria-hidden="true">
+          <g fill="#8A6412" opacity=".9"><g transform="rotate(0.0 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(27.7 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(55.4 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(83.1 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(110.8 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(138.5 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(166.2 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(193.8 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(221.5 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(249.2 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(276.9 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(304.6 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(332.3 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g></g>
+          <circle cx="50" cy="46" r="13" fill="#2E220E"/>
+          <path d="M50,60 Q52,88 50,112" stroke="#4E6330" stroke-width="3" fill="none"/>
+          <path d="M50,86 Q34,80 28,90 Q40,99 50,92 Z" fill="#41522A"/>
+        </svg>
+        <b>El que te llevé</b><span>25 de julio</span>
+      </div>
+      <div class="marco">
+        <svg viewBox="0 0 100 120" aria-hidden="true">
+          <g fill="#8A6412" opacity=".9"><g transform="rotate(0.0 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(25.7 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(51.4 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(77.1 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(102.9 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(128.6 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(154.3 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(180.0 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(205.7 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(231.4 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(257.1 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(282.9 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(308.6 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g><g transform="rotate(334.3 50 46)"><path d="M50,30 C56,22 55,10 50,5 C45,10 44,22 50,30 Z"/></g></g>
+          <circle cx="50" cy="46" r="13" fill="#2E220E"/>
+          <path d="M50,60 Q48,88 50,112" stroke="#4E6330" stroke-width="3" fill="none"/>
+          <path d="M50,84 Q66,78 72,88 Q60,97 50,90 Z" fill="#41522A"/>
+        </svg>
+        <b>El que me diste</b><span>1 de agosto</span>
+      </div>
+    </div>
+
+    <p style="margin-top:var(--s4)">Vos me dijiste ese día que cuidar ese girasol era la representación gráfica de lo que sentías. Que no fue solo un girasol: fue un detalle, fue tiempo, fue una intención, fue muchísimo.</p>
+    <p>Yo el mío lo guardo por una razón mucho más simple, y ya te la había dicho: para acordarme siempre de la primera mujer que me tocó el corazón con una flor.</p>
+    <p>Y sí, Meli: <strong>el mío sigue ahí.</strong> Nuestros girasoles eternos siguen los dos donde los dejamos 🌻</p>
+  </div>
+</section>
+
+<!-- ═══════════ 8 · RESPUESTA A SUS GRACIAS ═══════════ -->
+<section id="gracias">
+  <div class="env sube">
+    <p class="fecha">Tu carta</p>
+    <h2>Ahora sí, vamos a lo que me escribiste</h2>
+    <p>Vos me pusiste una fila de gracias, y yo te los voy a devolver uno por uno, porque cada uno me tocó algo 🫶</p>
+
+    <h3 class="oro" style="margin-top:var(--s4)">Gracias a vos por querer conocerme</h3>
+    <p>Y eso no es poca cosa, guapa: el 7 de julio vos me dijiste clarito que no querías planes ni nada parecido. Yo lo respeté, y no porque fuera estrategia, sino porque los no y los límites de una persona para mí son sagrados y no se negocian.</p>
+    <p>Y aun así te quedaste ahí conversando conmigo hasta las 10:32 de la noche. Y a los dos días yo borré Tinder, porque después de usted el resto de la gente resultaba aburridoooo ✨</p>
+
+    <h3 class="oro" style="margin-top:var(--s4)">Gracias a vos por enseñarme una forma sana de querer</h3>
+    <p>Y acá te corrijo con cariño, hermosa: esto no me lo enseñaste vos sola, esto lo aprendimos los dos.</p>
+    <p>Sos la primera persona con la que puedo decir absolutamente todo lo que pienso sin filtrarlo antes, sin medir si va a caer bien o mal, y eso a mí no me había pasado nunca. Vos lo dejaste en cuatro palabras el 15 de julio y yo me las quedé: <em>«me lees, te leo»</em>.</p>
+
+    <h3 class="oro" style="margin-top:var(--s4)">Gracias a vos por abrir ese corazón</h3>
+    <p>Vos le decís clausurado y congelado. El 30 de julio me lo dijiste de otra forma: que estabas muy resignada y muy cerrada en un montón de aspectos de tu vida. Y yo ese mismo día te contesté que esperaba poder ir abriendo, poco a poco, cada puerta cerrada de tu corazón.</p>
+    <p>Pues esa carta que me mandaste hoy es la prueba de que algunas se abrieron.</p>
+    <p>Pero eso no lo abrí yo, guapa. Eso lo abriste vos, que es muchísimo más difícil, y yo lo único que hice fue quedarme quieto, no apurarte y no dar portazos. Y realmente lo valoro demasiado demasiado, porque yo sé lo que cuesta abrir algo que uno mismo cerró para no volver a sufrir 💛</p>
+
+    <h3 class="oro" style="margin-top:var(--s4)">Gracias por los silencios, los abrazos y las carcajadas</h3>
+    <p>Los silencios son de mis cosas favoritas, porque hay poquísima gente con la que uno se puede quedar callado sin que se ponga raro. Los abrazos me duran días. Y las carcajadas, hermosa, 1.864 «jaja» no se escriben solos 😅</p>
+    <p>Y la calma esa te la agradezco doble, guapa. Porque usted anda creyendo que soy yo el que le da calma a su ansiedad, y lo que no sabe es que la calma suya me llegó a mí también. Yo ando con mil cosas abiertas al mismo tiempo, proyectos que me pueden cambiar la vida, y usted es el único lugar de mi día donde no tengo que andar demostrando nada ☀️</p>
+    <p>Y sobre los lugares mágicos: ese viaje del 28 fue demasiado lindo y realmente sí que nos hizo sentir más cerquita. De ese atardecer, de esa cena y de esa playa todavía tengo mucha mucha miel adentro 🌻</p>
+    <p>Gracias también por ponerme en tus oraciones. A mí nadie me había dicho eso nunca, y agradezco con el alma que alguien ande pidiendo cosas buenas por mí sin que yo me entere ✨</p>
+    <p>Y gracias por esa lista de quince cosas que me escribiste. Me quedé viéndola un rato largo sin saber qué hacer con ella, porque yo no me veo así. Pero si usted me ve así, yo lo que quiero es no desentonar 💛</p>
+
+    <h3 class="oro" style="margin-top:var(--s4)">Y ahora uno que vos no pusiste</h3>
+    <p><strong>Gracias por preguntar. Gracias por el 2 de septiembre.</strong></p>
+    <p>Gracias por armarte de valor y escribirme directo si seguíamos o no, en vez de irte callada. Porque un montón de gente no pregunta, guapa. Un montón de gente siente que algo cambió, se traga la duda y se va despacito, y el otro se queda años sin saber qué fue lo que pasó.</p>
+    <p>Vos preguntaste de frente, aguantándote el miedo, y me diste la oportunidad de contestarte. Eso lo aprecio muchísimo 🫶</p>
+
+    <h3 class="oro" style="margin-top:var(--s4)">Ah, y lo de si soy real</h3>
+    <p>«He entrado en conflicto si eres real, jajajajaja», escribiste. Y no es la primera vez: me lo has preguntado como tres veces desde julio 🤭</p>
+    <p>Sí soy real, hermosa. Real con trabajo que se me atraviesa, real con días en que contesto lento, real con un carro que hay que aspirar y con un girasol que todavía no sé secar bien. Lo que no soy es un invento suyo ✨🌻</p>
+    <p>Ah, y una última cosa. El 14 de julio vos me escribiste, textual: <em>«No crea q estoy enamorada, no se asuste.»</em></p>
+    <p>Hoy me mandaste una carta de amor.</p>
+    <p><strong>¿Decías? 🤭</strong></p>
+  </div>
+</section>
+
+<!-- ═══════════ 9 · LOS ACUERDOS ═══════════ -->
+<section id="acuerdos">
+  <div class="env sube">
+    <p class="fecha">Nuestros acuerdos</p>
+    <h2>Cuidar, comunicar, libertad, calma, reciprocidad</h2>
+    <p>Vos escribiste que querés honrar y rescatar siempre cada uno de nuestros acuerdos. Y yo sé que los anotás, porque me lo dijiste el 23 de julio 🤝</p>
+    <p>Acá están los cinco que nombraste, con lo que significan para mí y lo que te prometo en cada uno.</p>
+    <p class="apagado" style="font-size:.88rem">Tocá cada pétalo.</p>
+
+    <div class="flor-acuerdos">
+      <svg viewBox="0 0 300 300" role="group" aria-label="Los cinco acuerdos">
+        <g><g class="petalo-btn" role="button" tabindex="0" aria-selected="true" aria-label="Acuerdo: cuidar"><path class="forma" d="M150,108 C186,96 190,40 150,18 C110,40 114,96 150,108 Z" transform="rotate(0 150 150)"/><text class="rotulo" x="150.0" y="61.5" text-anchor="middle" font-size="10.5">CUIDAR</text></g><g class="petalo-btn" role="button" tabindex="0" aria-selected="false" aria-label="Acuerdo: comunicar"><path class="forma" d="M150,108 C186,96 190,40 150,18 C110,40 114,96 150,108 Z" transform="rotate(72 150 150)"/><text class="rotulo" x="237.5" y="125.1" text-anchor="middle" font-size="9.6">COMUNICAR</text></g><g class="petalo-btn" role="button" tabindex="0" aria-selected="false" aria-label="Acuerdo: libertad"><path class="forma" d="M150,108 C186,96 190,40 150,18 C110,40 114,96 150,108 Z" transform="rotate(144 150 150)"/><text class="rotulo" x="204.1" y="227.9" text-anchor="middle" font-size="10.2">LIBERTAD</text></g><g class="petalo-btn" role="button" tabindex="0" aria-selected="false" aria-label="Acuerdo: calma"><path class="forma" d="M150,108 C186,96 190,40 150,18 C110,40 114,96 150,108 Z" transform="rotate(216 150 150)"/><text class="rotulo" x="95.9" y="227.9" text-anchor="middle" font-size="10.5">CALMA</text></g><g class="petalo-btn" role="button" tabindex="0" aria-selected="false" aria-label="Acuerdo: reciprocidad"><path class="forma" d="M150,108 C186,96 190,40 150,18 C110,40 114,96 150,108 Z" transform="rotate(288 150 150)"/><text class="rotulo" x="62.5" y="125.1" text-anchor="middle" font-size="8.4">RECIPROCIDAD</text></g></g>
+        <circle cx="150" cy="150" r="34" fill="url(#gCentro)"/>
+        <text x="150" y="157" text-anchor="middle" fill="#F5B720" font-family="Caveat, cursive" font-size="26">nosotros</text>
+      </svg>
+    </div>
+
+    <div class="acuerdo-texto" id="acuerdoTexto" aria-live="polite">
+      <span class="cual" id="acuerdoCual">Acuerdo 1 de 5</span>
+      <h3 id="acuerdoTitulo">cuidar</h3>
+      <p id="acuerdoCuerpo">Yo te cuido como estoy cuidando ese girasol que todavía tengo secándose: con calma, sin apurarlo, averiguando cómo se hace bien aunque sea la primera vez que lo hago. Y cuidarte es también respetarte los límites, las cicatrices y los espacios, aunque nunca me expliqués el porqué. El 7 de agosto te dije que nadie puede hacer daño en una casa si no le dan las llaves, y que vos ya tenías las mías. Eso sigue igual, y sigue habiendo una copia de emergencia.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 10 · LA CERTEZA ═══════════ -->
+<section id="certeza">
+  <div class="env sube">
+    <p class="fecha">2 de septiembre · lo que me pediste</p>
+    <h2>Ayer sí, hoy sí, mañana sí</h2>
+
+    <p>Esta parte te la escribo sin adornos, guapa, porque lo que me pediste el 2 de septiembre no era un adorno.</p>
+    <p>Primero lo que preguntaste de frente y que yo todavía no te había contestado derecho: <strong>sí, yo también lo noté.</strong> Y no eras vos, hermosa, ni se me apagó nada. Era el trabajo que no me soltaba, y yo, que me hundo ahí y aparezco hasta la noche. Ya está dicho, y prefiero que lo sepás por mí a que lo andés adivinando ✨</p>
+    <p>Y después me escribiste esto:</p>
+
+    <blockquote class="dice">«Yo si necesito sentir q ayer si, hoy si, mañana si, en un mes si.»<span class="quien">Vainilla · 2 de septiembre</span></blockquote>
+
+    <p><strong>Ayer sí. Hoy sí. Mañana sí. En un mes sí.</strong></p>
+    <p>Y te lo pongo con nombre y con fecha, dicho hoy, 4 de septiembre, para que no lo tengás que volver a preguntar nunca. Tocá cada una:</p>
+
+    <div class="sies" id="sies"><button class="si" type="button"><span class="preg">¿Y hoy?</span><span class="resp">Sí. Hoy sí, hermosa 🌻</span></button>
+      <button class="si" type="button"><span class="preg">¿Y mañana?</span><span class="resp">Sí. Y le escribo yo de primero ✨</span></button>
+      <button class="si" type="button"><span class="preg">¿Y esa bachatica que me quedó debiendo?</span><span class="resp">Sí. Esa se la pago bailada, guapa 💥</span></button>
+      <button class="si" type="button"><span class="preg">¿Y mi carrera de fin de mes?</span><span class="resp">Sí. Decime la hora y ahí estoy, gritando como loco ☀️</span></button>
+      <button class="si" type="button"><span class="preg">¿Y el teatro de dentro de un mes?</span><span class="resp">Sí. Compramos las entradas cuando querás 💛</span></button>
+      <button class="si" type="button"><span class="preg">¿Y el 3 de enero, cuando cumpla 35?</span><span class="resp">Sí. Ese ya lo tengo apuntado desde hoy, girasol 🌻</span></button>
+      <button class="si" type="button"><span class="preg">¿Y si un día me vuelve el miedo y le pregunto otra vez?</span><span class="resp">Sí también. Preguntá siempre, hermosa. Gracias por preguntar 🫶</span></button></div>
+
+    <div class="marcador"><span id="marcadorTexto">0 de 7</span><span class="barrita"><i id="marcadorBarra"></i></span></div>
+    <p class="remate" id="remate">Y si un día se te olvidan, volvé y tocalas otra vez. Van a decir lo mismo 🌻</p>
+
+    <p style="margin-top:var(--s4)">Y te repito lo que te dije el martes, igualito, porque no fue cosa del momento ni para calmarte ese rato: <strong>cualquier plan que se te ocurra proponerme, yo lo voy a aceptar.</strong> Vos proponé, que yo digo que sí.</p>
+    <p>Vos decías que no querías planes con nadie. Yo tampoco andaba buscando esto. Y aquí estamos los dos, haciendo planes ✨</p>
+    <p>Y cuando te den ganas de contarme algo y la mente te diga que no me escribás porque no estoy, escribime igual, hermosa. Puede que conteste tarde porque ando en el trabajo, pero contestar tarde nunca va a significar que me fui.</p>
+    <p>El 13 de agosto vos lo dijiste mejor que yo: <em>«Sé q ambos pudimos elegir hacer muchas cosas hoy, sin embargo, nos elegimos mutuamente.»</em> Eso es lo que yo hago cada mañana, guapa.</p>
+    <p>No te quiero lejos. Y quiero con Meli, con Vainilla y con todas tus versiones, y quiero muchísimooooo 💕✨🌻</p>
+  </div>
+</section>
+
+<!-- ═══════════ 11 · EL MIEDO ═══════════ -->
+<section id="miedo" class="seria">
+  <div class="env sube">
+    <p class="fecha">Esto va sin emojis</p>
+    <h2>Sobre lo que te da miedo</h2>
+    <p>Hay una parte de tu carta que quiero contestarte aparte, y la voy a escribir sin ningún emoji, porque quiero que se lea tal cual es.</p>
+    <p>Vos me dijiste que no ha sido fácil, y que para vos es aterrador sentir que estás empezando a querer a alguien, porque tu cerebro lo relaciona con dolor.</p>
+    <p>Yo no te voy a decir que exagerés, ni que ya pasó, ni que lo dejés atrás. Realmente tu sentir es demasiado demasiado válido, y ese corazón se clausuró y se congeló por razones que existieron de verdad. Eso yo lo respeto muchísimo y no lo voy a minimizar nunca.</p>
+    <p>Y tampoco te voy a prometer que nunca te va a doler nada conmigo, porque esa promesa no la puedo cumplir y yo no te voy a mentir justo acá. Yo me equivoco, hay semanas en que el trabajo me come, y en algún momento la vamos a regar en algo.</p>
+    <p>Lo que sí te prometo, porque esto sí lo controlo yo, es que <strong>si algún día algo llega a doler, no va a ser por silencio mío ni porque desaparecí sin avisar.</strong> Si ando cansado te lo digo. Si necesito espacio te lo pido con palabras y no desapareciendo. Y si algo cambia, lo vas a saber por mí, de frente y a tiempo, aunque me cueste y aunque no sea lo que querés oír. Nada de ley del hielo, nunca.</p>
+    <p>Vos me contaste una vez que fuiste un pájaro al que le cortaron las alas, y que estabas tratando de construir otra vez una vida. Yo te contesté que quería a ese pajarito volando muy alto.</p>
+    <p>Pues mirá lo que ha volado en estos dos meses: fuiste al concierto, saliste con tus amigas, hiciste tus planes, te inscribiste en tu carrera, te pusiste a manejar aunque te diera un susto tremendo. Y ni una sola vez yo te pedí que cambiaras algo de eso. Ni una. Eso no es una promesa mía, Meli: es tu propio historial de estos 59 días.</p>
+    <p>Y el día que la ansiedad te hable y te diga que ya no estoy, o que esto se acabó y nadie te avisó, hacé dos cosas por mí: <strong>escribime igual, y volvé a abrir esta página.</strong> Está hecha para ese día. Para estar acá cuando yo no pueda contestar en ese minuto exacto.</p>
+  </div>
+</section>
+
+<!-- ═══════════ 12 · LAS CANCIONES ═══════════ -->
+<section id="canciones">
+  <div class="env sube">
+    <p class="fecha">Tu recomendación del día</p>
+    <h2>Me hiciste una playlist sin decirme</h2>
+    <p>Ese ritual lo inventaste vos el 9 de julio, cuando me preguntaste cuál era mi recomendación para escuchar ese día. Y desde entonces no ha parado.</p>
+    <p>Acá están todas las que me mandaste, en orden:</p>
+
+    <div class="discos">
+      <a class="disco" href="https://youtu.be/6su5xSijPs4" target="_blank" rel="noopener">
+        <svg class="vinilo" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="#F5B720" stroke-width="1.2" opacity=".5"/><circle cx="20" cy="20" r="11" fill="none" stroke="#F5B720" stroke-width="1" opacity=".35"/><circle cx="20" cy="20" r="4" fill="#F5B720"/></svg>
+        <span class="info"><b>Je Veux</b><span>Zaz · la que guardaste dos años</span></span><span class="cuando">6 ago</span>
+      </a>
+      <a class="disco" href="https://open.spotify.com/track/2WJvgLpKWjiFY3G8ncND46" target="_blank" rel="noopener">
+        <svg class="vinilo" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="#F5B720" stroke-width="1.2" opacity=".5"/><circle cx="20" cy="20" r="11" fill="none" stroke="#F5B720" stroke-width="1" opacity=".35"/><circle cx="20" cy="20" r="4" fill="#F5B720"/></svg>
+        <span class="info"><b>Jefe</b><span>Daddy Yankee</span></span><span class="cuando">8 ago</span>
+      </a>
+      <a class="disco" href="https://open.spotify.com/track/7b3k8I1fncAzbk9PHnLkbX" target="_blank" rel="noopener">
+        <svg class="vinilo" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="#F5B720" stroke-width="1.2" opacity=".5"/><circle cx="20" cy="20" r="11" fill="none" stroke="#F5B720" stroke-width="1" opacity=".35"/><circle cx="20" cy="20" r="4" fill="#F5B720"/></svg>
+        <span class="info"><b>Luna</b><span>Zoé</span></span><span class="cuando">12 ago</span>
+      </a>
+      <a class="disco" href="https://open.spotify.com/track/1nULBrlzWatdcjA2ZctIMv" target="_blank" rel="noopener">
+        <svg class="vinilo" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="#F5B720" stroke-width="1.2" opacity=".5"/><circle cx="20" cy="20" r="11" fill="none" stroke="#F5B720" stroke-width="1" opacity=".35"/><circle cx="20" cy="20" r="4" fill="#F5B720"/></svg>
+        <span class="info"><b>Labios Rotos</b><span>Zoé · en vivo</span></span><span class="cuando">12 ago</span>
+      </a>
+      <a class="disco" href="https://open.spotify.com/track/5RvmmRCoZY1Yupl3PXgZm4" target="_blank" rel="noopener">
+        <svg class="vinilo" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="#F5B720" stroke-width="1.2" opacity=".5"/><circle cx="20" cy="20" r="11" fill="none" stroke="#F5B720" stroke-width="1" opacity=".35"/><circle cx="20" cy="20" r="4" fill="#F5B720"/></svg>
+        <span class="info"><b>Abrázame</b><span>Ángela Aguilar</span></span><span class="cuando">12 ago</span>
+      </a>
+      <a class="disco" href="https://open.spotify.com/track/5SudOD9R1Of6CsJVWZy6CQ" target="_blank" rel="noopener">
+        <svg class="vinilo" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="none" stroke="#FFD963" stroke-width="1.4"/><circle cx="20" cy="20" r="11" fill="none" stroke="#FFD963" stroke-width="1" opacity=".5"/><circle cx="20" cy="20" r="4" fill="#FFD963"/></svg>
+        <span class="info"><b>Dardos</b><span>Romeo Santos &amp; Prince Royce · la bachata</span></span><span class="cuando">3 sep</span>
+      </a>
+    </div>
+
+    <p style="margin-top:var(--s3)">Esa última me llegó ayer con un «Si nos bailamos esa bachatica? Jajajaja» 🤭 Y ese día yo te quedé debiendo una canción, ¿se acuerda? Le dije que no me habían soltado y que se la debía.</p>
+    <p>Se la sigo debiendo, hermosa. Y le repito lo que le dije ese día: qué rico ir a verte en la noche y bailar esa bachatica 💥</p>
+    <p>Pero esa deuda la voy a pagar como corresponde. Vos me dijiste el 12 de agosto <em>«tú tocas y yo canto»</em>, y esa es la que hay que sacar: yo pongo la guitarra y usted pone esa voz que me dejó flechado 🌻</p>
+  </div>
+</section>
+
+<!-- ═══════════ 13 · CIERRE ═══════════ -->
+<section id="cierre">
+  <div class="env sube">
+    <p class="fecha">Para terminar</p>
+    <h2>Bendito este presente</h2>
+    <p>Me falta lo último, guapa, que es lo que me quedó dando vueltas todo el día.</p>
+    <p>Vos me dijiste que si pudieras alterar la línea del tiempo también me hubieras buscado hace muchísimos años atrás, y que quizá así nos hubiéramos reconocido. Y a mí me encantó leerlo, de verdad.</p>
+    <p>Pero eso ya lo contestaste vos misma, hermosa. El 20 de julio me dijiste, textual:</p>
+    <blockquote class="dice">«Bueno Ud y yo que si nos reconocemos. 🤭»<span class="quien">Vainilla · 20 de julio</span></blockquote>
+    <p>Nos reconocimos, guapa. No hizo falta alterar nada.</p>
+    <p>Y te voy a ser honesto: yo no cambiaría la línea del tiempo, y te digo por qué. Hace años yo no era el que soy hoy. No sabía pedir paciencia, no sabía decir lo que sentía el mismo día que lo sentía, y no me hubiera sabido quedar quieto esperando a que alguien abriera a su propio ritmo.</p>
+    <p>Y usted tampoco era esta Melissa. Esta es la que empezó de oficinista y hoy se sienta al lado de la Directora. La que corre. La que pregunta de frente. La que se atrevió a escribir una carta después de años de años. Usted es esta por todo lo que le tocó, con cicatrices y con todo.</p>
+    <p>Así que a mí me gusta que nos hayamos encontrado justo ahora. Justo el 7 del 7 a las 11:32 de la mañana ✨</p>
+    <p>Bendito este presente, dijiste vos. Bendito, sí, y lo firmo igualito 🌻</p>
+    <p>Gracias por la carta, mi Vainilla. Y ahora te devuelvo la frase que vos me regalaste en agosto, esa que te dijo tu psicóloga, porque hoy le toca a usted:</p>
+    <p class="grande" style="color:var(--girasol-luz)"><strong>Disfrutá esa sensación, Melissa.</strong></p>
+
+    <p>Y te devuelvo tu despedida, la del 3 de septiembre, porque me la guardé desde ese día:</p>
+
+    <div class="firma">
+      <p class="frase">Un abrazo al corazón,<br>del Vikingo para su Vainilla 🌻💛</p>
+      <p class="nombre">Luis</p>
+      <p class="sello">Santa Ana · 4 de septiembre de 2026 · 10:32 p. m.</p>
+    </div>
+
+    <div class="posdata">
+      <p><b>P. D.</b> Todavía no tenés mi correo 😅 y mirá que en vez de mandártelo me puse a hacerte una página entera. Hoy mismo te lo paso, hermosa, aunque acá te contesto mejor.</p>
+      <p><b>P. D. 2</b> El ramo sigue en pie. Esa deuda es mía y la tengo bien anotada 🌻</p>
+      <p><b>P. D. 3</b> Y todavía te debo la explicación de por qué el 3 es el número de los milagros. Esa sí te la tengo que dar en persona y con tiempo, guapa. Pero fijate que usted nació un 3 ✨</p>
+    </div>
+  </div>
+</section>
+
+<p class="colofon">
+  <span class="girasoles">🌻🌻🌻🌻🌻🌻🌻🌻🌻</span>
+  Nueve girasoles, los mismos que me mandaste hoy.<br>
+  Hecho a mano, en una noche, para una sola persona.
+</p>
+
+</main>
+</div>
+
+<script>
+window.__DIAS__=[{"n":"Martes 7 de julio","c":260,"h":"El día que te escribí"},{"n":"Miércoles 8 de julio","c":117,"h":""},{"n":"Jueves 9 de julio","c":153,"h":""},{"n":"Viernes 10 de julio","c":103,"h":""},{"n":"Sábado 11 de julio","c":0,"h":""},{"n":"Domingo 12 de julio","c":0,"h":""},{"n":"Lunes 13 de julio","c":100,"h":""},{"n":"Martes 14 de julio","c":131,"h":""},{"n":"Miércoles 15 de julio","c":104,"h":""},{"n":"Jueves 16 de julio","c":40,"h":""},{"n":"Viernes 17 de julio","c":98,"h":""},{"n":"Sábado 18 de julio","c":78,"h":"Tu cumpleaños 31"},{"n":"Domingo 19 de julio","c":209,"h":"«Soy un hermoso girasol en forma de humana»"},{"n":"Lunes 20 de julio","c":66,"h":""},{"n":"Martes 21 de julio","c":101,"h":""},{"n":"Miércoles 22 de julio","c":125,"h":""},{"n":"Jueves 23 de julio","c":98,"h":""},{"n":"Viernes 24 de julio","c":161,"h":"Las siete promesas"},{"n":"Sábado 25 de julio","c":46,"h":"Primera cita · el girasol"},{"n":"Domingo 26 de julio","c":98,"h":""},{"n":"Lunes 27 de julio","c":69,"h":""},{"n":"Martes 28 de julio","c":156,"h":""},{"n":"Miércoles 29 de julio","c":36,"h":""},{"n":"Jueves 30 de julio","c":87,"h":""},{"n":"Viernes 31 de julio","c":53,"h":""},{"n":"Sábado 1 de agosto","c":38,"h":"El picnic · mi primera flor"},{"n":"Domingo 2 de agosto","c":108,"h":""},{"n":"Lunes 3 de agosto","c":75,"h":""},{"n":"Martes 4 de agosto","c":176,"h":""},{"n":"Miércoles 5 de agosto","c":46,"h":""},{"n":"Jueves 6 de agosto","c":105,"h":""},{"n":"Viernes 7 de agosto","c":242,"h":"Las llaves de la casa"},{"n":"Sábado 8 de agosto","c":130,"h":""},{"n":"Domingo 9 de agosto","c":9,"h":""},{"n":"Lunes 10 de agosto","c":92,"h":"Nuestros girasoles eternos"},{"n":"Martes 11 de agosto","c":44,"h":""},{"n":"Miércoles 12 de agosto","c":143,"h":"Manejé la 27 para abrazarte"},{"n":"Jueves 13 de agosto","c":81,"h":""},{"n":"Viernes 14 de agosto","c":43,"h":""},{"n":"Sábado 15 de agosto","c":55,"h":""},{"n":"Domingo 16 de agosto","c":2,"h":""},{"n":"Lunes 17 de agosto","c":22,"h":""},{"n":"Martes 18 de agosto","c":77,"h":""},{"n":"Miércoles 19 de agosto","c":49,"h":""},{"n":"Jueves 20 de agosto","c":33,"h":""},{"n":"Viernes 21 de agosto","c":38,"h":""},{"n":"Sábado 22 de agosto","c":10,"h":"Doce horas juntos"},{"n":"Domingo 23 de agosto","c":23,"h":""},{"n":"Lunes 24 de agosto","c":49,"h":""},{"n":"Martes 25 de agosto","c":14,"h":""},{"n":"Miércoles 26 de agosto","c":5,"h":""},{"n":"Jueves 27 de agosto","c":90,"h":""},{"n":"Viernes 28 de agosto","c":54,"h":"El viaje"},{"n":"Sábado 29 de agosto","c":79,"h":"La playa"},{"n":"Domingo 30 de agosto","c":3,"h":""},{"n":"Lunes 31 de agosto","c":0,"h":""},{"n":"Martes 1 de septiembre","c":7,"h":""},{"n":"Miércoles 2 de septiembre","c":12,"h":"Me preguntaste de frente"},{"n":"Jueves 3 de septiembre","c":17,"h":""},{"n":"Viernes 4 de septiembre","c":3,"h":"Tu carta"}];
+window.__ACUERDOS__=[{"t":"cuidar","p":"Yo te cuido como estoy cuidando ese girasol que todavía tengo secándose: con calma, sin apurarlo, averiguando cómo se hace bien aunque sea la primera vez que lo hago. Y cuidarte es también respetarte los límites, las cicatrices y los espacios, aunque nunca me expliqués el porqué. El 7 de agosto te dije que nadie puede hacer daño en una casa si no le dan las llaves, y que vos ya tenías las mías. Eso sigue igual, y sigue habiendo una copia de emergencia."},{"t":"comunicar","p":"Acá se dice todo, hermosa: lo bonito, lo incómodo y lo que da pereza decir. Esto me lo enseñaste vos el 19 de julio, que con un mensaje basta: «estaré ocupado, reunión, plan de amigos, necesito dormir», y ya. Y le reconozco mi falla real, porque la tengo: a veces me duermo y no aviso, y usted se queda ahí viendo el chat sin saber qué pasó. Eso lo voy a trabajar, y si igual me pasa, al día siguiente se lo digo yo antes de que me pregunte."},{"t":"libertad","p":"Es lo mismo que te escribí el 29 de julio y te lo repito igualito: libertad de ser yo en todo sentido, de ser vos siempre, de decirlo todo, de compartirlo todo, de exponer nuestros puntos, de hacer acuerdos, de no estar de acuerdo, libres de ser los océanos que somos sin minimizar ni censurar nada nuestro. Vos sos un océano y no tenés que reducirte al tamaño de una taza solo porque alguien únicamente puede con el agua que cabe en una taza."},{"t":"calma","p":"Mi medida es siempre la misma y te la dije desde el 9 de julio: lo más importante es que te dé paz, y si te la roba, ahí no es. Por eso acá no se pelea a gritos, no se usa la ley del hielo y no se deja nada hirviendo tres días en la cabeza de ninguno de los dos. Y el negocio es parejo, guapa: usted me agradece por darle calma a su ansiedad, pero yo también ando buscando paz, mucha mucha paz, y con usted la encontré."},{"t":"reciprocidad","p":"Vos la pediste desde el 14 de julio: libre de ser en todas mis versiones, y con reciprocidad. Y el 29 de agosto me dijiste que la próxima salida así la reserva usted, la comida y todo. Le digo que sí, acepto encantado. Y de paso me toca aprender a recibir, que a mí eso me cuesta muchísimo más que dar. La reciprocidad es el secreto más grande de la vida."}];
+</script>
+
+<script>
+(function(){
+  "use strict";
+  var doc=document, root=doc.documentElement;
+  doc.body.classList.remove("no-js");
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- 1. portada ---- */
+  var capullo=doc.getElementById("capullo"), portada=doc.getElementById("portada");
+  function abrir(){
+    if(!capullo || capullo.classList.contains("abierta")) return;
+    capullo.classList.add("abierta"); portada.classList.add("abierta-ya");
+  }
+  if(capullo){
+    capullo.addEventListener("click", abrir);
+    if(reduce) abrir(); else setTimeout(function(){ abrir(); }, 6500);
+  }
+
+  /* ---- 2. la luz sube con el scroll ---- */
+  var tick=false;
+  function pintarCielo(){
+    var alto=doc.body.scrollHeight - window.innerHeight;
+    var p = alto>0 ? Math.min(1, Math.max(0, window.scrollY/alto)) : 0;
+    root.style.setProperty("--luz", p.toFixed(3));
+    tick=false;
+  }
+  window.addEventListener("scroll", function(){ if(!tick){ tick=true; requestAnimationFrame(pintarCielo); } }, {passive:true});
+  pintarCielo();
+
+  /* ---- 3. aparición ---- */
+  var sube=doc.querySelectorAll(".sube");
+  function mostrarTodo(){ for(var v=0;v<sube.length;v++) sube[v].classList.add("vista"); }
+  if("IntersectionObserver" in window && !reduce){
+    doc.body.classList.add("revela");
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("vista"); io.unobserve(e.target); } });
+    },{rootMargin:"0px 0px -10% 0px", threshold:.05});
+    for(var i=0;i<sube.length;i++) io.observe(sube[i]);
+    // red de seguridad: si a los 4 s el observador no marcó nada, se muestra todo
+    setTimeout(function(){
+      if(!doc.querySelector(".sube.vista")) doc.body.classList.remove("revela");
+    }, 4000);
+  } else { mostrarTodo(); }
+
+  /* ---- 4. contadores ---- */
+  function fmt(n){ return n.toLocaleString("es-CR"); }
+  var cifras=doc.querySelectorAll("[data-hasta]");
+  if("IntersectionObserver" in window && !reduce){
+    var io2=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(!e.isIntersecting) return;
+        io2.unobserve(e.target);
+        var el=e.target, fin=parseInt(el.getAttribute("data-hasta"),10), t0=null;
+        (function paso(t){
+          if(t0===null) t0=t;
+          var k=Math.min(1,(t-t0)/1500), s=1-Math.pow(1-k,3);
+          el.textContent=fmt(Math.round(fin*s));
+          if(k<1) requestAnimationFrame(paso);
+        })(performance.now());
+      });
+    },{threshold:.4});
+    for(var k=0;k<cifras.length;k++) io2.observe(cifras[k]);
+  }
+
+  /* ---- 5. gráfico de los 60 días ---- */
+  var DIAS = window.__DIAS__ || [];
+  var grafico=doc.getElementById("grafico");
+  var lDia=doc.getElementById("lecturaDia"), lHito=doc.getElementById("lecturaHito"), lCuenta=doc.getElementById("lecturaCuenta");
+  var barras = grafico ? grafico.querySelectorAll(".barra") : [];
+  var activa=-1;
+  function mostrarDia(idx){
+    if(idx<0 || idx>=DIAS.length || idx===activa) return;
+    if(activa>=0 && barras[activa]) barras[activa].classList.remove("activa");
+    activa=idx;
+    if(barras[idx]) barras[idx].classList.add("activa");
+    var d=DIAS[idx];
+    lDia.firstChild.nodeValue=d.n;
+    lHito.textContent=d.h||"";
+    lCuenta.firstChild.nodeValue=fmt(d.c);
+  }
+  if(grafico && DIAS.length){
+    var svgG=grafico.querySelector("svg");
+    function leerX(ev){
+      var r=svgG.getBoundingClientRect();
+      var cx=(ev.touches?ev.touches[0].clientX:ev.clientX)-r.left;
+      mostrarDia(Math.max(0,Math.min(DIAS.length-1, Math.floor(cx/r.width*DIAS.length))));
+    }
+    svgG.addEventListener("pointermove", leerX);
+    svgG.addEventListener("pointerdown", leerX);
+    svgG.addEventListener("touchmove", function(ev){ leerX(ev); ev.preventDefault(); }, {passive:false});
+  }
+
+  /* ---- 6. el girasol que gira hacia la luz ---- */
+  var helio=doc.getElementById("helio");
+  if(helio){
+    var svgH=helio.querySelector("svg");
+    var sol=doc.getElementById("sol"), halo=doc.getElementById("halo");
+    var cabeza=doc.getElementById("cabeza"), tallo=doc.getElementById("tallo");
+    var BX=170, BY=242, LARGO=118;
+    var sx=250, sy=54, ox=250, oy=54, libre=true, t=0.9;
+
+    function colocar(){
+      sx += (ox-sx)*.12; sy += (oy-sy)*.12;
+      sol.setAttribute("cx", sx.toFixed(1)); sol.setAttribute("cy", sy.toFixed(1));
+      halo.setAttribute("cx", sx.toFixed(1)); halo.setAttribute("cy", sy.toFixed(1));
+
+      var ang=Math.atan2(sx-BX, BY-sy), lim=58*Math.PI/180;
+      if(ang>lim) ang=lim; if(ang<-lim) ang=-lim;
+
+      var hx=BX+Math.sin(ang)*LARGO, hy=BY-Math.cos(ang)*LARGO;
+      var cx=BX+Math.sin(ang)*LARGO*.42, cy=BY-Math.cos(ang)*LARGO*.58;
+      tallo.setAttribute("d","M"+BX+","+BY+" Q"+cx.toFixed(1)+","+cy.toFixed(1)+" "+hx.toFixed(1)+","+hy.toFixed(1));
+      cabeza.setAttribute("transform","translate("+(hx-100).toFixed(1)+","+(hy-100).toFixed(1)+") rotate("+(ang*180/Math.PI).toFixed(1)+",100,100)");
+    }
+    function lazo(){
+      if(libre && !reduce){ t+=.006; ox=170+Math.sin(t)*132; oy=74-Math.cos(t)*38; }
+      colocar(); requestAnimationFrame(lazo);
+    }
+    function moverSol(ev){
+      var r=svgH.getBoundingClientRect();
+      var px=(ev.touches?ev.touches[0].clientX:ev.clientX)-r.left;
+      var py=(ev.touches?ev.touches[0].clientY:ev.clientY)-r.top;
+      ox=px/r.width*340; oy=Math.max(18,Math.min(150, py/r.height*250)); libre=false;
+    }
+    function soltar(){ libre=true; t=Math.asin(Math.max(-1,Math.min(1,(ox-170)/132))); }
+    helio.addEventListener("pointerdown", moverSol);
+    helio.addEventListener("pointermove", function(ev){ if(ev.buttons||ev.pointerType==="touch") moverSol(ev); });
+    helio.addEventListener("touchmove", function(ev){ moverSol(ev); ev.preventDefault(); }, {passive:false});
+    helio.addEventListener("pointerleave", soltar);
+    helio.addEventListener("pointerup", soltar);
+    helio.addEventListener("touchend", soltar);
+    if(reduce) colocar(); else requestAnimationFrame(lazo);
+  }
+
+  /* ---- 7. los cinco acuerdos ---- */
+  var ACUERDOS = window.__ACUERDOS__ || [];
+  var btns=doc.querySelectorAll(".petalo-btn");
+  var aCual=doc.getElementById("acuerdoCual"), aTit=doc.getElementById("acuerdoTitulo"), aCue=doc.getElementById("acuerdoCuerpo");
+  function elegir(i){
+    if(!ACUERDOS[i]) return;
+    for(var n=0;n<btns.length;n++) btns[n].setAttribute("aria-selected", n===i?"true":"false");
+    aCual.textContent="Acuerdo "+(i+1)+" de 5";
+    aTit.textContent=ACUERDOS[i].t;
+    aCue.textContent=ACUERDOS[i].p;
+  }
+  for(var b=0;b<btns.length;b++){
+    (function(idx,el){
+      el.addEventListener("click", function(){ elegir(idx); });
+      el.addEventListener("keydown", function(ev){ if(ev.key==="Enter"||ev.key===" "){ ev.preventDefault(); elegir(idx); } });
+    })(b, btns[b]);
+  }
+
+  /* ---- 8. los sí ---- */
+  var sies=doc.querySelectorAll(".si"), abiertos=0, total=sies.length;
+  var mT=doc.getElementById("marcadorTexto"), mB=doc.getElementById("marcadorBarra"), remate=doc.getElementById("remate");
+  if(mT) mT.textContent="0 de "+total;
+  for(var s=0;s<sies.length;s++){
+    (function(el){
+      el.addEventListener("click", function(){
+        if(el.getAttribute("data-abierto")==="1") return;
+        el.setAttribute("data-abierto","1"); abiertos++;
+        if(mT) mT.textContent=abiertos+" de "+total;
+        if(mB) mB.style.width=(abiertos/total*100)+"%";
+        if(abiertos===total && remate) remate.setAttribute("data-visible","1");
+      });
+    })(sies[s]);
+  }
+
+  /* ---- 9. estrellas y polen ---- */
+  function lienzo(el){
+    var ctx=el.getContext("2d"), dpr=Math.min(2, window.devicePixelRatio||1);
+    function medir(){ el.width=Math.floor(el.clientWidth*dpr); el.height=Math.floor(el.clientHeight*dpr); ctx.setTransform(dpr,0,0,dpr,0,0); }
+    medir();
+    var re; window.addEventListener("resize", function(){ clearTimeout(re); re=setTimeout(medir,180); });
+    return ctx;
+  }
+  var cE=doc.querySelector(".estrellas");
+  if(cE){
+    var ctxE=lienzo(cE), estrellas=[];
+    for(var e=0;e<70;e++) estrellas.push({x:Math.random(), y:Math.random()*.78, r:Math.random()*1.1+.3, o:Math.random()*.5+.2, v:Math.random()*.9+.2});
+    (function pintar(ts){
+      var w=cE.clientWidth,h=cE.clientHeight;
+      ctxE.clearRect(0,0,w,h);
+      for(var i2=0;i2<estrellas.length;i2++){
+        var s2=estrellas[i2];
+        var br = reduce ? s2.o : s2.o*(.55+.45*Math.sin(ts/1000*s2.v+i2));
+        ctxE.beginPath(); ctxE.arc(s2.x*w, s2.y*h, s2.r, 0, 6.284);
+        ctxE.fillStyle="rgba(255,241,205,"+br.toFixed(3)+")"; ctxE.fill();
+      }
+      if(!reduce) requestAnimationFrame(pintar);
+    })(0);
+  }
+  var cP=doc.querySelector(".polen");
+  if(cP && !reduce){
+    var ctxP=lienzo(cP), motas=[];
+    for(var m=0;m<32;m++) motas.push({x:Math.random(), y:Math.random(), r:Math.random()*2.1+.7, vy:-(Math.random()*.00016+.00005), vx:(Math.random()-.5)*.00009, o:Math.random()*.4+.15, f:Math.random()*6.28});
+    (function pintarP(ts){
+      var w=cP.clientWidth,h=cP.clientHeight;
+      ctxP.clearRect(0,0,w,h);
+      for(var i3=0;i3<motas.length;i3++){
+        var p3=motas[i3];
+        p3.y += p3.vy*16; p3.x += (p3.vx + Math.sin(ts/2200+p3.f)*.00004)*16;
+        if(p3.y<-.03){ p3.y=1.03; p3.x=Math.random(); }
+        if(p3.x<-.03) p3.x=1.03; if(p3.x>1.03) p3.x=-.03;
+        ctxP.beginPath(); ctxP.arc(p3.x*w, p3.y*h, p3.r, 0, 6.284);
+        ctxP.fillStyle="rgba(245,183,32,"+p3.o.toFixed(3)+")"; ctxP.fill();
+      }
+      requestAnimationFrame(pintarP);
+    })(0);
+  }
+})();
+</script>
+</body>
+</html>
