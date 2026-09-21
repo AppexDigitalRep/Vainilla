@@ -1,0 +1,1416 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Flores amarillas para Vainilla</title>
+<meta name="description" content="21 de septiembre, el día de las flores amarillas. — Tu Vikingo">
+<meta name="theme-color" content="#1a0f08">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='%23FFC21A'%3E%3Cellipse cx='50' cy='22' rx='9' ry='18'/%3E%3Cellipse cx='50' cy='78' rx='9' ry='18'/%3E%3Cellipse cx='22' cy='50' rx='18' ry='9'/%3E%3Cellipse cx='78' cy='50' rx='18' ry='9'/%3E%3Cellipse cx='30' cy='30' rx='9' ry='18' transform='rotate(-45 30 30)'/%3E%3Cellipse cx='70' cy='70' rx='9' ry='18' transform='rotate(-45 70 70)'/%3E%3Cellipse cx='70' cy='30' rx='9' ry='18' transform='rotate(45 70 30)'/%3E%3Cellipse cx='30' cy='70' rx='9' ry='18' transform='rotate(45 30 70)'/%3E%3C/g%3E%3Ccircle cx='50' cy='50' r='16' fill='%235a3413'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Great+Vibes&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --oro:#FFC21A; --oro-luz:#FFE38A; --crema:#FFF6E0; --noche:#140b06;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:var(--noche);overflow:hidden;color:var(--crema);
+    font-family:'Cormorant Garamond',Georgia,serif;-webkit-tap-highlight-color:transparent;touch-action:none}
+  canvas#escena{position:fixed;inset:0;width:100%;height:100%;display:block}
+
+  /* ── Portada ─────────────────────────────── */
+  #portada{position:fixed;inset:0;z-index:20;display:grid;place-items:center;text-align:center;
+    background:radial-gradient(120% 90% at 50% 110%, #3a1d08 0%, #1d0f07 45%, #0c0604 100%);
+    transition:opacity 2.4s ease, visibility 2.4s;padding:24px}
+  #portada.fuera{opacity:0;visibility:hidden}
+  .semilla{width:92px;height:92px;margin:0 auto 28px;position:relative;animation:latido 3.2s ease-in-out infinite}
+  .semilla i{position:absolute;left:50%;top:50%;width:18px;height:40px;margin:-40px 0 0 -9px;border-radius:50%;
+    background:linear-gradient(#FFE38A,#FFB300);transform-origin:50% 100%;opacity:.95}
+  .semilla b{position:absolute;inset:30px;border-radius:50%;background:radial-gradient(#6b3f14,#2e1605);box-shadow:0 0 30px #ffb30066}
+  @keyframes latido{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.06) rotate(8deg)}}
+  #portada .fecha{font-family:'Jost',sans-serif;font-weight:300;letter-spacing:.42em;text-transform:uppercase;
+    font-size:12px;color:#ffd77a;opacity:.85;margin-bottom:18px}
+  #portada h1{font-weight:400;font-style:italic;font-size:clamp(30px,6.5vw,58px);line-height:1.08;color:var(--crema)}
+  #portada h1 em{font-family:'Great Vibes',cursive;font-style:normal;color:var(--oro);font-size:1.25em;display:block;margin-top:6px;
+    text-shadow:0 0 28px #ffb30055}
+  #abrir{margin-top:44px;font-family:'Jost',sans-serif;font-weight:400;letter-spacing:.28em;text-transform:uppercase;font-size:12px;
+    color:#2a1604;background:linear-gradient(180deg,#FFE38A,#FFB81A);border:0;border-radius:999px;padding:17px 34px;cursor:pointer;
+    box-shadow:0 10px 40px -8px #ffb300aa, inset 0 1px 0 #fff8;transition:transform .25s ease, box-shadow .25s ease}
+  #abrir:hover{transform:translateY(-2px);box-shadow:0 16px 50px -8px #ffb300cc, inset 0 1px 0 #fff8}
+  #abrir:active{transform:scale(.97)}
+  #portada .nota{margin-top:18px;font-family:'Jost',sans-serif;font-weight:300;font-size:12px;opacity:.55;letter-spacing:.06em}
+  #cargando{font-family:'Jost',sans-serif;font-weight:300;font-size:12px;letter-spacing:.2em;opacity:.6;margin-top:44px}
+
+  /* ── Mensaje ─────────────────────────────── */
+  #mensaje{position:fixed;left:0;right:0;top:0;bottom:0;z-index:10;display:grid;place-items:center;pointer-events:none;padding:0 22px}
+  .linea{max-width:920px;text-align:center;padding:1.1em 1.4em;border-radius:50%;
+    background:radial-gradient(closest-side, rgba(40,14,0,.55), rgba(40,14,0,.25) 60%, transparent);font-size:clamp(25px,4.4vw,50px);line-height:1.22;font-weight:400;
+    color:var(--crema);text-shadow:0 2px 24px rgba(40,15,0,.75),0 0 2px rgba(40,15,0,.6);opacity:0;
+    transform:translateY(18px);filter:blur(10px);transition:opacity 1.8s ease, transform 2.2s cubic-bezier(.2,.7,.2,1), filter 1.8s ease}
+  .linea.ver{opacity:1;transform:none;filter:blur(0)}
+  .linea.ir{opacity:0;transform:translateY(-14px);filter:blur(8px);transition-duration:1.4s}
+  .linea small{display:block;font-family:'Jost',sans-serif;font-weight:300;font-size:.32em;letter-spacing:.4em;text-transform:uppercase;
+    color:#ffe6a6;margin-bottom:.9em}
+  .linea .firma{font-family:'Great Vibes',cursive;color:var(--oro);font-size:1.5em;display:block;margin-top:.25em;
+    text-shadow:0 0 30px #ffb30088, 0 2px 20px rgba(40,15,0,.8)}
+  .linea i{color:var(--oro-luz)}
+  .linea.grande{font-size:clamp(32px,6vw,72px)}
+
+  /* ── Interfaz final ──────────────────────── */
+  #hud{position:fixed;left:0;right:0;bottom:0;z-index:12;display:flex;justify-content:space-between;align-items:flex-end;
+    padding:18px max(18px,env(safe-area-inset-right)) max(18px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));
+    pointer-events:none;opacity:0;transition:opacity 2s ease;font-family:'Jost',sans-serif;font-weight:300}
+  #hud.ver{opacity:1}
+  #contador{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#fff3cf;text-shadow:0 1px 10px #000a}
+  #contador b{display:block;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:30px;letter-spacing:.02em;color:var(--oro);text-transform:none;
+    text-shadow:0 0 18px #ffb30066, 0 2px 12px #000a}
+  #pista{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#fff3cf;text-shadow:0 1px 10px #000a;text-align:right;max-width:46vw}
+  .botones{display:flex;gap:10px;justify-content:flex-end;margin-bottom:12px;pointer-events:auto}
+  .boton{width:42px;height:42px;border-radius:50%;border:1px solid #ffe6a655;background:#2a160455;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    color:#ffe6a6;display:grid;place-items:center;cursor:pointer;font-size:16px;transition:background .2s}
+  .boton:hover{background:#2a1604aa}
+  .boton svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+  #velo{position:fixed;inset:0;z-index:9;pointer-events:none;
+    background:radial-gradient(ellipse at center, transparent 55%, rgba(30,10,0,.55) 100%)}
+  @media (prefers-reduced-motion: reduce){ .linea{transition-duration:.6s} .semilla{animation:none} }
+</style>
+</head>
+<body>
+<canvas id="escena"></canvas>
+<div id="velo"></div>
+
+<section id="portada">
+  <div>
+    <div class="semilla" aria-hidden="true"><i style="transform:rotate(0deg)"></i><i style="transform:rotate(45deg)"></i><i style="transform:rotate(90deg)"></i><i style="transform:rotate(135deg)"></i><i style="transform:rotate(180deg)"></i><i style="transform:rotate(225deg)"></i><i style="transform:rotate(270deg)"></i><i style="transform:rotate(315deg)"></i><b></b></div>
+    <p class="fecha">21 · septiembre · 2026</p>
+    <h1>Hoy es el día de las flores amarillas<em>Vainilla</em></h1>
+    <p id="cargando">sembrando la pradera…</p>
+    <button id="abrir" hidden>Ábrelo, girasol</button>
+    <p class="nota" id="notaSonido" hidden>súbele el volumen ✨</p>
+  </div>
+</section>
+
+<div id="mensaje"></div>
+
+<div id="hud">
+  <div id="contador">flores en esta pradera<b id="numero">0</b></div>
+  <div>
+    <div class="botones">
+      <button class="boton" id="btnRepetir" title="Ver el mensaje otra vez" aria-label="Ver el mensaje otra vez">
+        <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg></button>
+      <button class="boton" id="btnSonido" title="Sonido" aria-label="Silenciar o activar sonido">
+        <svg viewBox="0 0 24 24" id="icoSonido"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg></button>
+    </div>
+    <div id="pista">tocá la pradera<br>y nacen más flores</div>
+  </div>
+</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+} }
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+/* ════════════════════════════════════════════════════════════════════
+   EL MENSAJE — en la voz del Vikingo.
+   Cada entrada: [html, segundos en pantalla]
+   ════════════════════════════════════════════════════════════════════ */
+const MENSAJE = [
+  ['<small>21 de septiembre</small>El día de las <i>flores amarillas</i>', 5.5],
+  ['Hoy no te pude mandar flores amarillas, mi amor hermosa…', 5],
+  ['así que te hice una pradera entera ✨', 5],
+  ['Desde aquel 7 de julio, cuando te dije<br>que ibas a ser <i>Vainilla para mí</i>,', 5.5],
+  ['no has dejado de florecer en mis días 🌻', 5],
+  ['Una vez te dije que te veo y siento<br>lo mismo que cuando veo un girasol.', 6],
+  ['Vos dijiste que sos <i>un hermoso girasol<br>en forma de humana</i>…', 5.5],
+  ['y tenías toda la razón.', 4.5],
+  ['Aquí hay girasoles, rosas, tulipanes, lirios,<br>gerberas, cempasúchiles… miles y miles.', 6],
+  ['Y ninguna brilla como vos ✨', 5],
+  ['Fijate: hasta los girasoles le dieron<br>la espalda al sol… <i>para mirarte a vos</i> 🌻', 6.5],
+  ['Nuestros girasoles eternos<br>hoy tienen compañía 🫶', 5.5],
+  ['Tus flores de verdad ya las tenés…', 4.5],
+  ['estas son las que no se marchitan nunca,<br>para que vuelvas <i>cada vez que quieras</i> 🫶', 6],
+  ['Que hoy seas Meli en su máxima expresión,<br>Vainilla en su máximo sabor,', 6],
+  ['y un girasol que brilla a su mayor potencia 🌻', 6],
+  ['<span class="grande">Feliz día de las flores amarillas</span><span class="firma">— tu Vikingo</span>', 9],
+];
+
+/* ════════════════════════════════════════════════════════════════════
+   Calidad según el aparato
+   ════════════════════════════════════════════════════════════════════ */
+const esMovil = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && innerWidth < 1100);
+const Q = esMovil ? 0.45 : 1;           // densidad
+const reduceMov = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ── azar reproducible y ruido ─────────────────────────────────────── */
+let semilla = 2109;
+const rnd = () => { semilla = (semilla * 16807) % 2147483647; return (semilla - 1) / 2147483646; };
+const rango = (a, b) => a + (b - a) * rnd();
+function hash(x, y){ const s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return s - Math.floor(s); }
+function ruido(x, y){
+  const ix = Math.floor(x), iy = Math.floor(y), fx = x - ix, fy = y - iy;
+  const u = fx * fx * (3 - 2 * fx), v = fy * fy * (3 - 2 * fy);
+  const a = hash(ix, iy), b = hash(ix + 1, iy), c = hash(ix, iy + 1), d = hash(ix + 1, iy + 1);
+  return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+}
+const fbm = (x, y) => ruido(x, y) * .55 + ruido(x * 2.1 + 5.2, y * 2.1 + 1.3) * .3 + ruido(x * 4.3 + 9, y * 4.3 + 4) * .15;
+
+/* Relieve suave de la pradera */
+function altura(x, z){
+  const r = Math.hypot(x, z);
+  let h = (fbm(x * .018, z * .018) - .5) * 7 + Math.sin(x * .05) * .8 + Math.cos(z * .043) * .9;
+  h += Math.max(0, r - 90) * .03;               // colinas que suben al horizonte
+  return h;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   Escena
+   ════════════════════════════════════════════════════════════════════ */
+const canvas = document.getElementById('escena');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
+let pr = Math.min(devicePixelRatio, 1.25);
+renderer.setPixelRatio(pr);
+renderer.setSize(innerWidth, innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.88;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+const scene = new THREE.Scene();
+const HORIZONTE = new THREE.Color('#f0874a');
+scene.fog = new THREE.FogExp2(HORIZONTE, 0.0072);
+
+const camera = new THREE.PerspectiveCamera(esMovil && innerWidth < innerHeight ? 68 : 55, innerWidth / innerHeight, 0.05, 900);
+
+const SOL_DIR = new THREE.Vector3(-0.35, 0.12, -1).normalize();   // sol de atardecer
+
+/* Cielo */
+const cielo = new THREE.Mesh(
+  new THREE.SphereGeometry(600, 48, 24),
+  new THREE.ShaderMaterial({
+    side: THREE.BackSide, depthWrite: false, fog: false,
+    uniforms: { uSol: { value: SOL_DIR }, uT: { value: 0 } },
+    vertexShader: `varying vec3 vDir; void main(){ vDir = normalize(position); gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.); gl_Position.z = gl_Position.w; }`,
+    fragmentShader: `
+      varying vec3 vDir; uniform vec3 uSol; uniform float uT;
+      float h2(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+      float vn(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.-2.*f);
+        return mix(mix(h2(i), h2(i+vec2(1,0)), f.x), mix(h2(i+vec2(0,1)), h2(i+vec2(1,1)), f.x), f.y); }
+      void main(){
+        vec3 dir = normalize(vDir);
+        float y = dir.y;
+        float d = max(dot(dir, normalize(uSol)), 0.0);
+        // atardecer: naranja encendido abajo, rosa en medio, violeta arriba
+        vec3 horiz = vec3(1.0, 0.36, 0.06);
+        vec3 bajo  = vec3(1.0, 0.46, 0.1);
+        vec3 rosa  = vec3(1.0, 0.4, 0.22);
+        vec3 malva = vec3(0.78, 0.3, 0.36);
+        vec3 cenit = vec3(0.16, 0.12, 0.34);
+        vec3 c = mix(horiz, bajo, smoothstep(0.0, 0.07, y));
+        c = mix(c, rosa, smoothstep(0.06, 0.24, y));
+        c = mix(c, malva, smoothstep(0.22, 0.5, y));
+        c = mix(c, cenit, smoothstep(0.42, 0.9, y));
+        c = mix(c, vec3(0.94, 0.53, 0.29), smoothstep(0.0, -0.15, y));
+        // resplandor del sol
+        c = mix(c, vec3(1.0, 0.5, 0.1), pow(d, 5.0) * 0.75);
+        c += vec3(1.0, 0.45, 0.08) * pow(d, 18.0) * 0.8;
+        c += vec3(1.0, 0.75, 0.35) * pow(d, 160.0) * 1.6;
+        c += vec3(1.0, 0.92, 0.7) * smoothstep(0.9986, 0.9993, d) * 7.0;
+        // nubes alargadas encendidas por debajo
+        float az = atan(dir.z, dir.x);
+        float n = vn(vec2(az * 7.0 + uT * .004, y * 28.0)) * .6 + vn(vec2(az * 19.0 - uT * .006, y * 70.0)) * .4;
+        float banda = smoothstep(0.03, 0.09, y) * smoothstep(0.34, 0.14, y);
+        vec3 nube = mix(vec3(0.62, 0.25, 0.36), vec3(1.0, 0.6, 0.28), pow(d, 3.0) * 0.8 + 0.25);
+        c = mix(c, nube, smoothstep(0.56, 0.78, n) * banda * 0.75);
+        c += vec3(1.0, 0.55, 0.2) * smoothstep(0.7, 0.8, n) * banda * pow(d, 4.0) * 0.6;   // bordes dorados
+        gl_FragColor = vec4(c,1.);
+        #include <tonemapping_fragment>
+        #include <colorspace_fragment>
+      }`
+  })
+);
+scene.add(cielo);
+
+// Vuelo de dron: arranca alto, baja en picada, pasa rasante entre las flores y vuelve a subir
+const rutaDron = new THREE.CatmullRomCurve3([
+  new THREE.Vector3(0, 17, 56),  new THREE.Vector3(-10, 8, 38),  new THREE.Vector3(-7, 2.8, 21),
+  new THREE.Vector3(4, 2.4, 7),  new THREE.Vector3(16, 2.7, -8), new THREE.Vector3(13, 3.6, -26),
+  new THREE.Vector3(-5, 2.5, -37), new THREE.Vector3(-25, 3.0, -28), new THREE.Vector3(-37, 6.5, -8),
+  new THREE.Vector3(-33, 11, 14), new THREE.Vector3(-19, 15, 44),
+], true, 'centripetal');
+
+// mapa de cercanía al camino de la cámara: ahí el zacate es más tupido
+const CERCA = (() => {
+  const N = 110, L = 70, m = new Float32Array(N * N);
+  const pts = rutaDron.getSpacedPoints(260);
+  for (let gy = 0; gy < N; gy++) for (let gx = 0; gx < N; gx++){
+    const x = (gx / (N - 1)) * 2 * L - L, z = (gy / (N - 1)) * 2 * L - L;
+    let d = 1e9; for (const p of pts) d = Math.min(d, (p.x - x) ** 2 + (p.z - z) ** 2);
+    m[gy * N + gx] = Math.sqrt(d);
+  }
+  return (x, z) => {
+    const gx = Math.round((x + L) / (2 * L) * (N - 1)), gy = Math.round((z + L) / (2 * L) * (N - 1));
+    if (gx < 0 || gy < 0 || gx >= N || gy >= N) return 99;
+    return m[gy * N + gx];
+  };
+})();
+
+/* Luces */
+scene.add(new THREE.HemisphereLight('#ffc08e', '#3b4a16', 1.2));
+const sol = new THREE.DirectionalLight('#ff9d52', 2.9);
+sol.position.copy(SOL_DIR).multiplyScalar(100);
+scene.add(sol);
+const contra = new THREE.DirectionalLight('#ffd9ae', 1.3);
+contra.position.set(0.4, 0.6, 1);
+scene.add(contra);
+
+/* Suelo */
+{
+  const g = new THREE.PlaneGeometry(900, 900, 220, 220);
+  g.rotateX(-Math.PI / 2);
+  const p = g.attributes.position, col = [];
+  const c = new THREE.Color();
+  for (let i = 0; i < p.count; i++){
+    const x = p.getX(i), z = p.getZ(i);
+    p.setY(i, altura(x, z) - 0.02);
+    const n = fbm(x * .06, z * .06), r = Math.hypot(x, z);
+    c.setRGB(.13 + n * .1, .24 + n * .12, .04);
+    const lejos = THREE.MathUtils.smoothstep(r, 45, 140);          // a lo lejos el suelo se vuelve oro
+    c.lerp(new THREE.Color(.62 + n * .2, .45 + n * .12, .07), lejos * .85);
+    col.push(c.r, c.g, c.b);
+  }
+  g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
+  g.computeVertexNormals();
+  const mat = new THREE.MeshLambertMaterial({ vertexColors: true });
+  mat.onBeforeCompile = (sh) => {
+    sh.vertexShader = sh.vertexShader.replace('#include <common>', '#include <common>\nvarying vec3 vMundo;')
+      .replace('#include <worldpos_vertex>', '#include <worldpos_vertex>\nvMundo = (modelMatrix * vec4(transformed, 1.)).xyz;');
+    sh.fragmentShader = sh.fragmentShader.replace('#include <common>', `#include <common>
+      varying vec3 vMundo;
+      float h2(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+      float vn(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.-2.*f);
+        return mix(mix(h2(i), h2(i+vec2(1,0)), f.x), mix(h2(i+vec2(0,1)), h2(i+vec2(1,1)), f.x), f.y); }`)
+      .replace('#include <color_fragment>', `#include <color_fragment>
+      vec2 q = vMundo.xz;
+      float fino = vn(q * vec2(34., 9.)) * .55 + vn(q * vec2(9., 36.)) * .45;   // hebras
+      float mancha = vn(q * .7) * .6 + vn(q * 2.3) * .4;
+      diffuseColor.rgb *= .62 + fino * .5 + mancha * .22;
+      diffuseColor.rgb = mix(diffuseColor.rgb, diffuseColor.rgb * vec3(1.15, 1.08, .7), smoothstep(.55, .8, mancha) * .5);`);
+  };
+  scene.add(new THREE.Mesh(g, mat));
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   Piezas de flores (geometría procedural con color por vértice)
+   ════════════════════════════════════════════════════════════════════ */
+function pintar(g, colorA, colorB = colorA, eje = 'y'){
+  if (g.attributes.uv) g.deleteAttribute('uv');
+  const p = g.attributes.position, arr = new Float32Array(p.count * 3);
+  let mn = Infinity, mx = -Infinity;
+  const get = i => eje === 'y' ? p.getY(i) : eje === 'z' ? p.getZ(i) : Math.hypot(p.getX(i), p.getZ(i));
+  for (let i = 0; i < p.count; i++){ const v = get(i); mn = Math.min(mn, v); mx = Math.max(mx, v); }
+  const a = new THREE.Color(colorA), b = new THREE.Color(colorB), c = new THREE.Color();
+  for (let i = 0; i < p.count; i++){
+    const t = mx > mn ? (get(i) - mn) / (mx - mn) : 0;
+    c.copy(a).lerp(b, t); arr[i*3] = c.r; arr[i*3+1] = c.g; arr[i*3+2] = c.b;
+  }
+  g.setAttribute('color', new THREE.BufferAttribute(arr, 3));
+  return g;
+}
+
+/* Pétalo: sale del origen hacia +Z; `copa` lo curva hacia +Y, `caida` dobla la punta */
+function petalo({ largo = 1, ancho = .3, copa = .1, caida = 0, segL = 5, segA = 3, punta = 1, base = '#ffb000', tip = '#ffe070', forma = 0.8 }){
+  const pos = [], idx = [], col = [];
+  const cb = new THREE.Color(base), ct = new THREE.Color(tip), c = new THREE.Color();
+  for (let i = 0; i <= segL; i++){
+    const u = i / segL;
+    let w = Math.pow(Math.sin(Math.PI * Math.min(u * (0.55 + 0.45 * punta) + 0.001, 1)), forma) * ancho;
+    if (punta < 1) w = Math.max(w, ancho * 0.25 * Math.sin(Math.PI * u * 0.5 + 0.5));
+    for (let j = 0; j <= segA; j++){
+      const v = j / segA * 2 - 1;
+      const x = v * w;
+      const z = u * largo;
+      const y = (v * v) * copa * Math.sin(Math.PI * u) + caida * u * u * largo;
+      pos.push(x, y, z);
+      c.copy(cb).lerp(ct, Math.pow(u, .8)); col.push(c.r, c.g, c.b);
+    }
+  }
+  for (let i = 0; i < segL; i++) for (let j = 0; j < segA; j++){
+    const a = i * (segA + 1) + j, b = a + segA + 1;
+    idx.push(a, b, a + 1, b, b + 1, a + 1);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
+  g.setIndex(idx); g.computeVertexNormals();
+  return g;
+}
+
+function tallo(alto, grosor = .014, color = '#4e7a1e', curva = 0){
+  const puntos = [];
+  for (let i = 0; i <= 6; i++){ const t = i / 6; puntos.push(new THREE.Vector3(Math.sin(t * 2.2) * curva, t * alto, 0)); }
+  const g = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(puntos), 4, grosor, 4, false);
+  return pintar(g, '#3d6317', color);
+}
+
+function hoja(largo, ancho, ang, alto, giro){
+  const g = petalo({ largo, ancho, copa: ancho * .5, caida: -.35, segL: 4, segA: 2, base: '#3f6a18', tip: '#6f9a2a', forma: .9 });
+  g.rotateX(-ang); g.rotateY(giro); g.translate(0, alto, 0);
+  return g;
+}
+
+/* ── Girasol ─────────────────────────────────────────────────────── */
+function crearGirasol(){
+  const partes = [];
+  const H = 1.0;                                      // se escala por instancia
+  partes.push(tallo(H, .02, '#5b8a22', .05));
+  partes.push(hoja(.3, .15, .6, H * .3, 0.4), hoja(.28, .14, .7, H * .5, 3.4), hoja(.24, .12, .55, H * .7, 1.9));
+  const cabeza = [];
+  const R = .15;
+  // disco abombado, con anillos de color como el de verdad
+  const disco = new THREE.RingGeometry(.002, R * .98, 28, 5);
+  {
+    const p = disco.attributes.position;
+    for (let i = 0; i < p.count; i++){ const r = Math.hypot(p.getX(i), p.getY(i)) / R; p.setZ(i, (1 - r * r) * .03); }
+    disco.computeVertexNormals();
+  }
+  const d = disco; d.deleteAttribute('uv');
+  {
+    const p = d.attributes.position, col = new Float32Array(p.count * 3), c = new THREE.Color();
+    const cCentro = new THREE.Color('#4a4010'), cOscuro = new THREE.Color('#1f0e03'), cAro = new THREE.Color('#5c2f08'), cBorde = new THREE.Color('#a86a14');
+    for (let i = 0; i < p.count; i++){
+      const r = Math.hypot(p.getX(i), p.getY(i)) / R;
+      if (r < .22) c.copy(cCentro).lerp(cOscuro, r / .22);
+      else if (r < .8) c.copy(cOscuro).lerp(cAro, (r - .22) / .58 * .7);
+      else c.copy(cAro).lerp(cBorde, (r - .8) / .2);
+      col[i*3] = c.r; col[i*3+1] = c.g; col[i*3+2] = c.b;
+    }
+    d.setAttribute('color', new THREE.BufferAttribute(col, 3));
+  }
+  cabeza.push(d);
+  // tres coronas de pétalos puntiagudos, cada uno un poco distinto
+  const coronas = [
+    { n: 20, largo: .16, ancho: .034, z: .004,  giro: 0,   tilt: .08,  base: '#e98a00', tip: '#ffd93d' },
+    { n: 18, largo: .145, ancho: .032, z: -.002, giro: .16, tilt: -.1,  base: '#e07c00', tip: '#ffc928' },
+    { n: 10, largo: .07, ancho: .022, z: .012,  giro: .07, tilt: .35,  base: '#d97400', tip: '#ffb81c' },
+  ];
+  coronas.forEach((k, capa) => {
+    for (let i = 0; i < k.n; i++){
+      const var1 = hash(i, capa + 1), var2 = hash(i + 7, capa + 3);
+      const p = petalo({ largo: k.largo * (.88 + var1 * .24), ancho: k.ancho * (.9 + var2 * .2), copa: .012, caida: (var2 - .5) * .25,
+        segL: 4, segA: 2, punta: .85, base: k.base, tip: k.tip, forma: .7 });
+      p.rotateX(-Math.PI / 2);                         // apunta hacia +Y (en el plano de la cara)
+      p.rotateZ((var1 - .5) * .15);                    // un leve giro sobre su eje
+      p.translate(0, R * .9, k.z);
+      p.rotateZ((i / k.n) * Math.PI * 2 + k.giro + (var2 - .5) * .1);
+      // inclina la corona hacia adelante o atrás
+      const th = (i / k.n) * Math.PI * 2 + k.giro;
+      const m = new THREE.Matrix4().makeRotationAxis(new THREE.Vector3(Math.cos(th), Math.sin(th), 0), k.tilt * .5);
+      p.applyMatrix4(m);
+      cabeza.push(p);
+    }
+  });
+  // brácteas verdes puntiagudas detrás de los pétalos
+  for (let i = 0; i < 12; i++){
+    const b = petalo({ largo: .06, ancho: .02, copa: .006, caida: .3, segL: 2, segA: 1, punta: .9, base: '#3c6516', tip: '#6e9a2c', forma: .8 });
+    b.rotateX(-Math.PI / 2); b.translate(0, R * .75, -.022); b.rotateZ(i / 12 * Math.PI * 2 + .2);
+    cabeza.push(b);
+  }
+  const caliz = new THREE.SphereGeometry(R * .95, 12, 3, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2); caliz.scale(1, .45, 1);
+  caliz.rotateX(Math.PI / 2); caliz.translate(0, 0, -.006);
+  cabeza.push(pintar(caliz, '#3f6a18', '#5d8a24', 'z'));
+  const cab = mergeGeometries(cabeza);
+  cab.rotateX(.28);                                     // la cabeza pesa y se inclina un poquito
+  cab.translate(0.05, H + .02, .04);
+  partes.push(cab);
+  return mergeGeometries(partes);
+}
+
+/* ── Rosa amarilla ───────────────────────────────────────────────── */
+function crearRosa(){
+  const Y = .6;
+  const partes = [tallo(Y, .01, '#4f7c1d', .025)];
+  // hojas compuestas: tres foliolos
+  [[.22, .6], [.34, 3.7]].forEach(([h, g]) => {
+    partes.push(hoja(.075, .04, .9, h, g), hoja(.06, .032, .6, h + .01, g + .55), hoja(.06, .032, .6, h + .01, g - .55));
+  });
+  const golden = Math.PI * (3 - Math.sqrt(5));
+  const N = 20;
+  for (let i = 0; i < N; i++){
+    const t = i / (N - 1);
+    const dentro = t < .35;
+    const p = petalo({
+      largo: .035 + t * .04, ancho: .022 + t * .032, copa: dentro ? .035 : .025 + t * .01,
+      caida: dentro ? .5 - t : -.15 - (t - .35) * .7,           // los de adentro se cierran, los de afuera se abren y se enroscan hacia atrás
+      segL: 4, segA: 2, punta: .65, forma: .5,
+      base: dentro ? '#e08a00' : '#eea400', tip: dentro ? '#ffbe1c' : '#ffe067',
+    });
+    p.rotateX(-Math.PI / 2 + (dentro ? .06 + t * .5 : .28 + t * .75));
+    p.rotateY(i * golden);
+    p.translate(0, Y - t * .012, 0);
+    partes.push(p);
+  }
+  for (let i = 0; i < 5; i++){
+    const s = petalo({ largo: .04, ancho: .01, copa: .004, caida: -.4, segL: 3, segA: 2, punta: .9, base: '#3f6a18', tip: '#5e8c26' });
+    s.rotateX(-Math.PI / 2 + 1.9); s.rotateY(i / 5 * Math.PI * 2 + .3); s.translate(0, Y - .01, 0);
+    partes.push(s);
+  }
+  const receptaculo = new THREE.SphereGeometry(.014, 6, 4); receptaculo.scale(1, 1.3, 1); receptaculo.translate(0, Y - .014, 0);
+  partes.push(pintar(receptaculo, '#3f6a18'));
+  return mergeGeometries(partes);
+}
+
+/* ── Tulipán ─────────────────────────────────────────────────────── */
+function crearTulipan(){
+  const Y = .44;
+  const partes = [tallo(Y, .01, '#5a8a25', .015)];
+  [[.3, -1.2, .3], [.26, -1.1, 3.5]].forEach(([l, x, g]) => {
+    const h = petalo({ largo: l, ancho: .045, copa: .04, caida: -.18, segL: 5, segA: 2, base: '#4a7a1c', tip: '#7aa83c', forma: .8 });
+    h.rotateX(x); h.rotateY(g); partes.push(h);
+  });
+  for (let capa = 0; capa < 2; capa++) for (let i = 0; i < 3; i++){
+    const p = petalo({ largo: .095, ancho: .042, copa: .05, caida: -.12, segL: 4, segA: 2, punta: .9, forma: .55,
+      base: capa ? '#e05a00' : '#e87000', tip: capa ? '#ffcf20' : '#ffe04a' });
+    p.rotateX(-Math.PI / 2 + .2 + capa * .06);
+    p.rotateY(i * Math.PI * 2 / 3 + capa * Math.PI / 3);
+    p.translate(0, Y, 0);
+    const s = capa ? 1 : .95; p.scale(s, s, s);
+    partes.push(p);
+  }
+  return mergeGeometries(partes);
+}
+
+/* ── Rudbeckia (margarita de ojo negro) ─────────────────────────── */
+function crearMargarita(){
+  const Y = .5;
+  const partes = [tallo(Y, .006, '#557f20', .03), hoja(.1, .028, .9, .15, .8), hoja(.08, .024, .9, .26, 3.9)];
+  for (let capa = 0; capa < 1; capa++){
+    const n = 15;
+    for (let i = 0; i < n; i++){
+      const p = petalo({ largo: .06 - capa * .006, ancho: .014, copa: .006, caida: -.32 - hash(i, capa) * .2, segL: 3, segA: 1, punta: .75, forma: .6,
+        base: '#d97a00', tip: '#ffd21c' });
+      p.rotateY((i + capa * .5) / n * Math.PI * 2);
+      p.translate(0, Y - capa * .003, 0);
+      partes.push(p);
+    }
+  }
+  const c = new THREE.SphereGeometry(.018, 8, 4, 0, Math.PI * 2, 0, Math.PI / 2); c.scale(1, 1.35, 1); c.translate(0, Y, 0);
+  partes.push(pintar(c, '#3b1c05', '#150801'));
+  return mergeGeometries(partes);
+}
+
+/* ── Gerbera amarilla ────────────────────────────────────────────── */
+function crearGerbera(){
+  const Y = .46;
+  const partes = [tallo(Y, .007, '#5a8a24', .02)];
+  for (let i = 0; i < 4; i++){ const h = petalo({ largo: .12, ancho: .03, copa: .02, caida: -.2, segL: 4, segA: 2, base: '#3f6a18', tip: '#6c9a2a' }); h.rotateX(-1.35); h.rotateY(i * 1.6); partes.push(h); }
+  for (let capa = 0; capa < 2; capa++){
+    const n = capa ? 14 : 20;
+    for (let i = 0; i < n; i++){
+      const p = petalo({ largo: capa ? .05 : .072, ancho: capa ? .008 : .011, copa: .003, caida: capa ? .15 : -.05, segL: 3, segA: 1, punta: .8, forma: .45,
+        base: capa ? '#e8a000' : '#f5b000', tip: capa ? '#ffd23a' : '#ffe35a' });
+      p.rotateX(capa ? -.2 : 0);
+      p.rotateY((i + capa * .5) / n * Math.PI * 2);
+      p.translate(0, Y + capa * .004, 0);
+      partes.push(p);
+    }
+  }
+  const c = new THREE.CylinderGeometry(.018, .02, .008, 12); c.translate(0, Y + .004, 0);
+  partes.push(pintar(c, '#7a6a12', '#3a3006'));
+  const aro = new THREE.TorusGeometry(.016, .003, 3, 12); aro.rotateX(Math.PI / 2); aro.translate(0, Y + .008, 0);
+  partes.push(pintar(aro, '#e8b21a'));
+  return mergeGeometries(partes);
+}
+
+/* ── Cempasúchil ─────────────────────────────────────────────────── */
+function crearCempasuchil(){
+  const Y = .34;
+  const partes = [tallo(Y, .008, '#4d7a1c', .02)];
+  for (let i = 0; i < 4; i++){ const h = hoja(.08, .018, .8, .1 + i * .05, i * 1.7); partes.push(h); }
+  const golden = Math.PI * (3 - Math.sqrt(5));
+  const N = 44;
+  for (let i = 0; i < N; i++){
+    const t = i / N;
+    const p = petalo({ largo: .026 + t * .012, ancho: .018, copa: .012, caida: -.3 + hash(i, 2) * .4, segL: 2, segA: 2, forma: .45, punta: .55,
+      base: '#e86400', tip: t > .6 ? '#ff9e00' : '#ffb81a' });
+    p.rotateZ((hash(i, 5) - .5) * .8);                 // volantes: cada pétalo girado distinto
+    p.rotateX(-Math.PI / 2 + .1 + t * 1.55);
+    p.rotateY(i * golden);
+    p.translate(0, Y, 0);
+    partes.push(p);
+  }
+  return mergeGeometries(partes);
+}
+
+/* ── Lirio amarillo ──────────────────────────────────────────────── */
+function crearLirio(){
+  const Y = .64;
+  const partes = [tallo(Y, .009, '#4f7f1f', .03), hoja(.17, .022, .7, .2, .4), hoja(.16, .02, .7, .32, 2.6), hoja(.14, .02, .7, .44, 4.5)];
+  for (let i = 0; i < 6; i++){
+    const p = petalo({ largo: .11, ancho: .03, copa: .02, caida: -.75, segL: 5, segA: 2, punta: .9, base: '#ff8a00', tip: '#ffe45c', forma: .6 });
+    p.rotateX(-Math.PI / 2 + .55 + (i % 2) * .12);
+    p.rotateY(i * Math.PI / 3 + (i % 2) * .1);
+    p.translate(0, Y, 0);
+    partes.push(p);
+  }
+  for (let i = 0; i < 6; i++){
+    const a = i * Math.PI / 3 + .5, fin = new THREE.Vector3(Math.cos(a) * .04, Y + .075, Math.sin(a) * .04);
+    const e = new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(new THREE.Vector3(0, Y, 0), new THREE.Vector3(fin.x * .3, Y + .06, fin.z * .3), fin), 3, .0018, 3, false);
+    partes.push(pintar(e, '#d9c060'));
+    const an = new THREE.CapsuleGeometry(.0035, .013, 1, 4); an.rotateZ(Math.PI / 2); an.rotateY(-a); an.translate(fin.x, fin.y, fin.z);
+    partes.push(pintar(an, '#a8350a'));
+  }
+  return mergeGeometries(partes);
+}
+
+/* ── Florcita de suelo (botón de oro) ───────────────────────────── */
+function crearBoton(){
+  const partes = [tallo(.15, .004, '#5c8a22', .01)];
+  for (let i = 0; i < 5; i++){
+    const p = petalo({ largo: .028, ancho: .018, copa: .01, caida: .25, segL: 3, segA: 2, base: '#f2b300', tip: '#fff06a', forma: .5, punta: .6 });
+    p.rotateX(-.35); p.rotateY(i / 5 * Math.PI * 2); p.translate(0, .15, 0);
+    partes.push(p);
+  }
+  const c = new THREE.SphereGeometry(.008, 6, 4); c.translate(0, .155, 0); partes.push(pintar(c, '#e38b00'));
+  return mergeGeometries(partes);
+}
+
+/* ── Montañas al fondo: capas con perspectiva atmosférica ────────── */
+const GLSL_RUIDO = `
+  float h2(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+  float vn(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.-2.*f);
+    return mix(mix(h2(i), h2(i+vec2(1,0)), f.x), mix(h2(i+vec2(0,1)), h2(i+vec2(1,1)), f.x), f.y); }`;
+const NIEBLA = new THREE.Color('#f0874a');
+function cordillera({ radio, alto, freq, sem, cima, brillo, bruma }){
+  const seg = 1400, pos = [], top = [], ang = [], sol = [], idx = [];
+  const aSol = Math.atan2(SOL_DIR.z, SOL_DIR.x);
+  for (let i = 0; i <= seg; i++){
+    const a = i / seg * Math.PI * 2;
+    const nx = Math.cos(a) * freq + sem, nz = Math.sin(a) * freq - sem;
+    const n = fbm(nx, nz);
+    const cresta = 1 - Math.abs(ruido(nx * 2.6, nz * 2.6) * 2 - 1);
+    const fino = ruido(nx * 9, nz * 9) - .5;
+    let h = alto * (.12 + .88 * Math.pow(n, 1.8)) + cresta * cresta * alto * .28 + fino * alto * .05;
+    h += Math.pow(Math.max(0, fbm(nx * .5 + 40, nz * .5)), 5) * alto * 1.6;          // algún volcán
+    const haciaSol = Math.max(0, Math.cos(a - aSol));
+    h *= 1 - .55 * Math.pow(haciaSol, 10);                                            // valle donde se pone el sol
+    const x = Math.cos(a) * radio, z = Math.sin(a) * radio;
+    pos.push(x, h, z, x, -40, z);
+    top.push(h, h); ang.push(a, a); sol.push(Math.pow(haciaSol, 3), Math.pow(haciaSol, 3));
+    if (i < seg){ const k = i * 2; idx.push(k, k + 1, k + 2, k + 1, k + 3, k + 2); }
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('aTop', new THREE.Float32BufferAttribute(top, 1));
+  g.setAttribute('aAng', new THREE.Float32BufferAttribute(ang, 1));
+  g.setAttribute('aSolar', new THREE.Float32BufferAttribute(sol, 1));
+  g.setIndex(idx);
+  const m = new THREE.ShaderMaterial({
+    fog: false, side: THREE.DoubleSide,
+    uniforms: { uCima: { value: new THREE.Color(cima) }, uBruma: { value: NIEBLA }, uBrillo: { value: brillo }, uNiebla: { value: bruma } },
+    vertexShader: `attribute float aTop; attribute float aAng; attribute float aSolar;
+      varying float vY; varying float vTop; varying float vAng; varying float vSol;
+      void main(){ vY = position.y; vTop = aTop; vAng = aAng; vSol = aSolar;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.); }`,
+    fragmentShader: `uniform vec3 uCima; uniform vec3 uBruma; uniform float uBrillo; uniform float uNiebla;
+      varying float vY; varying float vTop; varying float vAng; varying float vSol;
+      ${GLSL_RUIDO}
+      void main(){
+        float t = clamp(vY / max(vTop, 1.), 0., 1.);
+        // cárcavas y laderas: vetas verticales de erosión
+        float vetas = vn(vec2(vAng * 420., vY * .05)) * .55 + vn(vec2(vAng * 1500., vY * .18)) * .3 + vn(vec2(vAng * 90., vY * .02)) * .15;
+        vec3 c = uCima * (.86 + vetas * .22);
+        // borde encendido por el sol en las crestas
+        float borde = smoothstep(.975, 1., t) * vSol * uBrillo;
+        c = mix(c, vec3(1., .66, .32), borde * .6);
+        c *= .9 + .1 * t;
+        // bruma naranja que sube desde abajo
+        float bruma = (1. - smoothstep(-.05, .9, t)) * .85 + uNiebla;
+        c = mix(c, uBruma, clamp(bruma, 0., 1.));
+        gl_FragColor = vec4(c, 1.);
+        #include <tonemapping_fragment>
+        #include <colorspace_fragment>
+      }`
+  });
+  const mesh = new THREE.Mesh(g, m); mesh.renderOrder = -1; return mesh;
+}
+scene.add(cordillera({ radio: 540, alto: 170, freq: 1.5, sem: 3.3,  cima: '#d9728a', brillo: 1.0, bruma: .42 }));
+scene.add(cordillera({ radio: 440, alto: 110, freq: 2.2, sem: 8.1,  cima: '#a44b72', brillo: .9,  bruma: .28 }));
+scene.add(cordillera({ radio: 320, alto: 62,  freq: 3.1, sem: 1.7,  cima: '#6e3561', brillo: .8,  bruma: .16 }));
+
+
+/* ════════════════════════════════════════════════════════════════════
+   Material con viento + brote (cada instancia nace a su tiempo)
+   ════════════════════════════════════════════════════════════════════ */
+const U = { uTime: { value: 0 }, uViento: { value: 1 } };
+
+function materialFlor(opts = {}){
+  const m = new THREE.MeshLambertMaterial({ vertexColors: true, side: THREE.DoubleSide, emissive: '#3a1800', emissiveIntensity: .2, ...opts });
+  m.onBeforeCompile = (s) => {
+    s.uniforms.uTime = U.uTime; s.uniforms.uViento = U.uViento;
+    s.vertexShader = s.vertexShader
+      .replace('#include <common>', `#include <common>
+        attribute float aNace; attribute float aFase;
+        uniform float uTime; uniform float uViento;`)
+      .replace('#include <begin_vertex>', `
+        float g = clamp((uTime - aNace) / 1.7, 0.0, 1.0);
+        float crece = g < 1.0 ? (1.0 - pow(1.0 - g, 3.0)) + sin(g * 3.14159) * 0.14 : 1.0;
+        vec3 transformed = position * crece;
+        vec3 wpos = (instanceMatrix * vec4(0.,0.,0.,1.)).xyz;
+        float h = max(position.y, 0.0);
+        float ola = sin(uTime * 0.9 - wpos.x * 0.11 + wpos.z * 0.05) * 0.5 + 0.5;       // ráfagas que cruzan la pradera
+        float w = (sin(uTime * 1.7 + aFase + wpos.x * 0.6) * 0.35 + sin(uTime * 2.9 + aFase * 1.7) * 0.12 + ola * 0.8) * uViento;
+        mat3 imW = mat3(instanceMatrix);
+        vec3 dirLocal = transpose(imW) * vec3(0.85, 0.0, 0.35);
+        dirLocal /= max(dot(imW[0], imW[0]), 1e-4);
+        transformed += dirLocal * w * h * h * 0.16;
+        transformed.y -= w * w * h * h * 0.02;
+      `);
+  };
+  return m;
+}
+
+const matFlor = materialFlor();
+
+/* ════════════════════════════════════════════════════════════════════
+   Siembra
+   ════════════════════════════════════════════════════════════════════ */
+const R_PRADERA = 64;
+const especies = [];
+const dummy = new THREE.Object3D();
+// La pradera se divide en parcelas: solo se dibujan las que la cámara está viendo
+const GRID = 7, LADO = 140 / GRID;
+const celda = (x, z) => Math.min(GRID - 1, Math.max(0, Math.floor((x + 70) / LADO))) + GRID * Math.min(GRID - 1, Math.max(0, Math.floor((z + 70) / LADO)));
+
+function geoCompartida(geo, n){
+  const g = new THREE.BufferGeometry();
+  g.setIndex(geo.index);
+  for (const k in geo.attributes) g.setAttribute(k, geo.attributes[k]);    // se comparte en la GPU, no se copia
+  g.boundingSphere = geo.boundingSphere;
+  const nace = new Float32Array(n).fill(-100), fase = new Float32Array(n);
+  for (let i = 0; i < n; i++) fase[i] = rnd() * 6.28;
+  g.setAttribute('aNace', new THREE.InstancedBufferAttribute(nace, 1));
+  g.setAttribute('aFase', new THREE.InstancedBufferAttribute(fase, 1));
+  return g;
+}
+
+function sembrar({ geo, n, extra, escala, mascara, mirarSol = false, radio = R_PRADERA, inclinar = .12, tinte = null }){
+  geo.computeBoundingSphere();
+  const base = Math.floor(n * Q);
+  const cubetas = Array.from({ length: GRID * GRID }, () => []);
+  let i = 0, intentos = 0;
+  while (i < base && intentos < base * 40){
+    intentos++;
+    const r = Math.sqrt(rnd()) * radio, a = rnd() * Math.PI * 2;
+    const x = Math.cos(a) * r, z = Math.sin(a) * r;
+    if (mascara && mascara(x, z) < rnd()) continue;
+    if (mirarSol && CERCA(x, z) < 1.3) continue;              // que el dron no atraviese girasoles
+    cubetas[celda(x, z)].push(x, z);
+    i++;
+  }
+  const parcelas = [];
+  for (const c of cubetas){
+    const k = c.length / 2; if (!k) continue;
+    const mesh = new THREE.InstancedMesh(geoCompartida(geo, k), matFlor, k);
+    for (let j = 0; j < k; j++){ colocar(mesh, j, c[j*2], c[j*2+1], escala, mirarSol, inclinar); if (tinte) mesh.setColorAt(j, tinte()); }
+    mesh.computeBoundingSphere(); mesh.boundingSphere.radius += 1.5;
+    mesh.userData.n0 = k;
+    scene.add(mesh); parcelas.push(mesh);
+  }
+  // reserva para las flores que ella siembra tocando (se dibujan solo las que ya nacieron)
+  const reserva = new THREE.InstancedMesh(geoCompartida(geo, extra), matFlor, extra);
+  reserva.geometry.attributes.aNace.array.fill(1e6);
+  if (tinte) for (let j = 0; j < extra; j++) reserva.setColorAt(j, tinte());
+  reserva.count = 0; reserva.frustumCulled = false; reserva.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  scene.add(reserva);
+  especies.push({ parcelas, reserva, extra, siguiente: 0, escala, mirarSol, inclinar });
+}
+
+function colocar(mesh, i, x, z, [e0, e1], mirarSol, inclinar){
+  dummy.position.set(x, altura(x, z), z);
+  const s = rango(e0, e1);
+  dummy.scale.set(s, s * rango(.85, 1.15), s);
+  const giro = mirarSol ? Math.atan2(-SOL_DIR.x, -SOL_DIR.z) + rango(-.6, .6) : rnd() * Math.PI * 2;
+  dummy.rotation.set(rango(-inclinar, inclinar), giro, rango(-inclinar, inclinar), 'YXZ');
+  dummy.updateMatrix();
+  mesh.setMatrixAt(i, dummy.matrix);
+}
+
+// cuántas flores de verdad hay ahora mismo en la pradera
+function floresReales(){
+  let n = 0;
+  for (const e of especies){ for (const m of e.parcelas) n += m.count; n += e.reserva.count; }
+  return n;
+}
+
+// manchones naturales para cada especie
+// manchones naturales + una mezcla de todo en cualquier lado
+const S = THREE.MathUtils.smoothstep;
+const M = {
+  girasol:  (x, z) => S(fbm(x * .035 + 3, z * .035), .42, .64) * .85 + .12,
+  rosa:     (x, z) => S(fbm(x * .05 + 11, z * .05 - 4), .4, .62) * .7 + .3,
+  tulipan:  (x, z) => S(fbm(x * .06 - 7, z * .06 + 9), .42, .64) * .7 + .3,
+  cempa:    (x, z) => S(fbm(x * .045 + 21, z * .045 + 2), .42, .64) * .7 + .3,
+  lirio:    (x, z) => S(fbm(x * .05 - 31, z * .05 + 17), .42, .64) * .7 + .3,
+  marga:    (x, z) => .45 + fbm(x * .08 - 2, z * .08 + 14) * .55,
+  gerbera:  (x, z) => S(fbm(x * .055 + 41, z * .055 - 23), .42, .64) * .7 + .3,
+};
+
+let EXTRA = esMovil ? 500 : 1500;   // reservas para las que ella siembra tocando
+// cada flor con su propio tono de amarillo, como en un campo de verdad
+const _tc = new THREE.Color();
+const tono = () => _tc.setRGB(1, .9 + rnd() * .1, .78 + rnd() * .22);
+sembrar({ geo: crearBoton(),        n: 12000, extra: EXTRA, escala: [1.5, 2.3], radio: 62, inclinar: .25, tinte: tono });
+sembrar({ geo: crearMargarita(),    n: 8000,  extra: EXTRA, escala: [1.8, 2.5], mascara: M.marga, inclinar: .2, tinte: tono });
+sembrar({ geo: crearGerbera(),      n: 6000,  extra: EXTRA, escala: [2.0, 2.7], mascara: M.gerbera, inclinar: .18, tinte: tono });
+sembrar({ geo: crearCempasuchil(),  n: 7000,  extra: EXTRA, escala: [2.5, 3.3], mascara: M.cempa, tinte: tono });
+sembrar({ geo: crearTulipan(),      n: 7500,  extra: EXTRA, escala: [2.2, 2.9], mascara: M.tulipan, inclinar: .1, tinte: tono });
+sembrar({ geo: crearLirio(),        n: 5000,  extra: EXTRA, escala: [1.8, 2.4], mascara: M.lirio, inclinar: .12, tinte: tono });
+sembrar({ geo: crearRosa(),         n: 7000,  extra: EXTRA, escala: [2.4, 3.1], mascara: M.rosa, inclinar: .1, tinte: tono });
+sembrar({ geo: crearGirasol(),      n: 3500,  extra: EXTRA, escala: [1.2, 1.75], mascara: M.girasol, mirarSol: true, inclinar: .06, tinte: tono });
+
+/* ════════════════════════════════════════════════════════════════════
+   Zacate: cientos de miles de hojas individuales, con su propio shader
+   (base en sombra, puntas claras, contraluz dorado y viento en olas)
+   ════════════════════════════════════════════════════════════════════ */
+const HOJAS = Math.floor(esMovil ? 90000 : 240000);
+const zacate = (() => {
+  // plantilla de una hoja: x ∈ [-.5,.5] ancho, y ∈ [0,1] alto
+  const SEG = 4, pos = [], idx = [];
+  for (let i = 0; i < SEG; i++){ const y = i / SEG; pos.push(-.5, y, 0, .5, y, 0); }
+  pos.push(0, 1, 0);
+  for (let i = 0; i < SEG - 1; i++){ const a = i * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); }
+  const u = (SEG - 1) * 2; idx.push(u, u + 1, u + 2);
+  const plantilla = new THREE.Float32BufferAttribute(pos, 3), indice = new THREE.Uint16BufferAttribute(idx, 1);
+
+  // se reparte por parcelas, más tupido donde pasa el dron
+  const cub = Array.from({ length: GRID * GRID }, () => ({ off: [], par: [], v: [] }));
+  let n = 0, intentos = 0;
+  while (n < HOJAS && intentos < HOJAS * 8){
+    intentos++;
+    const r = Math.sqrt(rnd()) * 66, a = rnd() * Math.PI * 2;
+    const x = Math.cos(a) * r, z = Math.sin(a) * r;
+    const densidad = THREE.MathUtils.smoothstep(CERCA(x, z), 18, 4) * .9 + .1;
+    if (densidad < rnd()) continue;
+    const c = cub[celda(x, z)], mancha = fbm(x * .12 + 50, z * .12);
+    c.off.push(x, altura(x, z) - .02, z);
+    c.par.push(rnd() * Math.PI * 2, (.32 + rnd() * .5) * (.75 + mancha * .6), .032 + rnd() * .026, .15 + rnd() * .55);
+    c.v.push(rnd() * .7 + mancha * .3);
+    n++;
+  }
+  const m = new THREE.ShaderMaterial({
+    side: THREE.DoubleSide, fog: true,
+    uniforms: { ...THREE.UniformsLib.fog, uTime: U.uTime, uViento: U.uViento, uSol: { value: SOL_DIR } },
+    vertexShader: `
+      attribute vec3 aOff; attribute vec4 aPar; attribute float aVar;
+      uniform float uTime; uniform float uViento; uniform vec3 uSol;
+      varying float vY; varying float vVar; varying vec3 vN; varying vec3 vVista; varying float vX;
+      #include <fog_pars_vertex>
+      void main(){
+        float y = position.y, ang = aPar.x, h = aPar.y, w = aPar.z;
+        vec3 frente = vec3(cos(ang), 0., sin(ang));
+        vec3 lado = vec3(-frente.z, 0., frente.x);
+        float ola = sin(uTime * .9 - aOff.x * .11 + aOff.z * .05) * .5 + .5;
+        float rafaga = sin(uTime * 1.9 + aOff.x * .7 + aOff.z * .4 + aVar * 6.) * .25;
+        float viento = (ola * .75 + rafaga + .15) * uViento;
+        float doblez = (aPar.w + viento * .6) * y * y;
+        vec3 p = aOff + lado * position.x * w * (1. - pow(y, 1.4) * .92);
+        p += frente * aPar.w * y * y * h * .5;
+        p += vec3(.85, 0., .35) * viento * y * y * h * .55;
+        p.y += h * y * (1. - doblez * .25);
+        vN = normalize(frente * .6 + vec3(0., .55, 0.) + lado * position.x * 1.4);
+        vY = y; vVar = aVar; vX = position.x;
+        vVista = normalize(cameraPosition - p);
+        vec4 mvPosition = viewMatrix * vec4(p, 1.);
+        gl_Position = projectionMatrix * mvPosition;
+        #include <fog_vertex>
+      }`,
+    fragmentShader: `
+      uniform vec3 uSol;
+      varying float vY; varying float vVar; varying vec3 vN; varying vec3 vVista; varying float vX;
+      #include <fog_pars_fragment>
+      void main(){
+        vec3 base = vec3(.035, .07, .012);
+        vec3 medio = mix(vec3(.1, .24, .03), vec3(.17, .3, .035), vVar);
+        vec3 punta = mix(vec3(.3, .5, .08), vec3(.5, .56, .12), smoothstep(.55, 1., vVar));
+        punta = mix(punta, vec3(.78, .62, .28), step(.93, vVar));          // alguna hoja seca, dorada
+        vec3 c = mix(base, medio, smoothstep(0., .45, vY));
+        c = mix(c, punta, smoothstep(.4, 1., vY));
+        c *= .85 + .3 * (1. - abs(vX) * 1.6);                               // nervio central
+        vec3 n = normalize(gl_FrontFacing ? vN : -vN);
+        float dif = max(dot(n, uSol), 0.) * .55 + .6;
+        float contra = pow(max(dot(-vVista, uSol), 0.), 3.) * smoothstep(.2, 1., vY);   // sol a través de la hoja
+        vec3 luz = c * dif * vec3(1.25, 1.05, .8);
+        luz += vec3(1., .66, .22) * contra * (.4 + vVar * .4) * .7;
+        gl_FragColor = vec4(luz, 1.);
+        #include <tonemapping_fragment>
+        #include <colorspace_fragment>
+        #include <fog_fragment>
+      }`
+  });
+  const trozos = [];
+  cub.forEach((c, k) => {
+    const cuantas = c.v.length; if (!cuantas) return;
+    const g = new THREE.InstancedBufferGeometry();
+    g.setAttribute('position', plantilla); g.setIndex(indice);
+    g.setAttribute('aOff', new THREE.InstancedBufferAttribute(new Float32Array(c.off), 3));
+    g.setAttribute('aPar', new THREE.InstancedBufferAttribute(new Float32Array(c.par), 4));
+    g.setAttribute('aVar', new THREE.InstancedBufferAttribute(new Float32Array(c.v), 1));
+    g.instanceCount = cuantas;
+    const cx = (k % GRID + .5) * LADO - 70, cz = (Math.floor(k / GRID) + .5) * LADO - 70;
+    g.boundingSphere = new THREE.Sphere(new THREE.Vector3(cx, altura(cx, cz), cz), LADO * .75 + 3);
+    const mesh = new THREE.Mesh(g, m); mesh.userData.n0 = cuantas; scene.add(mesh); trozos.push(mesh);
+  });
+  return { trozos };
+})();
+
+
+/* Campo lejano: millones de puntitos dorados hasta el horizonte */
+const LEJANOS = Math.floor(esMovil ? 70000 : 150000);
+{
+  const pos = new Float32Array(LEJANOS * 3), col = new Float32Array(LEJANOS * 3), tam = new Float32Array(LEJANOS);
+  const pal = ['#ffc21a', '#ffd84a', '#ffb000', '#ffe27a', '#f59a00', '#ffcc33', '#e8f07a'].map(c => new THREE.Color(c));
+  for (let i = 0; i < LEJANOS; i++){
+    const r = 55 + Math.pow(rnd(), .7) * 330, a = rnd() * Math.PI * 2;
+    const x = Math.cos(a) * r, z = Math.sin(a) * r;
+    pos[i*3] = x; pos[i*3+1] = altura(x, z) + .25 + rnd() * .5; pos[i*3+2] = z;
+    const c = pal[(rnd() * pal.length) | 0]; col[i*3] = c.r; col[i*3+1] = c.g; col[i*3+2] = c.b;
+    tam[i] = rango(1.0, 1.9);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  g.setAttribute('color', new THREE.BufferAttribute(col, 3));
+  g.setAttribute('aTam', new THREE.BufferAttribute(tam, 1));
+  const m = new THREE.ShaderMaterial({
+    transparent: false, fog: true,
+    uniforms: { ...THREE.UniformsLib.fog, uTime: U.uTime, uPx: { value: innerHeight * pr } },
+    vertexShader: `
+      attribute vec3 color; attribute float aTam; varying vec3 vC; uniform float uTime; uniform float uPx;
+      #include <fog_pars_vertex>
+      void main(){
+        vec3 p = position;
+        float g = 1.0;
+        p.x += sin(uTime * 0.9 - p.x * 0.11 + p.z * 0.05) * 0.12;
+        vec4 mvPosition = modelViewMatrix * vec4(p, 1.);
+        gl_Position = projectionMatrix * mvPosition;
+        gl_PointSize = aTam * g * 0.16 * uPx / -mvPosition.z;
+        vC = color;
+        #include <fog_vertex>
+      }`,
+    fragmentShader: `
+      varying vec3 vC;
+      #include <fog_pars_fragment>
+      void main(){
+        vec2 d = gl_PointCoord - 0.5; if (dot(d,d) > 0.25) discard;
+        gl_FragColor = vec4(vC, 1.);
+        #include <tonemapping_fragment>
+        #include <colorspace_fragment>
+        #include <fog_fragment>
+      }`
+  });
+  const puntos = new THREE.Points(g, m); puntos.frustumCulled = false; scene.add(puntos);
+  window.__puntos = m;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   Vida: polen, pétalos que vuelan, mariposas
+   ════════════════════════════════════════════════════════════════════ */
+const POLEN = esMovil ? 700 : 1800;
+const polen = (() => {
+  const pos = new Float32Array(POLEN * 3), sem = new Float32Array(POLEN);
+  for (let i = 0; i < POLEN; i++){ pos[i*3] = rango(-35, 35); pos[i*3+1] = rango(0, 7); pos[i*3+2] = rango(-35, 35); sem[i] = rnd() * 100; }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  g.setAttribute('aSem', new THREE.BufferAttribute(sem, 1));
+  const m = new THREE.ShaderMaterial({
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    uniforms: { uTime: U.uTime, uCam: { value: new THREE.Vector3() }, uPx: { value: innerHeight * pr } },
+    vertexShader: `
+      attribute float aSem; uniform float uTime; uniform vec3 uCam; uniform float uPx; varying float vA;
+      void main(){
+        vec3 p = position;
+        p.x += sin(uTime * 0.3 + aSem) * 1.5 + uTime * 0.25;
+        p.y = mod(p.y + uTime * 0.12 + sin(uTime + aSem) * 0.2, 7.0) + 0.2;
+        p.z += cos(uTime * 0.25 + aSem * 1.3) * 1.5;
+        p.xz = uCam.xz + mod(p.xz - uCam.xz + 35.0, 70.0) - 35.0;
+        vec4 mv = modelViewMatrix * vec4(p, 1.);
+        gl_Position = projectionMatrix * mv;
+        float tw = 0.55 + 0.45 * sin(uTime * 2.3 + aSem * 7.0);
+        gl_PointSize = (0.06 + 0.05 * fract(aSem)) * uPx / -mv.z;
+        vA = tw * smoothstep(40.0, 5.0, -mv.z);
+      }`,
+    fragmentShader: `varying float vA; void main(){ float d = length(gl_PointCoord - .5); float a = smoothstep(.5, 0., d); gl_FragColor = vec4(1.0, .85, .45, a * a * vA); }`
+  });
+  const p = new THREE.Points(g, m); p.frustumCulled = false; scene.add(p);
+  return m;
+})();
+
+// pétalos al viento
+const N_PET = esMovil ? 160 : 420;
+const petalosVuelo = (() => {
+  const g = petalo({ largo: .07, ancho: .025, copa: .01, caida: .1, segL: 3, segA: 2, base: '#ffb000', tip: '#ffe46a' });
+  g.translate(0, 0, -.035);
+  const m = new THREE.InstancedMesh(g, new THREE.MeshStandardMaterial({ vertexColors: true, side: THREE.DoubleSide, roughness: .5, emissive: '#6b3d00', emissiveIntensity: .25 }), N_PET);
+  m.frustumCulled = false;
+  const datos = [];
+  for (let i = 0; i < N_PET; i++) datos.push({ x: rango(-25, 25), y: rango(0, 12), z: rango(-25, 25), v: rango(.25, .7), f: rnd() * 6.28, rx: rnd() * 6, rz: rnd() * 6, s: rango(.7, 1.3) });
+  scene.add(m);
+  return { m, datos };
+})();
+
+/* ════════════════════════════════════════════════════════════════════
+   Posproceso: brillo dorado
+   ════════════════════════════════════════════════════════════════════ */
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth / 2, innerHeight / 2), .38, .6, .92);
+{ const orig = bloom.setSize.bind(bloom); bloom.setSize = (w, h) => orig(Math.ceil(w / 2), Math.ceil(h / 2)); }   // brillo a media resolución
+composer.addPass(bloom);
+composer.addPass(new OutputPass());
+composer.setPixelRatio(pr);
+
+/* ════════════════════════════════════════════════════════════════════
+   Cámara: vuelo cinematográfico + mirar con el dedo
+   ════════════════════════════════════════════════════════════════════ */
+let yawUsr = 0, pitchUsr = 0, yawObj = 0, pitchObj = 0;
+let arrastrando = false, px0 = 0, py0 = 0, movido = 0;
+canvas.addEventListener('pointerdown', e => { arrastrando = true; px0 = e.clientX; py0 = e.clientY; movido = 0; });
+addEventListener('pointermove', e => {
+  if (!arrastrando) return;
+  const dx = e.clientX - px0, dy = e.clientY - py0; px0 = e.clientX; py0 = e.clientY; movido += Math.abs(dx) + Math.abs(dy);
+  yawObj -= dx * .004; pitchObj = THREE.MathUtils.clamp(pitchObj - dy * .003, -.5, .45);
+});
+addEventListener('pointerup', e => { if (arrastrando && movido < 10) tocar(e.clientX, e.clientY); arrastrando = false; });
+
+const _v = new THREE.Vector3(), _t = new THREE.Vector3(), _mira = new THREE.Vector3(), _dir = new THREE.Vector3(0, -.3, -1);
+const VUELTA = 85;                               // segundos por vuelta completa
+let rumboPrev = null, alabeo = 0;
+function moverCamara(t, dt){
+  // el dron frena suavecito al pasar rasante y acelera en lo alto
+  const k = (t / VUELTA + .0001) % 1;
+  const pos = rutaDron.getPointAt(k, _v);
+  const ade = rutaDron.getPointAt((k + .014) % 1, _t);
+  const dir = ade.sub(pos).normalize();
+  const alto = pos.y - altura(pos.x, pos.z);
+  dir.y = dir.y * .45 - .07 - Math.max(0, alto - 3) * .022;          // mira hacia abajo cuando va alto
+  dir.normalize();
+  _dir.lerp(dir, Math.min(1, dt * 2.2)).normalize();
+  // alabeo en las curvas, como un dron de verdad
+  const rumbo = Math.atan2(_dir.x, _dir.z);
+  if (rumboPrev !== null && dt > 0){
+    let d = rumbo - rumboPrev; if (d > Math.PI) d -= Math.PI * 2; if (d < -Math.PI) d += Math.PI * 2;
+    const obj = THREE.MathUtils.clamp(-d / dt * .22, -.22, .22);
+    alabeo += (obj - alabeo) * Math.min(1, dt * 1.5);
+  }
+  rumboPrev = rumbo;
+  pos.y = Math.max(pos.y, altura(pos.x, pos.z) + 2.3);
+  yawUsr += (yawObj - yawUsr) * Math.min(1, dt * 4);
+  pitchUsr += (pitchObj - pitchUsr) * Math.min(1, dt * 4);
+  if (!arrastrando){ yawObj *= Math.pow(.35, dt * .15); pitchObj *= Math.pow(.35, dt * .15); }
+  const mira = _dir.clone().applyAxisAngle(new THREE.Vector3(0, 1, 0), yawUsr); mira.y += pitchUsr;
+  const vaiven = reduceMov ? 0 : Math.sin(t * .7) * .06;
+  camera.position.set(pos.x, pos.y + vaiven, pos.z);
+  _mira.copy(camera.position).add(mira);
+  camera.lookAt(_mira);
+  if (!reduceMov) camera.rotateZ(alabeo);
+}
+
+// mariposas de colores
+const mariposas = [];
+{
+  const especiesAla = [
+    { a: '#ffe066', b: '#ffb400', borde: '#5a3200', n: 10 },                // amarilla
+    { a: '#ffb347', b: '#ff7a00', borde: '#1a0d05', n: 6, puntos: true },   // monarca
+    { a: '#b8f0ff', b: '#1d7bff', borde: '#0b0f22', n: 5, puntos: true },   // morpho azul
+    { a: '#ffffff', b: '#f3ecd6', borde: '#8a7d64', n: 4 },                 // blanca
+    { a: '#fff3a8', b: '#ffcf33', borde: '#b37700', n: 6 },                 // limón
+  ];
+  const tex = (e) => {
+    const c = document.createElement('canvas'); c.width = c.height = 128; const x = c.getContext('2d');
+    x.translate(0, 64);
+    const alaA = new Path2D('M4,-2 C10,-50 70,-62 118,-46 C124,-30 96,-6 60,4 C40,8 18,6 4,-2 Z');
+    const alaB = new Path2D('M4,2 C22,6 52,10 78,26 C88,44 70,60 44,58 C24,52 10,30 4,2 Z');
+    for (const p of [alaA, alaB]){
+      const g = x.createRadialGradient(10, 0, 4, 30, 0, 110); g.addColorStop(0, e.b); g.addColorStop(.55, e.a); g.addColorStop(1, e.b);
+      x.fillStyle = g; x.fill(p);
+      x.lineWidth = 7; x.strokeStyle = e.borde; x.stroke(p);
+    }
+    if (e.puntos){ x.fillStyle = '#fff'; for (let i = 0; i < 9; i++){ x.beginPath(); x.arc(70 + i * 5.5, -48 + i * 3.2 + (i % 2) * 3, 2, 0, 7); x.fill(); } }
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+  };
+  const gAla = new THREE.PlaneGeometry(.13, .13); gAla.translate(.065, 0, 0); gAla.rotateX(-Math.PI / 2);
+  const cuerpoGeo = new THREE.CapsuleGeometry(.005, .045, 2, 5); cuerpoGeo.rotateX(Math.PI / 2);
+  const cuerpoMat = new THREE.MeshStandardMaterial({ color: '#1e1208' });
+  // revolotean cerca del camino de la cámara, para que siempre haya alguna a la vista
+  const cerca = rutaDron.getSpacedPoints(40);
+  const factor = esMovil ? .5 : .9;
+  for (const e of especiesAla){
+    const mat = new THREE.MeshStandardMaterial({ map: tex(e), transparent: true, alphaTest: .4, side: THREE.DoubleSide, roughness: .5,
+      emissive: new THREE.Color(e.b), emissiveIntensity: .12 });
+    for (let i = 0; i < Math.round(e.n * factor); i++){
+      const cuerpo = new THREE.Group();
+      const iz = new THREE.Mesh(gAla, mat), de = new THREE.Mesh(gAla, mat);
+      de.scale.x = -1;
+      cuerpo.add(iz, de, new THREE.Mesh(cuerpoGeo, cuerpoMat));
+      cuerpo.scale.setScalar(rango(.8, 1.35));
+      scene.add(cuerpo);
+      const p = cerca[(rnd() * cerca.length) | 0];
+      mariposas.push({ cuerpo, iz, de, c: new THREE.Vector3(p.x + rango(-6, 6), 0, p.z + rango(-6, 6)),
+        r: rango(1.2, 4.5), v: rango(.18, .42) * (rnd() > .5 ? 1 : -1), f: rnd() * 6.28, h: rango(.9, 2.4), ale: rango(13, 20) });
+    }
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   Tocar la pradera = nace un ramillete
+   ════════════════════════════════════════════════════════════════════ */
+const ray = new THREE.Raycaster();
+const plano = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+let sembradas = 0;
+function tocar(cx, cy){
+  if (!listo) return;
+  ray.setFromCamera(new THREE.Vector2(cx / innerWidth * 2 - 1, -(cy / innerHeight) * 2 + 1), camera);
+  // marcha sobre el rayo hasta tocar el suelo (solo cerca, para que se vean nacer)
+  const o = ray.ray.origin, d = ray.ray.direction; let hit = null;
+  for (let s = 0.5; s < 28; s += .2){ const x = o.x + d.x * s, y = o.y + d.y * s, z = o.z + d.z * s; if (y <= altura(x, z)){ hit = new THREE.Vector3(x, y, z); break; } }
+  if (!hit){
+    // tocó el cielo o el horizonte: el ramillete nace igual, frente a la cámara
+    const h = new THREE.Vector3(d.x, 0, d.z);
+    if (h.lengthSq() < 1e-4){ camera.getWorldDirection(h); h.y = 0; }
+    h.normalize();
+    const dist = 8 + Math.random() * 4;
+    const x = o.x + h.x * dist, z = o.z + h.z * dist;
+    hit = new THREE.Vector3(x, altura(x, z), z);
+  }
+  const cuantas = 34;
+  for (let k = 0; k < cuantas; k++){
+    const e = especies[(rnd() * especies.length) | 0];
+    const i = e.siguiente++ % e.extra;                          // si se llena, recicla las más viejas
+    e.reserva.count = Math.min(e.extra, e.siguiente);
+    const r = Math.sqrt(rnd()) * 1.4, a = rnd() * 6.28;
+    const [e0, e1] = e.escala;
+    colocar(e.reserva, i, hit.x + Math.cos(a) * r, hit.z + Math.sin(a) * r, [e0 * 1.25, e1 * 1.35], e.mirarSol, e.inclinar);
+    e.reserva.instanceMatrix.needsUpdate = true;
+    const at = e.reserva.geometry.attributes.aNace;
+    at.array[i] = U.uTime.value + r * .25 + rnd() * .35; at.needsUpdate = true;
+  }
+  chorroPetalos(hit);
+  sembradas += cuantas;
+  chorroPetalos(hit);
+  sonar.campanita();
+  destello(hit);
+}
+
+// chispa de luz donde se siembra
+const chispas = [];
+let chorro = 0;
+function chorroPetalos(p){
+  const { datos } = petalosVuelo;
+  for (let n = 0; n < 40; n++){
+    const d = datos[chorro++ % datos.length];
+    d.x = p.x + rango(-.4, .4); d.z = p.z + rango(-.4, .4); d.y = p.y + .3;
+    d.vy = rango(2.2, 4.2); d.vx = rango(-1.2, 1.2); d.vz = rango(-1.2, 1.2);
+  }
+}
+function destello(p){
+  const m = new THREE.Sprite(new THREE.SpriteMaterial({ map: texBrillo, color: '#ffd46a', transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+  m.position.copy(p).add(new THREE.Vector3(0, .4, 0)); m.scale.setScalar(.1); scene.add(m);
+  chispas.push({ m, t: 0 });
+}
+const texBrillo = (() => {
+  const c = document.createElement('canvas'); c.width = c.height = 64; const x = c.getContext('2d');
+  const g = x.createRadialGradient(32, 32, 0, 32, 32, 32); g.addColorStop(0, '#fff'); g.addColorStop(.3, 'rgba(255,220,140,.6)'); g.addColorStop(1, 'rgba(255,200,80,0)');
+  x.fillStyle = g; x.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c);
+})();
+
+/* ════════════════════════════════════════════════════════════════════
+   Música generativa (Web Audio) — y, si existe, la voz de él (voz.mp3)
+   ════════════════════════════════════════════════════════════════════ */
+const sonar = (() => {
+  let ctx, master, mezcla, rev, activo = true, empezado = false, voz = null;
+  const hz = m => 440 * Math.pow(2, (m - 69) / 12);
+  const BEAT = 60 / 68;                                   // 68 pulsos por minuto, calmado
+
+  // Re mayor: I – V – vi – IV – I – V – IV – V
+  const ACORDES = [
+    { r: 50, t: [62, 66, 69] }, { r: 45, t: [61, 64, 69] }, { r: 47, t: [62, 66, 71] }, { r: 43, t: [62, 67, 71] },
+    { r: 50, t: [62, 66, 69] }, { r: 45, t: [61, 64, 69] }, { r: 43, t: [59, 62, 67] }, { r: 45, t: [61, 64, 69] },
+  ];
+  // melodía por compás: [nota midi, pulsos]
+  const MELODIA = [
+    [[78, 2], [76, 1], [74, 1]],
+    [[76, 3], [69, 1]],
+    [[74, 2], [73, 1], [71, 1]],
+    [[71, 1.5], [69, .5], [67, 1], [69, 1]],
+    [[78, 1], [81, 1], [78, 1], [76, 1]],
+    [[76, 2], [73, 1], [76, 1]],
+    [[74, 1], [71, 1], [74, 1], [79, 1]],
+    [[78, 2], [76, 2]],
+  ];
+  const CONTRA = [86, 85, 83, 83, 86, 88, 86, 85];
+
+  function reverb(seg = 5.5){
+    const len = ctx.sampleRate * seg, b = ctx.createBuffer(2, len, ctx.sampleRate);
+    for (let c = 0; c < 2; c++){ const d = b.getChannelData(c); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3); }
+    const cv = ctx.createConvolver(); cv.buffer = b; return cv;
+  }
+  function salida(pan, seco, humedo){
+    const p = ctx.createStereoPanner ? ctx.createStereoPanner() : ctx.createGain();
+    if (p.pan) p.pan.value = pan;
+    const gs = ctx.createGain(); gs.gain.value = seco; const gh = ctx.createGain(); gh.gain.value = humedo;
+    p.connect(gs); gs.connect(mezcla); p.connect(gh); gh.connect(rev);
+    return p;
+  }
+  // piano suave: armónicos que se apagan a distinto ritmo + filtro que se va cerrando
+  function piano(m, t, vel = .5, pan = 0, largo = 1){
+    const f = hz(m), dur = (3.2 - (m - 50) * .03) * largo;
+    const out = salida(pan, .8, .55);
+    const filtro = ctx.createBiquadFilter(); filtro.type = 'lowpass';
+    filtro.frequency.setValueAtTime(Math.min(f * 9, 9000), t); filtro.frequency.exponentialRampToValueAtTime(Math.max(f * 1.6, 300), t + dur * .8);
+    filtro.connect(out);
+    [[1, 1, 1], [2, .42, .55], [3, .16, .35], [4, .08, .25], [6, .03, .15]].forEach(([k, a, d]) => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = 'sine'; o.frequency.value = f * k * (1 + (k - 1) * .0009); o.detune.value = (Math.random() - .5) * 3;
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vel * a * .16, t + .006);
+      g.gain.exponentialRampToValueAtTime(.00008, t + dur * d);
+      o.connect(g); g.connect(filtro); o.start(t); o.stop(t + dur + .1);
+    });
+  }
+  // colchón de cuerdas cálidas
+  function cuerdas(notas, t, dur, vol = .05){
+    const out = salida(0, .6, .9);
+    const filtro = ctx.createBiquadFilter(); filtro.type = 'lowpass'; filtro.Q.value = .4;
+    filtro.frequency.setValueAtTime(500, t); filtro.frequency.linearRampToValueAtTime(1300, t + dur * .5); filtro.frequency.linearRampToValueAtTime(600, t + dur);
+    filtro.connect(out);
+    const g = ctx.createGain(); g.connect(filtro);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + dur * .4); g.gain.linearRampToValueAtTime(0, t + dur + .8);
+    notas.forEach(m => [-7, 0, 6].forEach(dt => {
+      const o = ctx.createOscillator(); o.type = 'sawtooth'; o.frequency.value = hz(m); o.detune.value = dt;
+      const lfo = ctx.createOscillator(), lg = ctx.createGain(); lfo.frequency.value = 4.8 + Math.random(); lg.gain.value = 4;
+      lfo.connect(lg); lg.connect(o.detune);
+      o.connect(g); o.start(t); o.stop(t + dur + 1); lfo.start(t); lfo.stop(t + dur + 1);
+    }));
+  }
+  // campanitas (celesta)
+  function celesta(m, t, vol = .05, pan = 0){
+    const out = salida(pan, .5, 1);
+    [[1, 1, 1.6], [4, .25, .5], [7.1, .08, .25]].forEach(([k, a, d]) => {
+      const o = ctx.createOscillator(), g = ctx.createGain(); o.frequency.value = hz(m) * k;
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol * a, t + .003); g.gain.exponentialRampToValueAtTime(.00006, t + d * 1.8);
+      o.connect(g); g.connect(out); o.start(t); o.stop(t + 3.5);
+    });
+  }
+  function bajo(m, t, dur){
+    const o = ctx.createOscillator(), g = ctx.createGain(); o.frequency.value = hz(m);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.09, t + .25); g.gain.exponentialRampToValueAtTime(.0005, t + dur);
+    o.connect(g); g.connect(mezcla); o.start(t); o.stop(t + dur + .1);
+  }
+
+  let compas = 0, proximo = 0;
+  function programar(){
+    if (!ctx) return;
+    while (proximo < ctx.currentTime + 1.5){
+      const t = proximo, ac = ACORDES[compas % 8], vuelta = Math.floor(compas / 8);
+      const dur = BEAT * 4;
+      // mano izquierda: arpegio en corcheas
+      const arp = [ac.r, ac.r + 7, ac.r + 12, ac.t[1], ac.t[2], ac.t[1], ac.r + 12, ac.r + 7];
+      arp.forEach((m, i) => piano(m, t + i * BEAT / 2 + (i % 2) * .012, i === 0 ? .55 : .32, -.25 + i * .04, .8));
+      bajo(ac.r - 12, t, dur * 1.1);
+      if (vuelta >= 1) cuerdas(ac.t.map(m => m - 12), t, dur, vuelta >= 2 ? .045 : .03);
+      // la melodía entra en la segunda vuelta; en la cuarta sube una octava; la quinta respira
+      if (vuelta >= 1 && vuelta % 4 !== 0){
+        let b = 0;
+        for (const [m, p] of MELODIA[compas % 8]){
+          piano(m + (vuelta % 4 === 3 ? 12 : 0), t + b * BEAT + .02, .62, .12, 1.3);
+          b += p;
+        }
+      }
+      if (vuelta >= 2) celesta(CONTRA[compas % 8], t + BEAT * 2, .035, .35);
+      compas++; proximo += dur;
+    }
+  }
+
+  return {
+    iniciar(){
+      if (empezado) return; empezado = true;
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+      master = ctx.createGain(); master.gain.value = 0;
+      const comp = ctx.createDynamicsCompressor(); comp.threshold.value = -18; comp.ratio.value = 3;
+      master.connect(comp); comp.connect(ctx.destination);
+      mezcla = ctx.createGain(); mezcla.connect(master);
+      rev = reverb(); const gr = ctx.createGain(); gr.gain.value = .6; rev.connect(gr); gr.connect(master);
+      master.gain.linearRampToValueAtTime(1, ctx.currentTime + 3);
+      proximo = ctx.currentTime + .3;
+      setInterval(programar, 200); programar();
+      // Si guardas un audio con tu voz llamado voz.mp3 junto a este archivo, suena solo.
+      voz = new Audio('voz.mp3'); voz.preload = 'auto';
+      voz.addEventListener('canplaythrough', () => {
+        setTimeout(() => { if (activo){ master.gain.linearRampToValueAtTime(.35, ctx.currentTime + 1.5); voz.play().catch(() => {}); } }, 5500);
+      }, { once: true });
+      voz.addEventListener('ended', () => master.gain.linearRampToValueAtTime(1, ctx.currentTime + 3));
+      voz.addEventListener('error', () => { voz = null; });
+    },
+    campanita(){
+      if (!ctx || !activo) return;
+      const ac = ACORDES[(compas + 7) % 8], t = ctx.currentTime;
+      [...ac.t, ac.t[0] + 12].forEach((m, i) => celesta(m + 12, t + i * .075, .05, (i - 1.5) * .3));
+    },
+    alternar(){
+      activo = !activo;
+      if (ctx){ activo ? ctx.resume() : ctx.suspend(); }
+      if (voz){ activo ? (voz.currentTime > 0 && !voz.ended && voz.play().catch(() => {})) : voz.pause(); }
+      return activo;
+    }
+  };
+})();
+
+/* ════════════════════════════════════════════════════════════════════
+   El mensaje en pantalla
+   ════════════════════════════════════════════════════════════════════ */
+const caja = document.getElementById('mensaje');
+let secuencia = 0;
+async function contar(){
+  const mia = ++secuencia;
+  document.getElementById('hud').classList.add('ver');
+  const espera = s => new Promise(r => setTimeout(r, s * 1000));
+  await espera(3.5);
+  for (const [html, dur] of MENSAJE){
+    if (mia !== secuencia) return;
+    const el = document.createElement('p');
+    el.className = 'linea'; el.innerHTML = html;
+    caja.replaceChildren(el);
+    requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('ver')));
+    await espera(dur);
+    if (mia !== secuencia) return;
+    if (html !== MENSAJE[MENSAJE.length - 1][0]){ el.classList.add('ir'); await espera(1.3); }
+  }
+  document.getElementById('hud').classList.add('ver');
+  await espera(6);
+  if (mia === secuencia){ const el = caja.firstChild; if (el){ el.classList.add('ir'); } }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   Arranque
+   ════════════════════════════════════════════════════════════════════ */
+let listo = false, t0 = 0;
+const reloj = new THREE.Clock();
+const numero = document.getElementById('numero');
+
+document.getElementById('abrir').addEventListener('click', () => {
+  sonar.iniciar();
+  document.getElementById('portada').classList.add('fuera');
+  listo = true; t0 = reloj.getElapsedTime() - (+new URLSearchParams(location.search).get('t') || 0);
+  contar();
+});
+document.getElementById('btnRepetir').addEventListener('click', e => { e.stopPropagation(); t0 = reloj.getElapsedTime(); contar(); });
+document.getElementById('btnSonido').addEventListener('click', e => {
+  e.stopPropagation();
+  const on = sonar.alternar();
+  document.getElementById('icoSonido').innerHTML = on
+    ? '<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/>'
+    : '<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 9l5 6M22 9l-5 6"/>';
+});
+['btnRepetir', 'btnSonido'].forEach(id => document.getElementById(id).addEventListener('pointerup', e => e.stopPropagation()));
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.fov = esMovil && innerWidth < innerHeight ? 68 : 55;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight); composer.setSize(innerWidth, innerHeight);
+  polen.uniforms.uPx.value = innerHeight * pr; window.__puntos.uniforms.uPx.value = innerHeight * pr;
+});
+
+// calidad adaptable: si va lento, baja resolución
+let fpsAcum = 0, fpsN = 0, fpsChequeo = 0, ultimoConteo = -1, nivel = 0;
+function ajustarCalidad(dt){
+  fpsAcum += dt; fpsN++; fpsChequeo += dt;
+  if (fpsChequeo > 2 && listo){
+    const fps = fpsN / fpsAcum; fpsAcum = 0; fpsN = 0; fpsChequeo = 0;
+    if (fps >= 40 || nivel >= 6) return;
+    nivel++;
+    if (pr > .8 && fps < 40){
+      pr = Math.max(.8, pr - .15); renderer.setPixelRatio(pr); composer.setPixelRatio(pr);
+      polen.uniforms.uPx.value = innerHeight * pr; window.__puntos.uniforms.uPx.value = innerHeight * pr;
+    }
+    // menos hojas de zacate y menos flores, sin tocar las que ella sembró
+    for (const t of zacate.trozos) t.geometry.instanceCount = Math.max(Math.floor(t.geometry.instanceCount * .72), Math.floor(t.userData.n0 * .3));
+    for (const e of especies) for (const m of e.parcelas) m.count = Math.max(Math.floor(m.count * .8), Math.floor(m.userData.n0 * .4));
+    if (fps < 24) bloom.enabled = false;
+  }
+}
+
+const _q = new THREE.Quaternion(), _e = new THREE.Euler(), _s = new THREE.Vector3();
+function animar(){
+  const dt = Math.min(reloj.getDelta(), .05);
+  const T = reloj.getElapsedTime();
+  const t = listo ? T - t0 : 0;
+  U.uTime.value = listo ? t : -10;
+  U.uViento.value = reduceMov ? .3 : 1;
+  cielo.material.uniforms.uT.value = T;
+  moverCamara(t, dt);
+  polen.uniforms.uCam.value.copy(camera.position);
+
+  // pétalos al viento alrededor de la cámara
+  const { m, datos } = petalosVuelo;
+  for (let i = 0; i < datos.length; i++){
+    const d = datos[i];
+    if (d.vy){ d.x += d.vx * dt; d.z += d.vz * dt; d.y += d.vy * dt; d.vy -= 2.6 * dt; d.vx *= .985; d.vz *= .985; if (d.vy < -d.v){ d.vy = 0; } }
+    else { d.y -= d.v * dt; d.x += (.9 + Math.sin(T * .7 + d.f) * .6) * dt; d.z += Math.cos(T * .5 + d.f) * .3 * dt; }
+    d.rx += dt * 2.1 * d.v; d.rz += dt * 1.3;
+    let lx = d.x - camera.position.x, lz = d.z - camera.position.z;
+    if (!d.vy && (d.y < altura(d.x, d.z) || Math.abs(lx) > 25 || Math.abs(lz) > 25)){
+      d.x = camera.position.x + rango(-25, 15); d.z = camera.position.z + rango(-25, 25); d.y = camera.position.y + rango(2, 9);
+    }
+    dummy.position.set(d.x, d.y, d.z);
+    dummy.rotation.set(d.rx, d.f, d.rz);
+    dummy.scale.setScalar(listo ? d.s : 0);
+    dummy.updateMatrix(); m.setMatrixAt(i, dummy.matrix);
+  }
+  m.instanceMatrix.needsUpdate = true;
+
+  // mariposas
+  for (const b of mariposas){
+    const a = T * b.v + b.f;
+    const x = b.c.x + Math.cos(a) * b.r, z = b.c.z + Math.sin(a * 1.3) * b.r;
+    const y = altura(x, z) + b.h + Math.sin(T * 1.7 + b.f) * .35;
+    b.cuerpo.lookAt(x + (x - b.cuerpo.position.x) * 10, y, z + (z - b.cuerpo.position.z) * 10);
+    b.cuerpo.position.set(x, y, z);
+    const aleteo = Math.sin(T * b.ale + b.f) * 1.1 + .15;
+    b.iz.rotation.z = aleteo; b.de.rotation.z = -aleteo;
+  }
+
+  // chispas
+  for (let i = chispas.length - 1; i >= 0; i--){
+    const c = chispas[i]; c.t += dt;
+    c.m.scale.setScalar(.2 + c.t * 7); c.m.material.opacity = Math.max(0, 1 - c.t / 1.1);
+    if (c.t > 1.1){ scene.remove(c.m); c.m.material.dispose(); chispas.splice(i, 1); }
+  }
+
+  if (listo){ const n = floresReales(); if (n !== ultimoConteo){ ultimoConteo = n; numero.textContent = n.toLocaleString('es-CR'); } }
+
+  ajustarCalidad(dt);
+  composer.render(dt);
+  requestAnimationFrame(animar);
+}
+
+// primer cuadro para compilar shaders antes de mostrar el botón
+renderer.compile(scene, camera);
+requestAnimationFrame(animar);
+setTimeout(() => {
+  document.getElementById('cargando').hidden = true;
+  document.getElementById('abrir').hidden = false;
+  document.getElementById('notaSonido').hidden = false;
+}, 350);
+</script>
+</body>
+</html>
